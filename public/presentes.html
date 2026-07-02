@@ -7,20 +7,23 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
-    .gift-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .gift-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
 
-    .gift-row-item {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px 16px;
-      border: 2px solid var(--border); border-radius: 14px;
-      cursor: pointer; background: var(--bg);
-      transition: all 0.2s; position: relative;
+    /* ── Gift item wrapper ── */
+    .gift-item-wrap {
+      border: 2px solid var(--border); border-radius: 16px;
+      background: var(--bg); transition: all 0.2s; overflow: hidden;
     }
-    .gift-row-item:hover:not(.taken) { border-color: var(--rose-light); background: #fff; }
-    .gift-row-item.selected { border-color: var(--rose); background: #FFF0F4; box-shadow: var(--shadow-sm); }
-    .gift-row-item.taken { opacity: 0.5; cursor: not-allowed; }
+    .gift-item-wrap:hover:not(.taken) { border-color: var(--rose-light); background: #fff; }
+    .gift-item-wrap.selected { border-color: var(--rose); background: #FFF0F4; box-shadow: var(--shadow-sm); }
+    .gift-item-wrap.taken { opacity: 0.5; }
 
-    .gift-row-item input[type="radio"] { position:absolute; opacity:0; width:0; }
+    /* ── Clickable top row ── */
+    .gift-row-top {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 16px; cursor: pointer;
+    }
+    .gift-item-wrap.taken .gift-row-top { cursor: not-allowed; }
 
     .gift-check {
       width: 22px; height: 22px; border-radius: 50%;
@@ -28,8 +31,8 @@
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; transition: all 0.2s; color: transparent;
     }
-    .gift-row-item.selected .gift-check { background: var(--rose); border-color: var(--rose); color: #fff; }
-    .gift-row-item.taken .gift-check { background: var(--text-light); border-color: var(--text-light); color: #fff; }
+    .gift-item-wrap.selected .gift-check { background: var(--rose); border-color: var(--rose); color: #fff; }
+    .gift-item-wrap.taken .gift-check { background: var(--text-light); border-color: var(--text-light); color: #fff; }
 
     .gift-icon-sm {
       width: 40px; height: 40px; border-radius: 10px;
@@ -37,21 +40,12 @@
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; transition: background 0.2s;
     }
-    .gift-row-item.selected .gift-icon-sm { background: var(--rose-dark); color: #fff; }
-    .gift-row-item.taken .gift-icon-sm { background: var(--border); color: var(--text-light); }
+    .gift-item-wrap.selected .gift-icon-sm { background: var(--rose-dark); color: #fff; }
+    .gift-item-wrap.taken .gift-icon-sm { background: var(--border); color: var(--text-light); }
 
     .gift-info { flex: 1; min-width: 0; }
     .gift-title { font-size: 14px; font-weight: 600; color: var(--text); }
-    .gift-sub { font-size: 12px; color: var(--text-light); margin-top: 2px; }
-
-    .gift-link-btn {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-size: 11px; font-weight: 600; color: var(--rose);
-      text-decoration: none; padding: 4px 10px;
-      background: #FFF0F4; border-radius: 100px;
-      transition: background 0.15s; white-space: nowrap; flex-shrink: 0;
-    }
-    .gift-link-btn:hover { background: var(--rose); color: #fff; }
+    .gift-sub   { font-size: 12px; color: var(--text-light); margin-top: 2px; }
 
     .taken-badge {
       font-size: 10px; font-weight: 700; color: var(--text-mid);
@@ -60,17 +54,55 @@
       text-transform: uppercase; letter-spacing: 0.5px;
     }
 
+    /* ── Links section (bottom of each gift) ── */
+    .gift-links-strip {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+      padding: 0 16px 14px 70px; /* aligns under title */
+    }
+    .gift-links-strip.hidden { display: none; }
+
+    .gift-links-label {
+      font-size: 11px; font-weight: 700; color: var(--text-light);
+      text-transform: uppercase; letter-spacing: 0.8px;
+      white-space: nowrap;
+    }
+
+    .gift-link-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600;
+      color: var(--rose-dark); background: #FFF0F4;
+      border: 1px solid rgba(201,69,111,0.2);
+      padding: 5px 12px; border-radius: 100px;
+      text-decoration: none; white-space: nowrap;
+      transition: all 0.15s; cursor: pointer;
+    }
+    .gift-link-chip:hover { background: var(--rose); color: #fff; border-color: var(--rose); }
+    .gift-link-chip svg { flex-shrink: 0; }
+
+    /* ── Category groups ── */
+    .gift-category-group { margin-bottom: 18px; }
+    .gift-category-group:last-child { margin-bottom: 0; }
+    .gift-category-header {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.4px; color: var(--text-light);
+      margin-bottom: 8px; padding: 0 2px;
+    }
+    .gift-category-header i { flex-shrink: 0; }
+
+    /* ── Custom row ── */
     .custom-row {
       display: flex; align-items: center; gap: 14px;
       padding: 14px 16px;
       border: 2px dashed var(--border); border-radius: 14px;
-      cursor: pointer; background: var(--bg);
-      transition: all 0.2s;
+      cursor: pointer; background: var(--bg); transition: all 0.2s;
     }
     .custom-row:hover { border-color: var(--rose-light); background: #fff; }
     .custom-row.selected { border-color: var(--rose); background: #FFF0F4; border-style: solid; }
     .custom-row .gift-icon-sm { background: #FFF0F4; color: var(--rose); }
     .custom-row.selected .gift-icon-sm { background: var(--rose); color: #fff; }
+    .custom-row .gift-check { border-color: var(--border); }
+    .custom-row.selected .gift-check { background: var(--rose); border-color: var(--rose); color: #fff; }
   </style>
 </head>
 <body>
@@ -107,7 +139,7 @@
     <div class="card">
       <div class="section-title">Sugestões de presentes</div>
 
-      <!-- Progress bar -->
+      <!-- Progress -->
       <div style="margin-bottom:20px;">
         <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-light);margin-bottom:6px;">
           <span>Itens reservados</span>
@@ -155,11 +187,8 @@
       </div>
 
       <div class="form-group">
-        <label for="personPhone">
-          WhatsApp
-          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-light);font-size:12px;"> — opcional</span>
-        </label>
-        <input type="tel" id="personPhone" placeholder="(11) 99999-9999" autocomplete="tel" />
+        <label for="personPhone">WhatsApp</label>
+        <input type="tel" id="personPhone" placeholder="(11) 99999-9999" autocomplete="tel" required />
       </div>
 
       <div class="form-group">
@@ -178,7 +207,21 @@
 </div>
 
 <footer class="site-footer">
-  Feito com <i data-lucide="heart" style="width:13px;height:13px;display:inline-block;vertical-align:middle;color:#E8799A;fill:#E8799A;"></i> para a Juliana &nbsp;&bull;&nbsp; 🇧🇷 → 🇨🇦
+  <div class="footer-inner">
+    <div class="footer-top">
+      <i data-lucide="plane" style="width:14px;height:14px;transform:rotate(45deg);color:rgba(255,255,255,0.3);flex-shrink:0;"></i>
+      <span class="footer-brand-name">Festa da Juliana</span>
+    </div>
+    <div class="footer-route">São Paulo, Brasil &rarr; Toronto, Canadá</div>
+    <div class="footer-sep"></div>
+    <div class="footer-credit">
+      Desenvolvido por &nbsp;
+      <a href="https://instagram.com/tortelliweb" target="_blank" rel="noopener" class="footer-insta">
+        <i data-lucide="instagram" style="width:14px;height:14px;"></i>
+        @tortelliweb
+      </a>
+    </div>
+  </div>
 </footer>
 
 <script>
@@ -207,46 +250,87 @@
     }
   }
 
+  const CATEGORY_ICONS = {
+    'Bagagem': 'luggage',
+    'Higiene & Beleza': 'sparkles',
+    'Conforto em Viagem': 'moon',
+    'Documentos & Segurança': 'shield',
+    'Eletrônicos': 'zap',
+    'Presente Especial': 'gift'
+  };
+
   function renderList(list) {
     const el = document.getElementById('giftList');
     if (!list.length) {
       el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-light);">Nenhum item na lista.</div>';
       return;
     }
-    el.innerHTML = list.map(g => {
-      const icon = GIFT_ICONS[g.id] || 'gift';
-      const isTaken = !!g.takenBy;
-      const linkBtn = g.link
-        ? `<a href="${g.link}" target="_blank" rel="noopener" class="gift-link-btn" onclick="event.stopPropagation()">
-             <i data-lucide="external-link" style="width:11px;height:11px;"></i> Ver produto
-           </a>`
-        : '';
-      const takenBadge = isTaken ? `<span class="taken-badge">Reservado</span>` : '';
+
+    // Group by category preserving order
+    const groups = [];
+    const seen = {};
+    list.forEach(g => {
+      const cat = g.category || 'Outros';
+      if (!seen[cat]) { seen[cat] = true; groups.push({ cat, items: [] }); }
+      groups.find(gr => gr.cat === cat).items.push(g);
+    });
+
+    el.innerHTML = groups.map(({ cat, items }) => {
+      const catIcon = CATEGORY_ICONS[cat] || 'tag';
+      const itemsHtml = items.map(g => {
+        const icon = GIFT_ICONS[g.id] || 'gift';
+        const isTaken = !!g.takenBy;
+        const links = g.links || [];
+
+        const linkStrip = links.length > 0 ? `
+          <div class="gift-links-strip">
+            <span class="gift-links-label">Ver opções:</span>
+            ${links.map((lk, i) => `
+              <a href="${lk.url}" target="_blank" rel="noopener" class="gift-link-chip" onclick="event.stopPropagation()">
+                <i data-lucide="external-link" style="width:11px;height:11px;"></i>
+                ${lk.label || 'Opção ' + (i + 1)}
+              </a>
+            `).join('')}
+          </div>
+        ` : '';
+
+        return `
+          <div class="gift-item-wrap ${isTaken ? 'taken' : ''}" id="gitem-${g.id}">
+            <div class="gift-row-top" onclick="${isTaken ? '' : `selectGift('${g.id}')`}">
+              <div class="gift-check" id="gcheck-${g.id}">
+                <i data-lucide="check" style="width:13px;height:13px;"></i>
+              </div>
+              <div class="gift-icon-sm">
+                <i data-lucide="${icon}" style="width:18px;height:18px;"></i>
+              </div>
+              <div class="gift-info">
+                <div class="gift-title">${g.name}</div>
+                <div class="gift-sub">${isTaken ? `Reservado por ${g.takenBy}` : 'Disponível'}</div>
+              </div>
+              ${isTaken ? '<span class="taken-badge">Reservado</span>' : ''}
+            </div>
+            ${linkStrip}
+          </div>
+        `;
+      }).join('');
+
       return `
-        <div class="gift-row-item ${isTaken ? 'taken' : ''}" id="gitem-${g.id}" onclick="${isTaken ? '' : `selectGift('${g.id}')`}">
-          <input type="radio" name="giftChoice" id="gift-${g.id}" value="${g.id}" ${isTaken ? 'disabled' : ''} />
-          <div class="gift-check" id="gcheck-${g.id}">
-            <i data-lucide="${isTaken ? 'check' : 'check'}" style="width:13px;height:13px;"></i>
+        <div class="gift-category-group">
+          <div class="gift-category-header">
+            <i data-lucide="${catIcon}" style="width:14px;height:14px;"></i>
+            ${cat}
           </div>
-          <div class="gift-icon-sm"><i data-lucide="${icon}" style="width:18px;height:18px;"></i></div>
-          <div class="gift-info">
-            <div class="gift-title">${g.name}</div>
-            ${isTaken ? `<div class="gift-sub">Reservado por ${g.takenBy}</div>` : '<div class="gift-sub">Disponível</div>'}
-          </div>
-          ${linkBtn}
-          ${takenBadge}
+          ${itemsHtml}
         </div>
       `;
     }).join('');
+
     lucide.createIcons();
   }
 
   function selectGift(id) {
-    // Deselect all
-    document.querySelectorAll('.gift-row-item:not(.taken)').forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll('.gift-item-wrap:not(.taken)').forEach(el => el.classList.remove('selected'));
     document.getElementById('customRow').classList.remove('selected');
-    document.getElementById('customCheck').style.background = '';
-    // Select clicked
     const item = document.getElementById(`gitem-${id}`);
     if (item) item.classList.add('selected');
     selectedGiftId = id;
@@ -264,7 +348,7 @@
     } else {
       isCustom = true;
       selectedGiftId = null;
-      document.querySelectorAll('.gift-row-item').forEach(el => el.classList.remove('selected'));
+      document.querySelectorAll('.gift-item-wrap').forEach(el => el.classList.remove('selected'));
       row.classList.add('selected');
       input.style.display = 'block';
     }
@@ -281,6 +365,12 @@
     if (!personName) {
       document.getElementById('errorMsg').textContent = 'Por favor, informe seu nome completo.';
       errEl.classList.add('show'); return;
+    }
+    if (!phone) {
+      document.getElementById('errorMsg').textContent = 'Informe seu WhatsApp para continuar.';
+      errEl.classList.add('show');
+      document.getElementById('personPhone').focus();
+      return;
     }
     if (!selectedGiftId && !isCustom) {
       document.getElementById('errorMsg').textContent = 'Escolha um presente da lista ou selecione "Outro presente".';

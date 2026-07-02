@@ -266,12 +266,14 @@
     </div>
     <div class="info-chip">
       <i data-lucide="clock" style="width:14px;height:14px;"></i>
-      <span id="hero-hora">19:00</span>
+      <span id="hero-hora">17:00</span>
     </div>
-    <div class="info-chip">
+    <a href="#" id="maps-link" target="_blank" rel="noopener"
+       class="info-chip" style="text-decoration:none;cursor:pointer;transition:opacity 0.15s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
       <i data-lucide="map-pin" style="width:14px;height:14px;"></i>
       <span id="hero-local">...</span>
-    </div>
+      <i data-lucide="external-link" style="width:11px;height:11px;opacity:0.5;flex-shrink:0;"></i>
+    </a>
   </div>
 
   <!-- Countdown -->
@@ -350,56 +352,24 @@
   </div>
 
 
-  <div class="wave">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" preserveAspectRatio="none"
-         style="width:100%;height:40px;fill:#FFF7F9;display:block;">
-      <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z"/>
-    </svg>
-  </div>
-</section>
-
-<!-- How it works -->
-<section class="about-section">
-  <div class="section-divider"></div>
-  <h2>Como funciona?</h2>
-  <p>Ajude a organizar a festa confirmando sua presença e escolhendo um presente para a Juliana.</p>
-  <div class="steps">
-    <div class="step-card">
-      <div class="step-ic g"><i data-lucide="check-circle-2" style="width:24px;height:24px;"></i></div>
-      <h3>Confirme sua presença</h3>
-      <p>Diga se você vai, ainda não sabe ou não pode comparecer.</p>
-    </div>
-    <div class="step-card">
-      <div class="step-ic y"><i data-lucide="gift" style="width:24px;height:24px;"></i></div>
-      <h3>Escolha um presente</h3>
-      <p>Reserve um item da lista para evitar presentes repetidos.</p>
-    </div>
-    <div class="step-card">
-      <div class="step-ic b"><i data-lucide="sparkles" style="width:24px;height:24px;"></i></div>
-      <h3>Apareça e curta!</h3>
-      <p>Venha celebrar essa despedida especial rumo ao Canadá.</p>
-    </div>
-  </div>
-</section>
-
-<!-- Final CTA -->
-<section class="final-cta">
-  <h2>Pronto para confirmar?</h2>
-  <p>Não deixe para a última hora — quanto mais cedo, melhor para organizar tudo.</p>
-  <div class="final-btns">
-    <a href="rsvp.html" class="fb-br">
-      <i data-lucide="check-circle-2" style="width:18px;height:18px;"></i>
-      Confirmar Presença
-    </a>
-    <a href="presentes.html" class="fb-ca">
-      <i data-lucide="gift" style="width:18px;height:18px;"></i>
-      Escolher Presente
-    </a>
-  </div>
 </section>
 
 <footer class="site-footer">
-  Feito com <i data-lucide="heart" style="width:13px;height:13px;display:inline-block;vertical-align:middle;color:#E8799A;fill:#E8799A;"></i> para a Juliana &nbsp;&bull;&nbsp; São Paulo &rarr; Toronto
+  <div class="footer-inner">
+    <div class="footer-top">
+      <i data-lucide="plane" style="width:14px;height:14px;transform:rotate(45deg);color:rgba(255,255,255,0.3);flex-shrink:0;"></i>
+      <span class="footer-brand-name">Festa da Juliana</span>
+    </div>
+    <div class="footer-route">São Paulo, Brasil &rarr; Toronto, Canadá</div>
+    <div class="footer-sep"></div>
+    <div class="footer-credit">
+      Desenvolvido por &nbsp;
+      <a href="https://instagram.com/tortelliweb" target="_blank" rel="noopener" class="footer-insta">
+        <i data-lucide="instagram" style="width:14px;height:14px;"></i>
+        @tortelliweb
+      </a>
+    </div>
+  </div>
 </footer>
 
 <script>
@@ -411,12 +381,13 @@
     document.getElementById('hero-data').textContent = e.data;
     document.getElementById('hero-hora').textContent = e.horario;
     document.getElementById('hero-local').textContent = e.local;
+    document.getElementById('maps-link').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.local + ', ' + e.cidade)}`;
     document.title = `Festa da ${e.nome}`;
   });
 
 
   function tick() {
-    const diff = new Date('2026-08-15T19:00:00') - new Date();
+    const diff = new Date('2026-08-15T17:00:00') - new Date();
     if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='0'); return; }
     document.getElementById('cd-d').textContent = Math.floor(diff/86400000);
     document.getElementById('cd-h').textContent = String(Math.floor(diff%86400000/3600000)).padStart(2,'0');

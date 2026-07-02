@@ -100,11 +100,8 @@
       </div>
 
       <div class="form-group">
-        <label for="phone">
-          WhatsApp
-          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-light);font-size:12px;"> — opcional</span>
-        </label>
-        <input type="tel" id="phone" name="phone" placeholder="(11) 99999-9999" autocomplete="tel" />
+        <label for="phone">WhatsApp</label>
+        <input type="tel" id="phone" name="phone" placeholder="(11) 99999-9999" autocomplete="tel" required />
       </div>
 
       <div class="form-group">
@@ -156,7 +153,21 @@
 </div>
 
 <footer class="site-footer">
-  Feito com <i data-lucide="heart" style="width:13px;height:13px;display:inline-block;vertical-align:middle;color:#E8799A;fill:#E8799A;"></i> para a Juliana &nbsp;&bull;&nbsp; 🇧🇷 → 🇨🇦
+  <div class="footer-inner">
+    <div class="footer-top">
+      <i data-lucide="plane" style="width:14px;height:14px;transform:rotate(45deg);color:rgba(255,255,255,0.3);flex-shrink:0;"></i>
+      <span class="footer-brand-name">Festa da Juliana</span>
+    </div>
+    <div class="footer-route">São Paulo, Brasil &rarr; Toronto, Canadá</div>
+    <div class="footer-sep"></div>
+    <div class="footer-credit">
+      Desenvolvido por &nbsp;
+      <a href="https://instagram.com/tortelliweb" target="_blank" rel="noopener" class="footer-insta">
+        <i data-lucide="instagram" style="width:14px;height:14px;"></i>
+        @tortelliweb
+      </a>
+    </div>
+  </div>
 </footer>
 
 <script>
@@ -168,6 +179,13 @@
     const btn = document.getElementById('submitBtn');
     const errEl = document.getElementById('alertError');
     errEl.classList.remove('show');
+
+    if (!form.phone.value.trim()) {
+      document.getElementById('errorMsg').textContent = 'Informe seu WhatsApp para continuar.';
+      errEl.classList.add('show');
+      form.phone.focus();
+      return;
+    }
 
     const checkedRadio = document.querySelector('input[name="attending"]:checked');
     const attending = checkedRadio ? checkedRadio.value : '';

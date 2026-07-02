@@ -85,22 +85,28 @@ app.post('/api/presentes', (req, res) => {
 
 // Gift list management (admin)
 app.post('/api/presentes/list', (req, res) => {
-  const { name, link } = req.body;
+  const { name } = req.body;
   if (!name) return res.status(400).json({ error: 'Nome é obrigatório.' });
   const data = readData();
-  const item = { id: String(Date.now()), name: name.trim(), emoji: '🎁', link: link || '', takenBy: null };
+  const item = { id: String(Date.now()), name: name.trim(), emoji: '🎁', links: [], takenBy: null };
   data.giftList.push(item);
   writeData(data);
   res.json({ success: true, item });
 });
 
 app.patch('/api/presentes/list/:id', (req, res) => {
-  const { name, link } = req.body;
+  const { name, links } = req.body;
   const data = readData();
   const item = data.giftList.find(g => g.id === req.params.id);
   if (!item) return res.status(404).json({ error: 'Item não encontrado.' });
   if (name !== undefined) item.name = name.trim();
-  if (link !== undefined) item.link = link.trim();
+  if (links !== undefined) {
+    item.links = links.map(l => ({
+      url: (l.url || '').trim(),
+      label: (l.label || '').trim()
+    })).filter(l => l.url);
+  }
+  if (!item.links) item.links = [];
   writeData(data);
   res.json({ success: true, item });
 });
