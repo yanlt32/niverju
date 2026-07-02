@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Festa da Juliana</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    body { background: #F0EBF0; }
+    .dash-wrap { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
+    .dash-nav {
+      background: linear-gradient(135deg, #0D1F0E 0%, #1a3a1a 20%, #2C0D1A 55%, #4A1030 80%, #9B1B1B 100%);
+      padding: 18px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .dash-nav h1 { font-family:'Playfair Display',serif; color:#fff; font-size:20px; }
+    .dash-nav-links { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .dash-section { margin-bottom: 28px; }
+    .dash-section-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.8px; color: var(--text-light);
+      margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+    }
+    .dash-section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* Stats grid */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap:14px; }
+    .stat-card {
+      background:#fff; border-radius:18px; padding:20px 16px;
+      border:1px solid var(--border); text-align:center;
+      box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
+    .stat-card .ic {
+      width:40px;height:40px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;margin:0 auto 10px;
+    }
+    .stat-card .value { font-family:'Playfair Display',serif; font-size:36px; line-height:1; display:block; }
+    .stat-card .label { font-size:11px; color:var(--text-light); text-transform:uppercase; letter-spacing:0.8px; margin-top:6px; }
+    .stat-card.green .ic { background:#E8FAF0; color:#009C3B; }
+    .stat-card.green .value { color:#009C3B; }
+    .stat-card.yellow .ic { background:#FFF8E6; color:#C27D00; }
+    .stat-card.yellow .value { color:#C27D00; }
+    .stat-card.blue .ic { background:#EEF4FF; color:#3B6FD4; }
+    .stat-card.blue .value { color:#3B6FD4; }
+    .stat-card.red .ic { background:#FDEDEC; color:var(--error); }
+    .stat-card.red .value { color:var(--error); }
+    .stat-card.gold .ic { background:#FFF8E6; color:var(--gold); }
+    .stat-card.gold .value { color:var(--gold); }
+
+    /* Tables / cards */
+    .data-card { background:#fff; border-radius:18px; border:1px solid var(--border); overflow:hidden; box-shadow:var(--shadow-sm); }
+    .data-card-header {
+      padding:14px 20px; border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .data-card-header h3 { font-size:14px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:8px; }
+    .badge { display:inline-flex; align-items:center; min-width:22px; height:22px; padding:0 7px; background:#FFF0F4; border-radius:100px; font-size:11px; font-weight:700; color:var(--rose); }
+
+    /* Gift edit table */
+    .gift-edit-row {
+      display:flex; align-items:center; gap:10px;
+      padding:12px 20px; border-bottom:1px solid var(--border);
+      transition:background 0.15s;
+    }
+    .gift-edit-row:last-child { border-bottom:none; }
+    .gift-edit-row:hover { background:var(--bg); }
+    .gift-edit-icon { width:32px;height:32px;border-radius:8px;background:#F0EEF8;color:#7C5CBF;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+    .gift-edit-icon.taken { background:#FFF0F4;color:var(--rose); }
+    .gift-edit-name { flex:1; min-width:0; }
+    .gift-edit-name input {
+      width:100%; font-size:13px; font-weight:600; color:var(--text);
+      border:none; background:transparent; outline:none; font-family:'Inter',sans-serif;
+      padding:4px 8px; border-radius:6px; transition:background 0.15s;
+    }
+    .gift-edit-name input:focus { background:#FFF0F4; }
+    .gift-edit-link input {
+      font-size:12px; color:var(--text-mid); border:1.5px solid var(--border);
+      border-radius:8px; padding:5px 10px; outline:none; font-family:'Inter',sans-serif;
+      width:220px; background:var(--bg); transition:border-color 0.15s;
+    }
+    .gift-edit-link input:focus { border-color:var(--rose); background:#fff; }
+    .icon-btn {
+      width:30px;height:30px;border-radius:8px;border:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;
+    }
+    .icon-btn.save { background:#E8FAF0;color:#009C3B; }
+    .icon-btn.save:hover { background:#009C3B;color:#fff; }
+    .icon-btn.del  { background:#FDEDEC;color:var(--error); }
+    .icon-btn.del:hover { background:var(--error);color:#fff; }
+    .icon-btn.link-open { background:#EEF4FF;color:#3B6FD4; }
+    .icon-btn.link-open:hover { background:#3B6FD4;color:#fff; }
+    .tag-taken { background:var(--bg2);color:var(--rose);font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;white-space:nowrap;text-transform:uppercase;letter-spacing:0.5px; }
+    .tag-free  { background:#E8FAF0;color:#009C3B;font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;white-space:nowrap;text-transform:uppercase;letter-spacing:0.5px; }
+
+    /* Add gift form */
+    .add-gift-row {
+      display:flex; gap:10px; align-items:center;
+      padding:14px 20px; background:var(--bg); border-top:1px solid var(--border); flex-wrap:wrap;
+    }
+    .add-gift-row input {
+      flex:1; min-width:140px; font-size:13px; border:1.5px solid var(--border);
+      border-radius:8px; padding:8px 12px; outline:none; font-family:'Inter',sans-serif; background:#fff;
+      transition:border-color 0.15s;
+    }
+    .add-gift-row input:focus { border-color:var(--rose); }
+    .add-btn {
+      display:inline-flex;align-items:center;gap:6px;
+      background:linear-gradient(135deg,#E8799A,#C9456F);color:#fff;
+      border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;
+      cursor:pointer;font-family:'Inter',sans-serif;transition:filter 0.2s;white-space:nowrap;
+    }
+    .add-btn:hover { filter:brightness(1.1); }
+
+    /* Filter bar */
+    .filter-bar { padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap; }
+    .filter-btn { padding:6px 14px;border-radius:100px;border:1.5px solid var(--border);background:var(--bg);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;color:var(--text-mid);transition:all 0.15s; }
+    .filter-btn.active { border-color:var(--rose);background:#FFF0F4;color:var(--rose-dark); }
+    .export-btn { display:inline-flex;align-items:center;gap:6px;background:#FFF0F4;color:var(--rose-dark);border:1px solid #F4C2D2;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s; }
+    .export-btn:hover { background:var(--rose);color:#fff;border-color:var(--rose); }
+
+    /* List items */
+    .list-item { padding:12px 20px;display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid var(--border);transition:background 0.15s; }
+    .list-item:last-child { border-bottom:none; }
+    .list-item:hover { background:var(--bg); }
+    .list-avatar { width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;flex-shrink:0; }
+    .av-green { background:linear-gradient(135deg,#2ecc71,#27ae60); }
+    .av-yellow { background:linear-gradient(135deg,#f9c74f,#C27D00); }
+    .av-red    { background:linear-gradient(135deg,#e74c3c,#c0392b); }
+    .av-gold   { background:linear-gradient(135deg,#F0C96A,var(--gold)); color:#5a3e00; }
+    .list-info { flex:1;min-width:0; }
+    .list-name { font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .list-sub  { font-size:12px;color:var(--text-light);margin-top:2px; }
+    .list-msg  { font-size:12px;color:var(--text-mid);margin-top:3px;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .att-tag { font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;flex-shrink:0; }
+    .att-yes   { background:#E8FAF0;color:#27ae60; }
+    .att-no    { background:#FDEDEC;color:var(--error); }
+    .att-maybe { background:#FFF8E6;color:#C27D00; }
+
+    .empty-state { padding:36px 20px;text-align:center;color:var(--text-light);font-size:14px; }
+    .last-upd { font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px; }
+    .refresh-btn { display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:500;cursor:pointer;transition:background 0.2s;font-family:'Inter',sans-serif; }
+    .refresh-btn:hover { background:rgba(255,255,255,0.2); }
+    .progress-bar { height:6px;background:var(--border);border-radius:100px;overflow:hidden; }
+    .progress-fill { height:100%;background:linear-gradient(90deg,var(--rose-light),var(--rose));border-radius:100px;transition:width 0.5s ease; }
+
+    @media(max-width:680px) {
+      .gift-edit-link { display:none; }
+      .gift-edit-link-mobile { display:block!important; }
+    }
+
+    .gift-edit-link-mobile { display:none; }
+  </style>
+</head>
+<body>
+
+<div class="dash-nav">
+  <div>
+    <h1>Dashboard</h1>
+    <div class="last-upd" id="lastUpd">Carregando...</div>
+  </div>
+  <div class="dash-nav-links">
+    <a href="index.html" class="btn btn-outline btn-sm">
+      <i data-lucide="home" style="width:15px;height:15px;"></i> Início
+    </a>
+    <button class="refresh-btn" onclick="loadAll()">
+      <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i> Atualizar
+    </button>
+  </div>
+</div>
+
+<div class="dash-wrap">
+
+  <!-- Stats -->
+  <div class="dash-section">
+    <div class="dash-section-title">Resumo</div>
+    <div class="stats-grid">
+      <div class="stat-card green">
+        <div class="ic"><i data-lucide="user-check" style="width:20px;height:20px;"></i></div>
+        <span class="value" id="s-yes">--</span>
+        <div class="label">Confirmados</div>
+      </div>
+      <div class="stat-card yellow">
+        <div class="ic"><i data-lucide="help-circle" style="width:20px;height:20px;"></i></div>
+        <span class="value" id="s-maybe">--</span>
+        <div class="label">Talvez</div>
+      </div>
+      <div class="stat-card red">
+        <div class="ic"><i data-lucide="user-x" style="width:20px;height:20px;"></i></div>
+        <span class="value" id="s-no">--</span>
+        <div class="label">Não vão</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="ic"><i data-lucide="users" style="width:20px;height:20px;"></i></div>
+        <span class="value" id="s-total">--</span>
+        <div class="label">Total respostas</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="ic"><i data-lucide="gift" style="width:20px;height:20px;"></i></div>
+        <span class="value" id="s-gifts">--</span>
+        <div class="label">Presentes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gift list management -->
+  <div class="dash-section">
+    <div class="dash-section-title">Gerenciar lista de presentes</div>
+    <div class="data-card">
+      <div class="data-card-header">
+        <h3>
+          <i data-lucide="gift" style="width:16px;height:16px;color:var(--rose);"></i>
+          Lista de presentes
+          <span class="badge" id="gift-badge">0</span>
+        </h3>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div style="font-size:12px;color:var(--text-light);">
+            <span id="gp-taken">0</span> / <span id="gp-total">0</span> reservados
+          </div>
+          <div class="progress-bar" style="width:100px;margin:0;">
+            <div class="progress-fill" id="gp-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+      <div id="giftEditList"></div>
+      <!-- Add new gift -->
+      <div class="add-gift-row">
+        <input type="text" id="newGiftName" placeholder="Nome do presente..." />
+        <input type="url" id="newGiftLink" placeholder="Link (opcional)..." style="flex:1;min-width:140px;" />
+        <button class="add-btn" onclick="addGift()">
+          <i data-lucide="plus" style="width:15px;height:15px;"></i>
+          Adicionar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Presences -->
+  <div class="dash-section">
+    <div class="dash-section-title">Confirmações de presença</div>
+    <div class="data-card">
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterP('all',this)">Todos</button>
+        <button class="filter-btn" onclick="filterP('yes',this)">Confirmados</button>
+        <button class="filter-btn" onclick="filterP('maybe',this)">Talvez</button>
+        <button class="filter-btn" onclick="filterP('no',this)">Não vão</button>
+        <button class="export-btn" style="margin-left:auto;" onclick="exportCSV('presences')">
+          <i data-lucide="download" style="width:13px;height:13px;"></i> CSV
+        </button>
+      </div>
+      <div id="presenceList"></div>
+    </div>
+  </div>
+
+  <!-- Gift confirmations -->
+  <div class="dash-section">
+    <div class="dash-section-title">Presentes confirmados</div>
+    <div class="data-card">
+      <div class="data-card-header" style="justify-content:flex-end;">
+        <button class="export-btn" onclick="exportCSV('gifts')">
+          <i data-lucide="download" style="width:13px;height:13px;"></i> CSV
+        </button>
+      </div>
+      <div id="giftConfirmList"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  lucide.createIcons();
+
+  const GIFT_ICONS = {
+    '1':'luggage','2':'package-2','3':'sparkles','4':'moon',
+    '5':'file-text','6':'zap','7':'wallet','8':'thermometer',
+    '9':'credit-card','10':'shield'
+  };
+
+  let D = {};
+  let currentFilter = 'all';
+
+  async function loadAll() {
+    try {
+      const res = await fetch('/api/dashboard');
+      D = await res.json();
+      document.getElementById('s-yes').textContent   = D.totalConfirmed;
+      document.getElementById('s-maybe').textContent = D.totalMaybe;
+      document.getElementById('s-no').textContent    = D.totalDeclined;
+      document.getElementById('s-total').textContent = D.presences.length;
+      document.getElementById('s-gifts').textContent = D.totalGifts;
+      renderGiftEdit(D.giftList);
+      filterP(currentFilter);
+      renderGiftConfirms(D.gifts);
+      document.getElementById('lastUpd').textContent =
+        'Atualizado às ' + new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      lucide.createIcons();
+    } catch { document.getElementById('lastUpd').textContent = 'Erro ao carregar.'; }
+  }
+
+  function renderGiftEdit(list) {
+    const taken = list.filter(g=>g.takenBy).length;
+    document.getElementById('gift-badge').textContent = list.length;
+    document.getElementById('gp-taken').textContent = taken;
+    document.getElementById('gp-total').textContent = list.length;
+    document.getElementById('gp-bar').style.width = list.length ? `${taken/list.length*100}%` : '0%';
+
+    const el = document.getElementById('giftEditList');
+    if (!list.length) {
+      el.innerHTML = '<div class="empty-state">Nenhum item. Adicione presentes abaixo.</div>';
+      return;
+    }
+    el.innerHTML = list.map(g => {
+      const icon = GIFT_ICONS[g.id] || 'gift';
+      const isTaken = !!g.takenBy;
+      return `
+        <div class="gift-edit-row" id="gerow-${g.id}">
+          <div class="gift-edit-icon ${isTaken?'taken':''}">
+            <i data-lucide="${icon}" style="width:16px;height:16px;"></i>
+          </div>
+          <div class="gift-edit-name">
+            <input type="text" value="${escHtml(g.name)}" id="gname-${g.id}" ${isTaken?'title="Já reservado"':''} />
+          </div>
+          <div class="gift-edit-link">
+            <input type="url" placeholder="Colar link do produto..." value="${g.link||''}" id="glink-${g.id}" />
+          </div>
+          ${g.link ? `<a href="${g.link}" target="_blank" rel="noopener" class="icon-btn link-open" title="Abrir link">
+              <i data-lucide="external-link" style="width:14px;height:14px;"></i>
+            </a>` : ''}
+          <button class="icon-btn save" onclick="saveGift('${g.id}')" title="Salvar">
+            <i data-lucide="check" style="width:14px;height:14px;"></i>
+          </button>
+          ${!isTaken ? `<button class="icon-btn del" onclick="delGift('${g.id}')" title="Remover">
+              <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+            </button>` : `<span class="tag-taken">Reservado</span>`}
+        </div>
+      `;
+    }).join('');
+    lucide.createIcons();
+  }
+
+  function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  async function saveGift(id) {
+    const name = document.getElementById(`gname-${id}`).value.trim();
+    const link = document.getElementById(`glink-${id}`).value.trim();
+    if (!name) return;
+    const res = await fetch(`/api/presentes/list/${id}`, {
+      method:'PATCH', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name,link})
+    });
+    if (res.ok) { await loadAll(); }
+    else { const d=await res.json(); alert(d.error||'Erro ao salvar.'); }
+  }
+
+  async function delGift(id) {
+    if (!confirm('Remover este presente da lista?')) return;
+    const res = await fetch(`/api/presentes/list/${id}`, { method:'DELETE' });
+    if (res.ok) { await loadAll(); }
+    else { const d=await res.json(); alert(d.error||'Erro ao remover.'); }
+  }
+
+  async function addGift() {
+    const name = document.getElementById('newGiftName').value.trim();
+    const link = document.getElementById('newGiftLink').value.trim();
+    if (!name) { document.getElementById('newGiftName').focus(); return; }
+    const res = await fetch('/api/presentes/list', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name,link})
+    });
+    if (res.ok) {
+      document.getElementById('newGiftName').value = '';
+      document.getElementById('newGiftLink').value = '';
+      await loadAll();
+    } else { const d=await res.json(); alert(d.error||'Erro ao adicionar.'); }
+  }
+
+  function filterP(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    const list = D.presences||[];
+    const filtered = filter==='all' ? list
+      : list.filter(p=>p.attending===filter);
+    const el = document.getElementById('presenceList');
+    if (!filtered.length) {
+      el.innerHTML = '<div class="empty-state"><i data-lucide="inbox" style="width:24px;height:24px;display:block;margin:0 auto 8px;"></i>Nenhuma confirmação.</div>';
+      lucide.createIcons(); return;
+    }
+    const tagMap = { yes:'att-yes', no:'att-no', maybe:'att-maybe' };
+    const labelMap = { yes:'Vai', no:'Não vai', maybe:'Talvez' };
+    const avMap = { yes:'av-green', no:'av-red', maybe:'av-yellow' };
+    el.innerHTML = filtered.map(p => {
+      const date = new Date(p.createdAt).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      return `
+        <div class="list-item">
+          <div class="list-avatar ${avMap[p.attending]||'av-green'}">${p.name.charAt(0).toUpperCase()}</div>
+          <div class="list-info">
+            <div class="list-name">${p.name}</div>
+            <div class="list-sub">${p.phone||'Sem telefone'} &bull; ${date}</div>
+            ${p.message?`<div class="list-msg">"${p.message}"</div>`:''}
+          </div>
+          <span class="att-tag ${tagMap[p.attending]||'att-maybe'}">${labelMap[p.attending]||p.attending}</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderGiftConfirms(gifts) {
+    const el = document.getElementById('giftConfirmList');
+    if (!gifts||!gifts.length) {
+      el.innerHTML = '<div class="empty-state"><i data-lucide="gift" style="width:24px;height:24px;display:block;margin:0 auto 8px;"></i>Nenhum presente confirmado ainda.</div>';
+      lucide.createIcons(); return;
+    }
+    el.innerHTML = gifts.map(g => {
+      const date = new Date(g.createdAt).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      return `
+        <div class="list-item">
+          <div class="list-avatar av-gold">${g.personName.charAt(0).toUpperCase()}</div>
+          <div class="list-info">
+            <div class="list-name">${g.personName}</div>
+            <div class="list-sub">${g.giftName} &bull; ${date}</div>
+            ${g.message?`<div class="list-msg">"${g.message}"</div>`:''}
+          </div>
+          <span class="att-tag" style="background:#FFF8E6;color:#8A5500;">Presente</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function exportCSV(type) {
+    let rows, headers, filename;
+    if (type==='presences') {
+      headers=['Nome','Telefone','Confirmação','Mensagem','Data'];
+      const labels={yes:'Vai',no:'Não vai',maybe:'Talvez'};
+      rows=(D.presences||[]).map(p=>[
+        `"${p.name}"`,`"${p.phone}"`,labels[p.attending]||p.attending,
+        `"${(p.message||'').replace(/"/g,'""')}"`,
+        new Date(p.createdAt).toLocaleString('pt-BR')
+      ]);
+      filename='presencas_juliana.csv';
+    } else {
+      headers=['Nome','Telefone','Presente','Mensagem','Data'];
+      rows=(D.gifts||[]).map(g=>[
+        `"${g.personName}"`,`"${g.phone}"`,`"${g.giftName}"`,
+        `"${(g.message||'').replace(/"/g,'""')}"`,
+        new Date(g.createdAt).toLocaleString('pt-BR')
+      ]);
+      filename='presentes_juliana.csv';
+    }
+    const csv = [headers.join(','), ...rows.map(r=>r.join(','))].join('\n');
+    const blob = new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8;'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+  }
+
+  loadAll();
+  setInterval(loadAll, 30000);
+</script>
+</body>
+</html>

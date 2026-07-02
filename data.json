@@ -1,0 +1,24 @@
+{
+  "evento": {
+    "nome": "Juliana",
+    "data": "15 de Agosto de 2026",
+    "horario": "19:00",
+    "local": "Rua dos Ipês, 42 — Jardim das Flores",
+    "cidade": "São Paulo, SP",
+    "mensagem": "Vem celebrar o aniversário e a nova aventura da nossa querida Juliana, que está de malas prontas para o Canadá! 🍁"
+  },
+  "presences": [],
+  "gifts": [],
+  "giftList": [
+    { "id": "1", "name": "Mala de viagem grande", "emoji": "🧳", "link": "", "takenBy": null },
+    { "id": "2", "name": "Organizador de mala (cubos)", "emoji": "📦", "link": "", "takenBy": null },
+    { "id": "3", "name": "Necessaire de viagem", "emoji": "💄", "link": "", "takenBy": null },
+    { "id": "4", "name": "Almofada de pescoço ergonômica", "emoji": "😴", "link": "", "takenBy": null },
+    { "id": "5", "name": "Porta-documentos de viagem", "emoji": "📄", "link": "", "takenBy": null },
+    { "id": "6", "name": "Adaptador universal de tomada", "emoji": "🔌", "link": "", "takenBy": null },
+    { "id": "7", "name": "Carteira de viagem com bloqueio RFID", "emoji": "👜", "link": "", "takenBy": null },
+    { "id": "8", "name": "Garrafa térmica", "emoji": "♨️", "link": "", "takenBy": null },
+    { "id": "9", "name": "Vale presente (Amazon.ca)", "emoji": "🎁", "link": "", "takenBy": null },
+    { "id": "10", "name": "Capa impermeável para mala", "emoji": "🧥", "link": "", "takenBy": null }
+  ]
+}

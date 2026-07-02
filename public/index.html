@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Festa da Juliana</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    /* ─── HERO BACKGROUND ─── */
+    .hero {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(0,120,50,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(200,16,46,0.18) 0%, transparent 60%),
+        linear-gradient(170deg, #0C1A0E 0%, #18101A 35%, #2E0E1C 60%, #1A0A10 100%);
+    }
+
+    /* ─── BADGE ─── */
+    .hero-badge {
+      position: relative; z-index: 10;
+      margin-bottom: 28px;
+    }
+
+    /* ─── TITLE ─── */
+    .hero-title { position: relative; z-index: 10; }
+
+    /* ─── SUBTITLE ─── */
+    .hero-sub {
+      position: relative; z-index: 10;
+      margin-bottom: 32px;
+    }
+
+    /* ─── INFO CHIPS ─── */
+    .hero-info {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center;
+      margin-bottom: 32px;
+      position: relative; z-index: 10;
+    }
+
+    /* ─── COUNTDOWN ─── */
+    .countdown {
+      display: flex; gap: 10px; justify-content: center;
+      margin-bottom: 44px;
+      position: relative; z-index: 10;
+    }
+    .cd-item {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px; padding: 14px 16px;
+      text-align: center; min-width: 64px;
+    }
+    .cd-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 34px; color: #fff; display: block; line-height: 1;
+    }
+    .cd-label {
+      font-size: 9px; color: rgba(255,255,255,0.35);
+      text-transform: uppercase; letter-spacing: 1.5px; margin-top: 5px;
+    }
+
+    /* ─── FLIGHT TICKET ─── */
+    .flight-ticket {
+      display: flex; align-items: stretch;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 22px;
+      backdrop-filter: blur(16px);
+      width: 100%; max-width: 440px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      position: relative; z-index: 10;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+    }
+    .ft-side {
+      flex: 1; padding: 22px 18px; text-align: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 4px;
+    }
+    .ft-brasil { border-left: 3px solid #009C3B; }
+    .ft-canada  { border-right: 3px solid #C8102E; }
+
+    /* Mini CSS flags */
+    .mini-flag { width: 48px; height: 32px; border-radius: 5px; margin-bottom: 6px; overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+    .flag-br { background: #009C3B; position: relative; display: flex; align-items: center; justify-content: center; }
+    .flag-br::before { content:''; position:absolute; width:28px;height:28px;background:#FFDF00;transform:rotate(45deg); }
+    .flag-br::after  { content:''; position:absolute; width:14px;height:14px;border-radius:50%;background:#002776;z-index:1; }
+    .flag-ca { display: flex; }
+    .flag-ca-r { width: 12px; background: #C8102E; }
+    .flag-ca-w { flex: 1; background: #fff; display: flex; align-items: center; justify-content: center; }
+    .flag-ca-w svg { width: 14px; height: 14px; }
+    .maple { fill: #C8102E; }
+
+    .ft-code {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 700; line-height: 1;
+    }
+    .ft-brasil .ft-code { color: #5AFFAA; }
+    .ft-canada .ft-code  { color: #FF9999; }
+    .ft-city {
+      font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.75);
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .ft-country { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; }
+
+    .ft-center {
+      width: 110px; flex-shrink: 0; padding: 16px 8px;
+      border-left: 1px dashed rgba(255,255,255,0.1);
+      border-right: 1px dashed rgba(255,255,255,0.1);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    }
+    .ft-date { font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1.5px; }
+    .ft-path { display: flex; align-items: center; gap: 3px; width: 100%; }
+    .ft-dot-g { width: 7px; height: 7px; border-radius: 50%; background: #009C3B; box-shadow: 0 0 8px #009C3B; flex-shrink:0; }
+    .ft-dot-r { width: 7px; height: 7px; border-radius: 50%; background: #C8102E; box-shadow: 0 0 8px #C8102E; flex-shrink:0; }
+    .ft-line { flex: 1; height: 1px; background: linear-gradient(90deg, #009C3B50, #C8102E50); }
+    .ft-plane-ico { color: rgba(255,255,255,0.6); display:flex; align-items:center; }
+    .ft-sub { font-size: 8px; color: rgba(255,255,255,0.25); text-transform: uppercase; letter-spacing: 1px; text-align: center; line-height: 1.4; }
+
+    /* ─── CTA BUTTONS ─── */
+    .cta-block {
+      display: flex; flex-direction: column; gap: 12px;
+      width: 100%; max-width: 420px;
+      position: relative; z-index: 10;
+      margin-bottom: 48px;
+    }
+    .cta-btn {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 22px;
+      border-radius: 18px;
+      text-decoration: none;
+      font-family: 'Inter', sans-serif;
+      transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
+    .cta-btn:active { transform: translateY(0); }
+
+    .cta-br {
+      background: linear-gradient(135deg, #009C3B 0%, #007A2E 100%);
+      box-shadow: 0 12px 36px rgba(0,156,59,0.35);
+      border: 1px solid rgba(255,223,0,0.2);
+    }
+    .cta-ca {
+      background: linear-gradient(135deg, #C8102E 0%, #8F0C20 100%);
+      box-shadow: 0 12px 36px rgba(200,16,46,0.35);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .cta-ico {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .cta-br .cta-ico { background: rgba(0,0,0,0.2); color: #FFDF00; }
+    .cta-ca .cta-ico { background: rgba(0,0,0,0.2); color: #fff; }
+
+    .cta-text { flex: 1; }
+    .cta-title { font-size: 16px; font-weight: 700; line-height: 1.2; }
+    .cta-br .cta-title { color: #FFDF00; }
+    .cta-ca .cta-title { color: #fff; }
+    .cta-sub { font-size: 12px; margin-top: 2px; }
+    .cta-br .cta-sub { color: rgba(255,223,0,0.55); }
+    .cta-ca .cta-sub { color: rgba(255,255,255,0.5); }
+    .cta-arrow { color: rgba(255,255,255,0.35); flex-shrink:0; }
+
+    /* ─── STATS ─── */
+    .hero-stats {
+      display: flex; gap: 0;
+      position: relative; z-index: 10;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 16px; overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    .stat-item { flex: 1; text-align: center; padding: 16px 12px; }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px; color: #fff; display: block; line-height: 1;
+    }
+    .stat-label {
+      font-size: 9px; color: rgba(255,255,255,0.35);
+      text-transform: uppercase; letter-spacing: 1.2px; margin-top: 5px;
+    }
+    .stat-divider { width: 1px; background: rgba(255,255,255,0.09); }
+
+    /* ─── WAVE ─── */
+    .wave { position: absolute; bottom: 0; left: 0; width: 100%; line-height: 0; pointer-events: none; }
+
+    /* ─── HOW IT WORKS ─── */
+    .about-section { padding: 64px 20px; text-align: center; background: var(--bg); }
+    .about-section h2 { font-family: 'Playfair Display', serif; font-size: 34px; color: var(--text); margin-bottom: 10px; }
+    .about-section > p { color: var(--text-mid); max-width: 420px; margin: 0 auto 44px; font-size: 16px; line-height: 1.7; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 16px; max-width: 780px; margin: 0 auto; }
+    .step-card {
+      background: #fff; border: 1px solid var(--border); border-radius: 20px;
+      padding: 28px 20px; text-align: center;
+      box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .step-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .step-ic { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+    .step-ic.g { background: #E8FAF0; color: #009C3B; }
+    .step-ic.y { background: #FFF8E6; color: var(--gold); }
+    .step-ic.b { background: #EEF4FF; color: #3B6FD4; }
+    .step-card h3 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .step-card p  { font-size: 13px; color: var(--text-light); line-height: 1.6; }
+
+    /* ─── FINAL CTA ─── */
+    .final-cta {
+      background:
+        radial-gradient(ellipse at 15% 50%, rgba(0,120,50,0.2) 0%, transparent 60%),
+        radial-gradient(ellipse at 85% 50%, rgba(200,16,46,0.2) 0%, transparent 60%),
+        linear-gradient(170deg, #0C1A0E 0%, #18101A 40%, #2E0E1C 70%, #1A0A10 100%);
+      padding: 64px 20px; text-align: center;
+    }
+    .final-cta h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: #fff; margin-bottom: 12px; }
+    .final-cta p  { color: rgba(255,255,255,0.5); margin-bottom: 36px; max-width: 400px; margin-left: auto; margin-right: auto; }
+    .final-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; max-width: 420px; margin: 0 auto; }
+    .final-btns a {
+      flex: 1; min-width: 160px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 16px 24px; border-radius: 14px;
+      font-size: 15px; font-weight: 700; text-decoration: none; font-family: 'Inter', sans-serif;
+      transition: transform 0.2s, filter 0.2s;
+    }
+    .final-btns a:hover { filter: brightness(1.1); transform: translateY(-2px); }
+    .fb-br { background: linear-gradient(135deg,#009C3B,#007A2E); color: #FFDF00; box-shadow: 0 8px 24px rgba(0,156,59,0.3); }
+    .fb-ca { background: linear-gradient(135deg,#C8102E,#8F0C20); color: #fff; box-shadow: 0 8px 24px rgba(200,16,46,0.3); }
+
+    /* ─── DIVIDER ─── */
+    .section-divider { width: 48px; height: 3px; background: linear-gradient(90deg, #009C3B, #C8102E); border-radius: 2px; margin: 0 auto 20px; }
+
+    @media (max-width: 480px) {
+      .ft-code { font-size: 22px; }
+      .ft-center { width: 80px; }
+      .countdown { gap: 8px; }
+      .cd-item { min-width: 56px; padding: 12px 10px; }
+      .cd-num { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="particles" id="particles"></div>
+
+  <!-- Badge -->
+  <div class="hero-badge">
+    <i data-lucide="cake" style="width:13px;height:13px;"></i>
+    Aniversário &amp; Despedida
+  </div>
+
+  <!-- Title -->
+  <h1 class="hero-title">
+    Festa da<br /><span id="hero-nome">Juliana</span>
+  </h1>
+
+  <p class="hero-sub" id="hero-msg">
+    Vem celebrar o aniversário e a nova aventura da nossa querida Juliana!
+  </p>
+
+  <!-- Info chips -->
+  <div class="hero-info">
+    <div class="info-chip">
+      <i data-lucide="calendar" style="width:14px;height:14px;"></i>
+      <span id="hero-data">15 de Agosto de 2026</span>
+    </div>
+    <div class="info-chip">
+      <i data-lucide="clock" style="width:14px;height:14px;"></i>
+      <span id="hero-hora">19:00</span>
+    </div>
+    <div class="info-chip">
+      <i data-lucide="map-pin" style="width:14px;height:14px;"></i>
+      <span id="hero-local">...</span>
+    </div>
+  </div>
+
+  <!-- Countdown -->
+  <div class="countdown">
+    <div class="cd-item"><span class="cd-num" id="cd-d">--</span><div class="cd-label">Dias</div></div>
+    <div class="cd-item"><span class="cd-num" id="cd-h">--</span><div class="cd-label">Horas</div></div>
+    <div class="cd-item"><span class="cd-num" id="cd-m">--</span><div class="cd-label">Min</div></div>
+    <div class="cd-item"><span class="cd-num" id="cd-s">--</span><div class="cd-label">Seg</div></div>
+  </div>
+
+  <!-- Flight Ticket -->
+  <div class="flight-ticket">
+    <!-- Brasil -->
+    <div class="ft-side ft-brasil">
+      <div class="mini-flag flag-br"></div>
+      <div class="ft-code">GRU</div>
+      <div class="ft-city">São Paulo</div>
+      <div class="ft-country">Brasil</div>
+    </div>
+
+    <!-- Center flight path -->
+    <div class="ft-center">
+      <div class="ft-date">15 AGO 2026</div>
+      <div class="ft-path">
+        <div class="ft-dot-g"></div>
+        <div class="ft-line"></div>
+        <div class="ft-plane-ico">
+          <i data-lucide="plane" style="width:14px;height:14px;transform:rotate(45deg);"></i>
+        </div>
+        <div class="ft-line"></div>
+        <div class="ft-dot-r"></div>
+      </div>
+      <div class="ft-sub">Despedida<br>&amp; Aniversário</div>
+    </div>
+
+    <!-- Canadá -->
+    <div class="ft-side ft-canada">
+      <div class="mini-flag flag-ca">
+        <div class="flag-ca-r"></div>
+        <div class="flag-ca-w">
+          <!-- Maple leaf (simplified polygon) -->
+          <svg viewBox="0 0 20 22" xmlns="http://www.w3.org/2000/svg">
+            <path class="maple" d="M10 0 L11.5 5.5 L17 3 L14 8 L20 8.5 L16 12 L18 18 L12 15.5 L12 22 L8 22 L8 15.5 L2 18 L4 12 L0 8.5 L6 8 L3 3 L8.5 5.5 Z"/>
+          </svg>
+        </div>
+        <div class="flag-ca-r"></div>
+      </div>
+      <div class="ft-code">YYZ</div>
+      <div class="ft-city">Toronto</div>
+      <div class="ft-country">Canadá</div>
+    </div>
+  </div>
+
+  <!-- CTA Buttons -->
+  <div class="cta-block">
+    <a href="rsvp.html" class="cta-btn cta-br">
+      <div class="cta-ico">
+        <i data-lucide="check-circle-2" style="width:22px;height:22px;"></i>
+      </div>
+      <div class="cta-text">
+        <div class="cta-title">Confirmar Presença</div>
+        <div class="cta-sub">Avise se você vai comparecer</div>
+      </div>
+      <i data-lucide="arrow-right" class="cta-arrow" style="width:18px;height:18px;"></i>
+    </a>
+    <a href="presentes.html" class="cta-btn cta-ca">
+      <div class="cta-ico">
+        <i data-lucide="gift" style="width:22px;height:22px;"></i>
+      </div>
+      <div class="cta-text">
+        <div class="cta-title">Escolher Presente</div>
+        <div class="cta-sub">Reserve um item da lista</div>
+      </div>
+      <i data-lucide="arrow-right" class="cta-arrow" style="width:18px;height:18px;"></i>
+    </a>
+  </div>
+
+
+  <div class="wave">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" preserveAspectRatio="none"
+         style="width:100%;height:40px;fill:#FFF7F9;display:block;">
+      <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="about-section">
+  <div class="section-divider"></div>
+  <h2>Como funciona?</h2>
+  <p>Ajude a organizar a festa confirmando sua presença e escolhendo um presente para a Juliana.</p>
+  <div class="steps">
+    <div class="step-card">
+      <div class="step-ic g"><i data-lucide="check-circle-2" style="width:24px;height:24px;"></i></div>
+      <h3>Confirme sua presença</h3>
+      <p>Diga se você vai, ainda não sabe ou não pode comparecer.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-ic y"><i data-lucide="gift" style="width:24px;height:24px;"></i></div>
+      <h3>Escolha um presente</h3>
+      <p>Reserve um item da lista para evitar presentes repetidos.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-ic b"><i data-lucide="sparkles" style="width:24px;height:24px;"></i></div>
+      <h3>Apareça e curta!</h3>
+      <p>Venha celebrar essa despedida especial rumo ao Canadá.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="final-cta">
+  <h2>Pronto para confirmar?</h2>
+  <p>Não deixe para a última hora — quanto mais cedo, melhor para organizar tudo.</p>
+  <div class="final-btns">
+    <a href="rsvp.html" class="fb-br">
+      <i data-lucide="check-circle-2" style="width:18px;height:18px;"></i>
+      Confirmar Presença
+    </a>
+    <a href="presentes.html" class="fb-ca">
+      <i data-lucide="gift" style="width:18px;height:18px;"></i>
+      Escolher Presente
+    </a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  Feito com <i data-lucide="heart" style="width:13px;height:13px;display:inline-block;vertical-align:middle;color:#E8799A;fill:#E8799A;"></i> para a Juliana &nbsp;&bull;&nbsp; São Paulo &rarr; Toronto
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  fetch('/api/evento').then(r=>r.json()).then(e=>{
+    document.getElementById('hero-nome').textContent = e.nome;
+    document.getElementById('hero-msg').textContent  = e.mensagem;
+    document.getElementById('hero-data').textContent = e.data;
+    document.getElementById('hero-hora').textContent = e.horario;
+    document.getElementById('hero-local').textContent = e.local;
+    document.title = `Festa da ${e.nome}`;
+  });
+
+
+  function tick() {
+    const diff = new Date('2026-08-15T19:00:00') - new Date();
+    if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='0'); return; }
+    document.getElementById('cd-d').textContent = Math.floor(diff/86400000);
+    document.getElementById('cd-h').textContent = String(Math.floor(diff%86400000/3600000)).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(Math.floor(diff%3600000/60000)).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(Math.floor(diff%60000/1000)).padStart(2,'0');
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* Particles */
+  const pc = document.getElementById('particles');
+  const cols = ['rgba(0,168,79,0.35)','rgba(255,223,0,0.3)','rgba(200,16,46,0.35)','rgba(255,255,255,0.2)'];
+  for (let i=0;i<20;i++){
+    const p=document.createElement('div'); p.className='particle';
+    const s=Math.random()*6+2;
+    p.style.cssText=`width:${s}px;height:${s}px;background:${cols[Math.floor(Math.random()*cols.length)]};left:${Math.random()*100}%;animation-duration:${Math.random()*14+8}s;animation-delay:${Math.random()*10}s;border-radius:${Math.random()>.5?'50%':'3px'};`;
+    pc.appendChild(p);
+  }
+</script>
+</body>
+</html>

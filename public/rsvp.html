@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirmar Presença</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .radio-group { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+    .radio-card input[type="radio"] { position:absolute; opacity:0; width:0; }
+    .radio-card label {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; padding: 18px 10px;
+      border: 2px solid var(--border); border-radius: 14px;
+      cursor: pointer; text-align: center;
+      font-size: 12px; font-weight: 700; color: var(--text-mid);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      transition: all 0.2s; background: var(--bg); line-height: 1.3;
+    }
+    .radio-card label .rc-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 4px; transition: all 0.2s;
+    }
+    .radio-card.yes label .rc-icon  { background: #E8FAF0; color: #009C3B; }
+    .radio-card.no label .rc-icon   { background: #FDEDEC; color: var(--error); }
+    .radio-card.maybe label .rc-icon { background: #FFF8E6; color: #C27D00; }
+
+    .radio-card.yes input:checked + label   { border-color: #009C3B; background: #E8FAF0; color: #006A26; }
+    .radio-card.no input:checked + label    { border-color: var(--error); background: #FDEDEC; color: var(--error); }
+    .radio-card.maybe input:checked + label { border-color: #C27D00; background: #FFF8E6; color: #8A5500; }
+
+    .radio-card.yes input:checked + label .rc-icon   { background: #009C3B; color: #fff; }
+    .radio-card.no input:checked + label .rc-icon    { background: var(--error); color: #fff; }
+    .radio-card.maybe input:checked + label .rc-icon { background: #C27D00; color: #fff; }
+
+    .notice-box {
+      background: #FFF8E6;
+      border: 1px solid #F0C96A;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #7A5A00;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 420px) {
+      .radio-group { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header" style="padding-top:72px;padding-bottom:58px;">
+  <a href="index.html" class="back-btn">
+    <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+    Voltar
+  </a>
+  <h1>Confirmar Presença</h1>
+  <p>Nos diga se você vai comparecer!</p>
+</div>
+
+<div class="container">
+
+  <!-- Success -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon" id="successIcon">
+      <i data-lucide="check-circle-2" style="width:40px;height:40px;color:var(--success);"></i>
+    </div>
+    <h2 id="successTitle">Confirmado!</h2>
+    <p id="successMsg">Obrigado pela resposta.</p>
+    <a href="presentes.html" class="btn btn-secondary" id="successGiftBtn" style="display:none;">
+      <i data-lucide="gift" style="width:17px;height:17px;"></i>
+      Escolher um presente agora
+    </a>
+    <div style="height:12px;"></div>
+    <a href="index.html" class="btn btn-outline" style="color:var(--text-mid);border-color:var(--border);">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      Voltar ao início
+    </a>
+  </div>
+
+  <div class="card" id="formCard">
+
+    <div class="alert alert-error" id="alertError">
+      <i data-lucide="alert-circle" style="width:18px;height:18px;flex-shrink:0;"></i>
+      <span id="errorMsg">Erro ao enviar.</span>
+    </div>
+
+    <form id="rsvpForm">
+
+      <div class="form-group">
+        <label for="name">Nome completo</label>
+        <input type="text" id="name" name="name" placeholder="Ex: Maria da Silva Souza" required autocomplete="name" />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">
+          WhatsApp
+          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-light);font-size:12px;"> — opcional</span>
+        </label>
+        <input type="tel" id="phone" name="phone" placeholder="(11) 99999-9999" autocomplete="tel" />
+      </div>
+
+      <div class="form-group">
+        <label>Você vai comparecer?</label>
+        <div class="radio-group">
+          <div class="radio-card yes">
+            <input type="radio" name="attending" id="att-yes" value="yes" />
+            <label for="att-yes">
+              <div class="rc-icon">
+                <i data-lucide="check-circle-2" style="width:18px;height:18px;"></i>
+              </div>
+              Sim, vou!
+            </label>
+          </div>
+          <div class="radio-card maybe">
+            <input type="radio" name="attending" id="att-maybe" value="maybe" />
+            <label for="att-maybe">
+              <div class="rc-icon">
+                <i data-lucide="help-circle" style="width:18px;height:18px;"></i>
+              </div>
+              Ainda não sei
+            </label>
+          </div>
+          <div class="radio-card no">
+            <input type="radio" name="attending" id="att-no" value="no" />
+            <label for="att-no">
+              <div class="rc-icon">
+                <i data-lucide="x-circle" style="width:18px;height:18px;"></i>
+              </div>
+              Não vou poder
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="message">
+          Mensagem para a Juliana
+          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-light);font-size:12px;"> — opcional</span>
+        </label>
+        <textarea id="message" name="message" placeholder="Deixa um recadinho carinhoso..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        Confirmar
+      </button>
+    </form>
+  </div>
+</div>
+
+<footer class="site-footer">
+  Feito com <i data-lucide="heart" style="width:13px;height:13px;display:inline-block;vertical-align:middle;color:#E8799A;fill:#E8799A;"></i> para a Juliana &nbsp;&bull;&nbsp; 🇧🇷 → 🇨🇦
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const btn = document.getElementById('submitBtn');
+    const errEl = document.getElementById('alertError');
+    errEl.classList.remove('show');
+
+    const checkedRadio = document.querySelector('input[name="attending"]:checked');
+    const attending = checkedRadio ? checkedRadio.value : '';
+    if (!attending) {
+      document.getElementById('errorMsg').textContent = 'Selecione uma das opções: Sim, Talvez ou Não.';
+      errEl.classList.add('show');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Enviando...';
+
+    try {
+      const res = await fetch('/api/rsvp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name.value.trim(),
+          phone: form.phone.value.trim(),
+          attending,
+          message: form.message.value.trim()
+        })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        document.getElementById('errorMsg').textContent = data.error || 'Erro ao enviar.';
+        errEl.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = 'Confirmar';
+        return;
+      }
+
+      document.getElementById('formCard').style.display = 'none';
+      const first = form.name.value.trim().split(' ')[0];
+      const icon = document.getElementById('successIcon');
+      const title = document.getElementById('successTitle');
+      const msg = document.getElementById('successMsg');
+      const giftBtn = document.getElementById('successGiftBtn');
+
+      if (attending === 'yes') {
+        icon.innerHTML = '<i data-lucide="party-popper" style="width:40px;height:40px;color:#009C3B;"></i>';
+        title.textContent = 'Presença confirmada!';
+        msg.textContent = `Que ótimo, ${first}! Mal podemos esperar para te ver lá.`;
+        giftBtn.style.display = 'inline-flex';
+      } else if (attending === 'maybe') {
+        icon.innerHTML = '<i data-lucide="help-circle" style="width:40px;height:40px;color:#C27D00;"></i>';
+        title.textContent = 'Recebemos sua resposta!';
+        msg.textContent = `Tudo bem, ${first}! Quando souber, pode confirmar de novo com seu nome.`;
+        giftBtn.style.display = 'inline-flex';
+      } else {
+        icon.innerHTML = '<i data-lucide="heart-handshake" style="width:40px;height:40px;color:var(--rose);"></i>';
+        title.textContent = 'Que pena!';
+        msg.textContent = `Obrigado por avisar, ${first}. A Juliana vai sentir sua falta.`;
+      }
+
+      document.getElementById('successScreen').classList.add('show');
+      lucide.createIcons();
+    } catch {
+      document.getElementById('errorMsg').textContent = 'Erro de conexão. Verifique sua internet.';
+      errEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Confirmar';
+    }
+  });
+</script>
+</body>
+</html>
