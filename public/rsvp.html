@@ -49,6 +49,76 @@
       margin-bottom: 20px;
     }
 
+    /* ── Guest search ── */
+    .name-field-wrap { position: relative; }
+    .guest-dropdown {
+      position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 100;
+      background: #fff; border: 1.5px solid var(--rose-light);
+      border-radius: 14px; box-shadow: 0 8px 28px rgba(201,69,111,0.15);
+      overflow: hidden; max-height: 280px; overflow-y: auto;
+    }
+    .guest-dropdown-header {
+      padding: 9px 14px; font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.2px;
+      color: var(--text-light); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .guest-option {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 14px; cursor: pointer; transition: background 0.12s;
+      gap: 10px;
+    }
+    .guest-option:hover { background: #FFF0F4; }
+    .go-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .go-group {
+      font-size: 11px; color: var(--text-light);
+      background: var(--bg); border-radius: 100px;
+      padding: 2px 8px; white-space: nowrap; flex-shrink: 0;
+    }
+    .guest-option.selected { background: #FFF0F4; }
+    .guest-option.selected .go-name { color: var(--rose-dark); }
+
+    .name-hint {
+      display: none; align-items: center; gap: 6px;
+      font-size: 12px; margin-top: 7px; padding: 9px 12px;
+      border-radius: 10px; font-weight: 500;
+    }
+    .name-hint.warn  { background: #FFF8E6; color: #8A5500; display: flex; }
+    .name-hint.ok    { background: #E8FAF0; color: #1e6e40; display: flex; }
+    .name-hint.notfound { background: #FFF8E6; color: #8A5500; display: flex; }
+
+    /* ── Children section ── */
+    .children-section {
+      background: #EEF4FF; border: 1.5px solid #C5D9F5;
+      border-radius: 14px; padding: 18px 20px; margin-top: 4px;
+      animation: fadeSlide 0.2s ease;
+    }
+    @keyframes fadeSlide {
+      from { opacity:0; transform:translateY(-6px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .children-section label { color:#2756A0; }
+    .children-counter {
+      display: flex; align-items: center; gap: 12px; margin-top: 10px;
+    }
+    .children-btn {
+      width: 38px; height: 38px; border-radius: 10px;
+      border: 2px solid #C5D9F5; background: #fff;
+      font-size: 20px; font-weight: 700; color: #3B6FD4;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s; line-height: 1;
+    }
+    .children-btn:hover { background: #3B6FD4; color: #fff; border-color: #3B6FD4; }
+    .children-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .children-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px; font-weight: 700; color: #3B6FD4;
+      min-width: 40px; text-align: center; line-height: 1;
+    }
+    .children-text {
+      font-size: 14px; color: #2756A0; font-weight: 500;
+    }
+
     @media (max-width: 420px) {
       .radio-group { grid-template-columns: 1fr; }
     }
@@ -96,8 +166,18 @@
 
       <div class="form-group">
         <label for="name">Nome completo</label>
-        <input type="text" id="name" name="name" placeholder="Ex: Maria da Silva Souza" required autocomplete="name" />
+        <div class="name-field-wrap">
+          <input type="text" id="name" name="name"
+            placeholder="Digite seu nome para buscar na lista..."
+            required autocomplete="off"
+            oninput="onNameInput(this.value)"
+            onblur="onNameBlur(this.value)"
+            onfocus="onNameFocus()" />
+          <div class="guest-dropdown" id="guestDropdown" style="display:none;"></div>
+        </div>
+        <div class="name-hint" id="nameHint"></div>
       </div>
+      <input type="hidden" id="guestId" name="guestId" value="" />
 
       <div class="form-group">
         <label for="phone">WhatsApp</label>
@@ -133,6 +213,19 @@
               </div>
               Não vou poder
             </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Children section — shown when attending = yes or maybe -->
+      <div id="childrenSection" style="display:none;" class="form-group">
+        <div class="children-section">
+          <label>Você virá com crianças?</label>
+          <div class="children-counter">
+            <button type="button" class="children-btn" id="childrenMinus" onclick="changeChildren(-1)" disabled>−</button>
+            <span class="children-num" id="childrenNum">0</span>
+            <button type="button" class="children-btn" onclick="changeChildren(1)">+</button>
+            <span class="children-text" id="childrenText">nenhuma criança</span>
           </div>
         </div>
       </div>
@@ -173,6 +266,117 @@
 <script>
   lucide.createIcons();
 
+  /* ── Guest search ── */
+  let allGuests = [];
+  let selectedGuestId = null;
+  let dropdownOpen = false;
+
+  fetch('/api/guests').then(r => r.json()).then(g => { allGuests = g; });
+
+  /* ── Children counter ── */
+  let childrenCount = 0;
+
+  document.querySelectorAll('input[name="attending"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const val = radio.value;
+      const sec = document.getElementById('childrenSection');
+      if (val === 'yes' || val === 'maybe') {
+        sec.style.display = 'block';
+      } else {
+        sec.style.display = 'none';
+        childrenCount = 0;
+        updateChildrenUI();
+      }
+    });
+  });
+
+  function changeChildren(delta) {
+    childrenCount = Math.max(0, childrenCount + delta);
+    updateChildrenUI();
+  }
+
+  function updateChildrenUI() {
+    document.getElementById('childrenNum').textContent = childrenCount;
+    document.getElementById('childrenMinus').disabled = childrenCount === 0;
+    const texts = ['nenhuma criança', '1 criança', '2 crianças', '3 crianças', '4 crianças', '5 crianças'];
+    document.getElementById('childrenText').textContent = texts[childrenCount] || `${childrenCount} crianças`;
+  }
+
+  function norm(s) {
+    return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  }
+
+  function onNameInput(val) {
+    selectedGuestId = null;
+    document.getElementById('guestId').value = '';
+    const hint = document.getElementById('nameHint');
+    hint.className = 'name-hint';
+
+    if (val.length < 2) { hideDropdown(); return; }
+
+    const q = norm(val);
+    const matches = allGuests.filter(g => norm(g.name).includes(q)).slice(0, 10);
+    if (matches.length) showDropdown(matches);
+    else hideDropdown();
+  }
+
+  function showDropdown(matches) {
+    const dd = document.getElementById('guestDropdown');
+    dd.innerHTML =
+      `<div class="guest-dropdown-header"><i data-lucide="list" style="width:11px;height:11px;"></i> Selecione seu nome na lista</div>` +
+      matches.map(g =>
+        `<div class="guest-option" onmousedown="selectGuest('${g.id}','${g.name.replace(/'/g,"&#39;")}')">
+           <span class="go-name">${g.name}</span>
+         </div>`
+      ).join('');
+    dd.style.display = 'block';
+    dropdownOpen = true;
+    lucide.createIcons();
+  }
+
+  function hideDropdown() {
+    document.getElementById('guestDropdown').style.display = 'none';
+    dropdownOpen = false;
+  }
+
+  function selectGuest(id, name) {
+    document.getElementById('name').value = name;
+    selectedGuestId = id;
+    document.getElementById('guestId').value = id;
+    hideDropdown();
+    const hint = document.getElementById('nameHint');
+    hint.innerHTML = `<i data-lucide="check-circle-2" style="width:13px;height:13px;"></i> Encontrado na lista de convidados`;
+    hint.className = 'name-hint ok';
+    lucide.createIcons();
+  }
+
+  function onNameBlur(val) {
+    setTimeout(() => {
+      hideDropdown();
+      if (!val.trim()) return;
+      const hint = document.getElementById('nameHint');
+      if (selectedGuestId) return; // already showing "ok"
+      const parts = val.trim().split(/\s+/);
+      if (parts.length < 2) {
+        hint.innerHTML = `<i data-lucide="alert-triangle" style="width:13px;height:13px;"></i> Adicione o sobrenome para te identificarmos corretamente.`;
+        hint.className = 'name-hint warn';
+      } else {
+        const q = norm(val);
+        const found = allGuests.some(g => norm(g.name).includes(q.split(' ')[0]));
+        if (!found) {
+          hint.innerHTML = `<i data-lucide="alert-triangle" style="width:13px;height:13px;"></i> Nome não encontrado na lista. Verifique se foi convidado(a).`;
+          hint.className = 'name-hint notfound';
+        }
+      }
+      lucide.createIcons();
+    }, 180);
+  }
+
+  function onNameFocus() {
+    const val = document.getElementById('name').value;
+    if (val.length >= 2) onNameInput(val);
+  }
+
   document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -206,7 +410,9 @@
           name: form.name.value.trim(),
           phone: form.phone.value.trim(),
           attending,
-          message: form.message.value.trim()
+          children: childrenCount,
+          message: form.message.value.trim(),
+          guestId: selectedGuestId || null
         })
       });
       const data = await res.json();

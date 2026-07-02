@@ -22,9 +22,40 @@ function normName(n) {
 
 app.get('/api/evento', (req, res) => res.json(readData().evento));
 app.get('/api/rsvp', (req, res) => res.json(readData().presences));
+app.get('/api/guests', (req, res) => res.json(readData().guests || []));
+
+app.post('/api/guests', (req, res) => {
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ error: 'Nome é obrigatório.' });
+  const data = readData();
+  const guest = { id: `g${Date.now()}`, name: name.trim(), group: 'Convidados' };
+  data.guests.push(guest);
+  writeData(data);
+  res.json({ success: true, guest });
+});
+
+app.patch('/api/guests/:id', (req, res) => {
+  const { name, children } = req.body;
+  const data = readData();
+  const guest = data.guests.find(g => g.id === req.params.id);
+  if (!guest) return res.status(404).json({ error: 'Convidado não encontrado.' });
+  if (name !== undefined) guest.name = name.trim();
+  if (children !== undefined) guest.children = Math.max(0, parseInt(children) || 0);
+  writeData(data);
+  res.json({ success: true, guest });
+});
+
+app.delete('/api/guests/:id', (req, res) => {
+  const data = readData();
+  const idx = data.guests.findIndex(g => g.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ error: 'Convidado não encontrado.' });
+  data.guests.splice(idx, 1);
+  writeData(data);
+  res.json({ success: true });
+});
 
 app.post('/api/rsvp', (req, res) => {
-  const { name, phone, attending, message } = req.body;
+  const { name, phone, attending, message, guestId } = req.body;
   if (!name || !['yes', 'no', 'maybe'].includes(attending)) {
     return res.status(400).json({ error: 'Nome e confirmação são obrigatórios.' });
   }
@@ -32,12 +63,16 @@ app.post('/api/rsvp', (req, res) => {
   if (data.presences.find(p => normName(p.name) === normName(name))) {
     return res.status(409).json({ error: 'Este nome já está registrado. Caso precise atualizar, entre em contato com a organização.' });
   }
+  const onList = guestId ? !!(data.guests || []).find(g => g.id === guestId) : false;
   const entry = {
     id: randomUUID(),
     name: name.trim(),
     phone: phone || '',
     attending,
+    children: Math.max(0, parseInt(req.body.children) || 0),
     message: message || '',
+    guestId: guestId || null,
+    onList,
     createdAt: new Date().toISOString()
   };
   data.presences.push(entry);
@@ -123,21 +158,29 @@ app.delete('/api/presentes/list/:id', (req, res) => {
 
 app.get('/api/dashboard', (req, res) => {
   const data = readData();
-  const yes = data.presences.filter(p => p.attending === 'yes');
-  const no = data.presences.filter(p => p.attending === 'no');
+  const yes   = data.presences.filter(p => p.attending === 'yes');
+  const no    = data.presences.filter(p => p.attending === 'no');
   const maybe = data.presences.filter(p => p.attending === 'maybe');
+
+  const guests = (data.guests || []).map(g => {
+    const presence = data.presences.find(p => p.guestId === g.id);
+    return { ...g, status: presence ? presence.attending : null, presenceName: presence ? presence.name : null };
+  });
+
   res.json({
     evento: data.evento,
     totalConfirmed: yes.length,
     totalDeclined: no.length,
     totalMaybe: maybe.length,
-    totalGuests: yes.length,
     totalGifts: data.gifts.length,
     giftListTotal: data.giftList.length,
     giftListTaken: data.giftList.filter(g => g.takenBy).length,
     presences: data.presences,
     gifts: data.gifts,
-    giftList: data.giftList
+    giftList: data.giftList,
+    guests,
+    totalInvited: guests.length,
+    guestsPending: guests.filter(g => !g.status).length
   });
 });
 

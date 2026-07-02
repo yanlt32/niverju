@@ -165,6 +165,87 @@
     .progress-bar { height:6px;background:var(--border);border-radius:100px;overflow:hidden; }
     .progress-fill { height:100%;background:linear-gradient(90deg,var(--rose-light),var(--rose));border-radius:100px;transition:width 0.5s ease; }
 
+    /* ── Guest list pills ── */
+    .gl-pill { font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px; }
+    .gl-pill.green  { background:#E8FAF0;color:#27ae60; }
+    .gl-pill.yellow { background:#FFF8E6;color:#C27D00; }
+    .gl-pill.red    { background:#FDEDEC;color:var(--error); }
+    .gl-pill.grey   { background:#F0EBF0;color:#7C5CBF; }
+
+    /* ── Guest rows ── */
+    .gl-row {
+      display:flex;align-items:center;gap:10px;padding:10px 16px;
+      border-bottom:1px solid var(--border);transition:background 0.12s;
+    }
+    .gl-row:last-child { border-bottom:none; }
+    .gl-row:hover { background:var(--bg); }
+    .gl-dot { width:9px;height:9px;border-radius:50%;flex-shrink:0; }
+    .gl-dot.yes    { background:#27ae60; box-shadow:0 0 5px rgba(39,174,96,0.4); }
+    .gl-dot.no     { background:var(--error); box-shadow:0 0 5px rgba(192,57,43,0.4); }
+    .gl-dot.maybe  { background:#C27D00; box-shadow:0 0 5px rgba(194,125,0,0.35); }
+    .gl-dot.pending { background:#D0C0DC; }
+    .gl-name { flex:1;font-size:13px;font-weight:600;color:var(--text);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .gl-status { font-size:11px;font-weight:600;flex-shrink:0;min-width:90px;text-align:right; }
+    .gl-status.yes    { color:#27ae60; }
+    .gl-status.no     { color:var(--error); }
+    .gl-status.maybe  { color:#C27D00; }
+    .gl-status.pending { color:#C0B0D0; }
+
+    /* ── Children counter ── */
+    .gl-children {
+      display:flex; align-items:center; gap:4px;
+      border:1.5px solid var(--border); border-radius:8px;
+      padding:2px 4px; flex-shrink:0;
+    }
+    .gl-children-btn {
+      width:20px;height:20px;border:none;background:transparent;
+      cursor:pointer;border-radius:5px;font-size:14px;font-weight:700;
+      color:var(--text-mid);display:flex;align-items:center;justify-content:center;
+      transition:background 0.12s;line-height:1;
+    }
+    .gl-children-btn:hover { background:var(--bg2);color:var(--rose); }
+    .gl-children-count {
+      font-size:12px;font-weight:700;min-width:14px;text-align:center;
+      color:var(--text-mid);
+    }
+    .gl-children-count.has { color:#3B6FD4; }
+    .gl-children-label {
+      font-size:10px;color:var(--text-light);white-space:nowrap;
+      padding:0 2px; letter-spacing:0.3px;
+    }
+
+    /* ── Inline edit ── */
+    .gl-edit-input {
+      flex:1;font-size:13px;font-weight:600;border:1.5px solid var(--rose-light);
+      border-radius:8px;padding:4px 8px;outline:none;font-family:'Inter',sans-serif;
+      color:var(--text);background:#FFF0F4;min-width:0;
+    }
+    .gl-edit-input:focus { border-color:var(--rose); }
+
+    /* ── Guest search bar ── */
+    .gl-search-bar {
+      padding:12px 16px;border-bottom:1px solid var(--border);
+      display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    }
+    .gl-search-input {
+      flex:1;min-width:160px;font-size:13px;border:1.5px solid var(--border);
+      border-radius:8px;padding:7px 12px;outline:none;
+      font-family:'Inter',sans-serif;background:#fff;transition:border-color 0.15s;
+    }
+    .gl-search-input:focus { border-color:var(--rose); }
+
+    /* ── Add guest row ── */
+    .add-guest-row {
+      display:flex;gap:10px;align-items:center;padding:14px 16px;
+      background:var(--bg);border-top:1px solid var(--border);flex-wrap:wrap;
+    }
+    .add-guest-row input {
+      flex:1;min-width:140px;font-size:13px;border:1.5px solid var(--border);
+      border-radius:8px;padding:8px 12px;outline:none;
+      font-family:'Inter',sans-serif;background:#fff;transition:border-color 0.15s;
+    }
+    .add-guest-row input:focus { border-color:var(--rose); }
+
     @media(max-width:600px) { .add-link-url,.add-link-label { min-width:100%; } }
   </style>
 </head>
@@ -205,11 +286,48 @@
       </div>
       <div class="stat-card blue">
         <div class="ic"><i data-lucide="users" style="width:20px;height:20px;"></i></div>
-        <span class="value" id="s-total">--</span><div class="label">Total respostas</div>
+        <span class="value" id="s-total">--</span><div class="label">Respostas</div>
       </div>
       <div class="stat-card gold">
         <div class="ic"><i data-lucide="gift" style="width:20px;height:20px;"></i></div>
         <span class="value" id="s-gifts">--</span><div class="label">Presentes</div>
+      </div>
+      <div class="stat-card" style="border-color:#E0D0F0;">
+        <div class="ic" style="background:#F3EEF9;color:#7C5CBF;"><i data-lucide="clock" style="width:20px;height:20px;"></i></div>
+        <span class="value" id="s-pending" style="color:#7C5CBF;">--</span><div class="label">Sem resposta</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guest list -->
+  <div class="dash-section">
+    <div class="dash-section-title">Lista de convidados</div>
+    <div class="data-card">
+      <div class="data-card-header" style="flex-wrap:wrap;gap:10px;">
+        <h3>
+          <i data-lucide="clipboard-list" style="width:16px;height:16px;color:var(--rose);"></i>
+          Convidados
+          <span class="badge" id="gl-total">0</span>
+        </h3>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <span class="gl-pill green" id="gl-yes">0 vão</span>
+          <span class="gl-pill yellow" id="gl-maybe">0 talvez</span>
+          <span class="gl-pill red" id="gl-no">0 não vão</span>
+          <span class="gl-pill grey" id="gl-pending">0 sem resposta</span>
+        </div>
+      </div>
+      <div class="gl-search-bar">
+        <input class="gl-search-input" placeholder="Buscar convidado..." oninput="filterGuests(this.value)" id="glSearch" />
+        <button class="export-btn" onclick="exportCSV('guests')">
+          <i data-lucide="download" style="width:13px;height:13px;"></i> CSV
+        </button>
+      </div>
+      <div id="guestListEl"></div>
+      <div class="add-guest-row">
+        <input type="text" id="newGuestName" placeholder="Nome do novo convidado..." />
+        <button class="add-btn" onclick="addGuest()">
+          <i data-lucide="plus" style="width:15px;height:15px;"></i> Adicionar
+        </button>
       </div>
     </div>
   </div>
@@ -291,12 +409,14 @@
     try {
       const res = await fetch('/api/dashboard');
       D = await res.json();
-      document.getElementById('s-yes').textContent   = D.totalConfirmed;
-      document.getElementById('s-maybe').textContent = D.totalMaybe;
-      document.getElementById('s-no').textContent    = D.totalDeclined;
-      document.getElementById('s-total').textContent = D.presences.length;
-      document.getElementById('s-gifts').textContent = D.totalGifts;
+      document.getElementById('s-yes').textContent     = D.totalConfirmed;
+      document.getElementById('s-maybe').textContent   = D.totalMaybe;
+      document.getElementById('s-no').textContent      = D.totalDeclined;
+      document.getElementById('s-total').textContent   = D.presences.length;
+      document.getElementById('s-gifts').textContent   = D.totalGifts;
+      document.getElementById('s-pending').textContent = D.guestsPending ?? '--';
       renderGiftEdit(D.giftList);
+      renderGuestList(D.guests || []);
       filterP(currentFilter);
       renderGiftConfirms(D.gifts);
       document.getElementById('lastUpd').textContent =
@@ -307,6 +427,137 @@
 
   function escHtml(s) {
     return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  let guestSearchTerm = '';
+
+  function renderGuestList(guests) {
+    if (!guests) return;
+
+    const yes     = guests.filter(g => g.status === 'yes').length;
+    const maybe   = guests.filter(g => g.status === 'maybe').length;
+    const no      = guests.filter(g => g.status === 'no').length;
+    const pending = guests.filter(g => !g.status).length;
+
+    document.getElementById('gl-total').textContent   = guests.length;
+    document.getElementById('gl-yes').textContent     = `${yes} vão`;
+    document.getElementById('gl-maybe').textContent   = `${maybe} talvez`;
+    document.getElementById('gl-no').textContent      = `${no} não vão`;
+    document.getElementById('gl-pending').textContent = `${pending} sem resposta`;
+
+    const q = guestSearchTerm.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const list = q
+      ? guests.filter(g => g.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').includes(q))
+      : guests;
+
+    const el = document.getElementById('guestListEl');
+    if (!list.length) {
+      el.innerHTML = '<div class="empty-state">Nenhum convidado encontrado.</div>';
+      return;
+    }
+
+    const statusLabel = { yes:'Confirmado', no:'Não vai', maybe:'Talvez' };
+
+    el.innerHTML = list.map(g => {
+      const kids = g.children || 0;
+      const st   = g.status || 'pending';
+      return `
+        <div class="gl-row" id="glrow-${g.id}">
+          <div class="gl-dot ${st}"></div>
+          <span class="gl-name">${escHtml(g.name)}</span>
+
+          <!-- Children counter -->
+          <div class="gl-children" title="Crianças acompanhando">
+            <button class="gl-children-btn" onmousedown="event.preventDefault();changeChildren('${g.id}',${kids - 1})">−</button>
+            <span class="gl-children-count ${kids > 0 ? 'has' : ''}">${kids}</span>
+            <button class="gl-children-btn" onmousedown="event.preventDefault();changeChildren('${g.id}',${kids + 1})">+</button>
+            <span class="gl-children-label">cr.</span>
+          </div>
+
+          <span class="gl-status ${st}">${statusLabel[g.status] || 'Sem resposta'}</span>
+
+          <button class="icon-btn" style="width:26px;height:26px;background:#EEF4FF;color:#3B6FD4;" onclick="startEditGuest('${g.id}')" title="Editar nome">
+            <i data-lucide="pencil" style="width:12px;height:12px;"></i>
+          </button>
+          <button class="icon-btn-xs" onclick="removeGuest('${g.id}')" title="Remover">
+            <i data-lucide="x" style="width:11px;height:11px;"></i>
+          </button>
+        </div>
+      `;
+    }).join('');
+
+    lucide.createIcons();
+  }
+
+  function filterGuests(val) {
+    guestSearchTerm = val;
+    renderGuestList(D.guests || []);
+  }
+
+  async function changeChildren(id, newCount) {
+    newCount = Math.max(0, newCount);
+    const guest = D.guests.find(g => g.id === id);
+    if (!guest) return;
+    guest.children = newCount;
+    const res = await fetch(`/api/guests/${id}`, {
+      method: 'PATCH', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ children: newCount })
+    });
+    if (res.ok) renderGuestList(D.guests);
+  }
+
+  function startEditGuest(id) {
+    const guest = D.guests.find(g => g.id === id);
+    if (!guest) return;
+    const row = document.getElementById(`glrow-${id}`);
+    row.innerHTML = `
+      <div class="gl-dot pending"></div>
+      <input class="gl-edit-input" id="gledit-${id}"
+        value="${guest.name.replace(/"/g,'&quot;')}"
+        onkeydown="if(event.key==='Enter')saveGuestName('${id}');if(event.key==='Escape')renderGuestList(D.guests);" />
+      <button class="icon-btn" style="width:26px;height:26px;background:#E8FAF0;color:#27ae60;"
+        onclick="saveGuestName('${id}')" title="Salvar">
+        <i data-lucide="check" style="width:12px;height:12px;"></i>
+      </button>
+      <button class="icon-btn" style="width:26px;height:26px;background:#FDEDEC;color:var(--error);"
+        onclick="renderGuestList(D.guests)" title="Cancelar">
+        <i data-lucide="x" style="width:12px;height:12px;"></i>
+      </button>
+    `;
+    document.getElementById(`gledit-${id}`).focus();
+    lucide.createIcons();
+  }
+
+  async function saveGuestName(id) {
+    const input = document.getElementById(`gledit-${id}`);
+    const name = input ? input.value.trim() : '';
+    if (!name) return;
+    const res = await fetch(`/api/guests/${id}`, {
+      method: 'PATCH', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ name })
+    });
+    if (res.ok) {
+      const guest = D.guests.find(g => g.id === id);
+      if (guest) guest.name = name;
+      renderGuestList(D.guests);
+    }
+  }
+
+  async function addGuest() {
+    const name = document.getElementById('newGuestName').value.trim();
+    if (!name) { document.getElementById('newGuestName').focus(); return; }
+    const res = await fetch('/api/guests', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ name })
+    });
+    if (res.ok) { document.getElementById('newGuestName').value = ''; await loadAll(); }
+    else { const d = await res.json(); alert(d.error || 'Erro ao adicionar.'); }
+  }
+
+  async function removeGuest(id) {
+    if (!confirm('Remover este convidado da lista?')) return;
+    const res = await fetch(`/api/guests/${id}`, { method: 'DELETE' });
+    if (res.ok) await loadAll();
   }
 
   function renderGiftEdit(list) {
@@ -492,7 +743,13 @@
 
   function exportCSV(type) {
     let rows, headers, filename;
-    if (type === 'presences') {
+    if (type === 'guests') {
+      headers = ['Nome','Status'];
+      const labels = {yes:'Confirmado',no:'Não vai',maybe:'Talvez'};
+      rows = (D.guests||[]).map(g => [`"${g.name}"`, labels[g.status]||'Sem resposta']);
+      filename = 'convidados_juliana.csv';
+    } else if (type === 'presences') {
+
       headers = ['Nome','Telefone','Confirmação','Mensagem','Data'];
       const labels = {yes:'Vai',no:'Não vai',maybe:'Talvez'};
       rows = (D.presences||[]).map(p => [
