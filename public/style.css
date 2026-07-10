@@ -1,26 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
-  --rose: #C9456F;
-  --rose-light: #E8799A;
-  --rose-dark: #9B2D52;
+  --rose: #C8102E;
+  --rose-light: #E85070;
+  --rose-dark: #8B0C1F;
   --canada: #C8102E;
   --gold: #D4A843;
   --gold-light: #F0C96A;
-  --bg: #FFF7F9;
-  --bg2: #FFF0F4;
+  --bg: #FAF5E8;
+  --bg2: #FFF0E8;
   --card: #FFFFFF;
-  --text: #1A1A2E;
-  --text-mid: #4A4A6A;
-  --text-light: #8888AA;
-  --border: #F0D6DF;
+  --text: #1A0805;
+  --text-mid: #4A2520;
+  --text-light: #8A6550;
+  --border: #E8D5C0;
   --success: #27AE60;
   --success-bg: #EAFAF1;
   --error: #C0392B;
   --error-bg: #FDEDEC;
-  --shadow-sm: 0 2px 8px rgba(201,69,111,0.08);
-  --shadow: 0 8px 32px rgba(201,69,111,0.12);
-  --shadow-lg: 0 20px 60px rgba(201,69,111,0.18);
+  --shadow-sm: 0 2px 8px rgba(200,16,46,0.08);
+  --shadow: 0 8px 32px rgba(200,16,46,0.12);
+  --shadow-lg: 0 20px 60px rgba(200,16,46,0.18);
   --radius: 20px;
   --radius-sm: 12px;
 }
@@ -177,11 +177,11 @@ body {
 .btn:active { transform: translateY(0); }
 
 .btn-primary {
-  background: linear-gradient(135deg, #E8799A, #C9456F);
+  background: linear-gradient(135deg, #E85070, #C8102E);
   color: #fff;
-  box-shadow: 0 8px 24px rgba(201,69,111,0.4);
+  box-shadow: 0 8px 24px rgba(200,16,46,0.4);
 }
-.btn-primary:hover { box-shadow: 0 12px 32px rgba(201,69,111,0.5); }
+.btn-primary:hover { box-shadow: 0 12px 32px rgba(200,16,46,0.5); }
 
 /* Brasil x Canadá CTA buttons */
 .btn-brasil {
@@ -318,7 +318,7 @@ body {
 
 /* ===== PAGE HEADER ===== */
 .page-header {
-  background: linear-gradient(135deg, #1A0A14, #4A1030);
+  background: linear-gradient(135deg, #5C0412, #C8102E);
   padding: 24px 0 32px;
   text-align: center;
   position: relative;
@@ -425,7 +425,7 @@ select {
 input:focus, textarea:focus, select:focus {
   border-color: var(--rose);
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(201,69,111,0.1);
+  box-shadow: 0 0 0 4px rgba(200,16,46,0.1);
 }
 
 textarea { resize: vertical; min-height: 90px; }
@@ -470,7 +470,7 @@ textarea { resize: vertical; min-height: 90px; }
 
 .radio-card input:checked + label {
   border-color: var(--rose);
-  background: #FFF0F4;
+  background: #FFF0E8;
   color: var(--rose-dark);
   box-shadow: var(--shadow-sm);
 }
@@ -482,7 +482,7 @@ textarea { resize: vertical; min-height: 90px; }
 .btn-submit {
   width: 100%;
   padding: 18px;
-  background: linear-gradient(135deg, #E8799A, #C9456F);
+  background: linear-gradient(135deg, #E85070, #C8102E);
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
@@ -491,9 +491,9 @@ textarea { resize: vertical; min-height: 90px; }
   font-family: 'Inter', sans-serif;
   cursor: pointer;
   transition: all 0.25s;
-  box-shadow: 0 8px 24px rgba(201,69,111,0.3);
+  box-shadow: 0 8px 24px rgba(200,16,46,0.3);
 }
-.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,69,111,0.4); }
+.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(200,16,46,0.4); }
 .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 /* ===== ALERTS ===== */
@@ -791,7 +791,7 @@ textarea { resize: vertical; min-height: 90px; }
 
 /* ===== NAV ===== */
 .dash-nav {
-  background: linear-gradient(135deg, #1A0A14, #4A1030);
+  background: linear-gradient(135deg, #5C0412, #C8102E);
   padding: 20px;
   display: flex;
   align-items: center;
@@ -809,7 +809,7 @@ textarea { resize: vertical; min-height: 90px; }
 
 /* ===== FOOTER ===== */
 .site-footer {
-  background: linear-gradient(170deg, #0C1A0E 0%, #18101A 30%, #2E0E1C 65%, #1A0A10 100%);
+  background: linear-gradient(170deg, #0C0808 0%, #1A0505 30%, #2E0A0A 65%, #1A0505 100%);
   padding: 48px 20px 36px;
 }
 .footer-inner {
@@ -840,7 +840,7 @@ textarea { resize: vertical; min-height: 90px; }
 }
 .footer-insta {
   display: inline-flex; align-items: center; gap: 5px;
-  color: #E8799A; text-decoration: none;
+  color: #E87090; text-decoration: none;
   font-weight: 700; font-size: 13px;
   transition: color 0.2s, opacity 0.2s;
 }

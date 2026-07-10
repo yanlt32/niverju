@@ -7,12 +7,12 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
-    body { background: #F0EBF0; }
+    body { background: #F5EDE0; }
     .dash-wrap { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
 
     /* ── Nav ── */
     .dash-nav {
-      background: linear-gradient(135deg, #0D1F0E 0%, #1a3a1a 20%, #2C0D1A 55%, #4A1030 80%, #9B1B1B 100%);
+      background: linear-gradient(135deg, #5C0412 0%, #8B0C1F 40%, #C8102E 100%);
       padding: 18px 24px; display: flex; align-items: center;
       justify-content: space-between; gap: 16px; flex-wrap: wrap;
     }
@@ -44,7 +44,7 @@
     .data-card { background:#fff;border-radius:18px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-sm); }
     .data-card-header { padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap; }
     .data-card-header h3 { font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px; }
-    .badge { display:inline-flex;align-items:center;min-width:22px;height:22px;padding:0 7px;background:#FFF0F4;border-radius:100px;font-size:11px;font-weight:700;color:var(--rose); }
+    .badge { display:inline-flex;align-items:center;min-width:22px;height:22px;padding:0 7px;background:#FFF0E8;border-radius:100px;font-size:11px;font-weight:700;color:var(--rose); }
 
     /* ── Gift block (new multi-link design) ── */
     .gift-block {
@@ -62,13 +62,13 @@
       background: #F0EEF8; color: #7C5CBF;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-    .gift-block-icon.taken { background: #FFF0F4; color: var(--rose); }
+    .gift-block-icon.taken { background: #FFF0E8; color: var(--rose); }
     .gift-name-input {
       flex: 1; font-size: 14px; font-weight: 600; color: var(--text);
       border: none; background: transparent; outline: none; font-family: 'Inter', sans-serif;
       padding: 4px 8px; border-radius: 8px; transition: background 0.15s; min-width: 0;
     }
-    .gift-name-input:focus { background: #FFF0F4; }
+    .gift-name-input:focus { background: #FFF0E8; }
     .tag-taken { background:var(--bg2);color:var(--rose);font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;white-space:nowrap;text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0; }
 
     /* ── Icon buttons ── */
@@ -121,8 +121,8 @@
     .add-link-label { flex: 1; min-width: 100px; }
     .add-link-btn {
       display: inline-flex; align-items: center; gap: 5px;
-      background: #FFF0F4; color: var(--rose-dark);
-      border: 1px solid rgba(201,69,111,0.2);
+      background: #FFF0E8; color: var(--rose-dark);
+      border: 1px solid rgba(200,16,46,0.2);
       border-radius: 8px; padding: 7px 12px;
       font-size: 12px; font-weight: 600; cursor: pointer;
       font-family: 'Inter', sans-serif; transition: all 0.15s; white-space: nowrap;
@@ -133,14 +133,14 @@
     .add-gift-row { display:flex;gap:10px;align-items:center;padding:14px 20px;background:var(--bg);border-top:1px solid var(--border);flex-wrap:wrap; }
     .add-gift-row input { flex:1;min-width:140px;font-size:13px;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;outline:none;font-family:'Inter',sans-serif;background:#fff;transition:border-color 0.15s; }
     .add-gift-row input:focus { border-color:var(--rose); }
-    .add-btn { display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#E8799A,#C9456F);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:filter 0.2s;white-space:nowrap; }
+    .add-btn { display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#E85070,#C8102E);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:filter 0.2s;white-space:nowrap; }
     .add-btn:hover { filter:brightness(1.1); }
 
     /* ── Filters / exports ── */
     .filter-bar { padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap; }
     .filter-btn { padding:6px 14px;border-radius:100px;border:1.5px solid var(--border);background:var(--bg);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;color:var(--text-mid);transition:all 0.15s; }
-    .filter-btn.active { border-color:var(--rose);background:#FFF0F4;color:var(--rose-dark); }
-    .export-btn { display:inline-flex;align-items:center;gap:6px;background:#FFF0F4;color:var(--rose-dark);border:1px solid #F4C2D2;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s; }
+    .filter-btn.active { border-color:var(--rose);background:#FFF0E8;color:var(--rose-dark); }
+    .export-btn { display:inline-flex;align-items:center;gap:6px;background:#FFF0E8;color:var(--rose-dark);border:1px solid #F4C2D2;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s; }
     .export-btn:hover { background:var(--rose);color:#fff;border-color:var(--rose); }
 
     /* ── List items ── */
@@ -218,7 +218,7 @@
     .gl-edit-input {
       flex:1;font-size:13px;font-weight:600;border:1.5px solid var(--rose-light);
       border-radius:8px;padding:4px 8px;outline:none;font-family:'Inter',sans-serif;
-      color:var(--text);background:#FFF0F4;min-width:0;
+      color:var(--text);background:#FFF0E8;min-width:0;
     }
     .gl-edit-input:focus { border-color:var(--rose); }
 

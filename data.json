@@ -5,14 +5,29 @@
     "horario": "17:00",
     "local": "Rua Saturnino de Sousa, 299 - Vila Nhocuné",
     "cidade": "São Paulo, SP",
-    "mensagem": "Vem celebrar o aniversário e a nova aventura da nossa querida Juliana, que está de malas prontas para o Canadá! 🍁"
+    "mensagem": "Check-in aberto!\nUma nova aventura está prestes a começar.\nAntes da partida, quero reunir as pessoas que fazem parte da minha história. Confirme sua presença e venha celebrar esse momento comigo."
   },
-  "presences": [],
+  "presences": [
+    {
+      "id": "a42437dc-8f3f-428d-ac83-1133e182ee28",
+      "name": "Natalia Julie",
+      "phone": "(11) 11111-11111111",
+      "attending": "yes",
+      "companions": [],
+      "message": "",
+      "guestId": null,
+      "onList": false,
+      "createdAt": "2026-07-09T19:00:53.226Z"
+    }
+  ],
+  "messages": [],
   "gifts": [],
   "giftList": [
     {
       "id": "1",
       "name": "Mala de viagem grande",
+      "description": "Mala resistente de rodas 360°, ideal para viagens longas. Capacidade para 32kg.",
+      "imageUrl": "",
       "emoji": "🧳",
       "category": "Bagagem",
       "links": [
@@ -21,78 +36,122 @@
           "label": "Mercado Livre"
         }
       ],
+      "quantity": 1,
+      "reservations": [],
       "takenBy": null
     },
     {
       "id": "2",
       "name": "Organizador de mala (cubos)",
+      "description": "Kit de cubos compressores para organizar roupas e maximizar espaço na mala.",
+      "imageUrl": "",
       "emoji": "📦",
       "category": "Bagagem",
       "links": [],
-      "takenBy": null
+      "quantity": 1,
+      "reservations": [
+        {
+          "id": "c6ee3d8d-df49-4c5c-a7bf-c7b6e65c4be7",
+          "personName": "natalia silva",
+          "createdAt": "2026-07-09T19:05:26.797Z"
+        }
+      ],
+      "takenBy": "natalia silva"
     },
     {
       "id": "10",
       "name": "Capa impermeável para mala",
+      "description": "Protege a mala da chuva e arranhões em viagens. Essencial para o clima canadense.",
+      "imageUrl": "",
       "emoji": "🧥",
       "category": "Bagagem",
       "links": [],
+      "quantity": 1,
+      "reservations": [],
       "takenBy": null
     },
     {
       "id": "3",
       "name": "Necessaire de viagem",
+      "description": "Nécessaire espaçosa e impermeável para organizar produtos de higiene e beleza.",
+      "imageUrl": "",
       "emoji": "💄",
       "category": "Higiene & Beleza",
       "links": [],
+      "quantity": 1,
+      "reservations": [],
       "takenBy": null
     },
     {
       "id": "4",
       "name": "Almofada de pescoço ergonômica",
+      "description": "Almofada de memória com suporte cervical para viagens longas de avião.",
+      "imageUrl": "",
       "emoji": "😴",
       "category": "Conforto em Viagem",
       "links": [],
+      "quantity": 1,
+      "reservations": [],
       "takenBy": null
     },
     {
       "id": "8",
       "name": "Garrafa térmica",
+      "description": "Garrafa inox que mantém bebidas quentes ou frias por horas. Perfeita para o frio de Toronto.",
+      "imageUrl": "",
       "emoji": "♨️",
       "category": "Conforto em Viagem",
       "links": [],
+      "quantity": 1,
+      "reservations": [],
       "takenBy": null
     },
     {
       "id": "5",
       "name": "Porta-documentos de viagem",
+      "description": "Organizador de pescoço para passaporte, cartões e documentos importantes.",
+      "imageUrl": "",
       "emoji": "📄",
       "category": "Documentos & Segurança",
       "links": [],
+      "quantity": 1,
+      "reservations": [],
       "takenBy": null
     },
     {
       "id": "7",
-      "name": "Carteira de viagem com bloqueio RFID",
+      "name": "Carteira com bloqueio RFID",
+      "description": "Carteira slim com proteção RFID contra clonagem de cartões no exterior.",
+      "imageUrl": "",
       "emoji": "👜",
       "category": "Documentos & Segurança",
       "links": [],
+      "quantity": 1,
+      "reservations": [],
       "takenBy": null
     },
     {
       "id": "6",
       "name": "Adaptador universal de tomada",
+      "description": "Adaptador all-in-one compatível com tomadas do Canadá e do mundo inteiro.",
+      "imageUrl": "",
       "emoji": "🔌",
       "category": "Eletrônicos",
       "links": [],
+      "quantity": 1,
+      "reservations": [],
       "takenBy": null
     },
     {
       "id": "9",
       "name": "Vale presente (Amazon.ca)",
+      "description": "Vale presente para a loja Amazon do Canadá. A Juliana escolhe o que precisar quando chegar!",
+      "imageUrl": "",
       "emoji": "🎁",
       "category": "Presente Especial",
       "links": [],
+      "quantity": 3,
+      "reservations": [],
       "takenBy": null
     }
   ],
@@ -494,7 +553,7 @@
     },
     {
       "id": "o20",
-      "name": "Zequinha( José Carlos)",
+      "name": "Zequinha (José Carlos)",
       "group": "Outros Convidados"
     },
     {
@@ -516,17 +575,6 @@
       "id": "o24",
       "name": "Deilton Silva",
       "group": "Outros Convidados"
-    },
-    {
-      "id": "g1783011226402",
-      "name": "Duda Silva",
-      "group": "Convidados",
-      "children": 0
-    },
-    {
-      "id": "g1783564113862",
-      "name": "Djair Silva",
-      "group": "Convidados"
     }
   ]
 }

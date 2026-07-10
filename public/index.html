@@ -2,409 +2,882 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Festa da Juliana</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Despedida Juju</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
-    /* ─── HERO BACKGROUND ─── */
-    .hero {
-      min-height: 100vh;
-      background:
-        radial-gradient(ellipse at 20% 50%, rgba(0,120,50,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 50%, rgba(200,16,46,0.18) 0%, transparent 60%),
-        linear-gradient(170deg, #0C1A0E 0%, #18101A 35%, #2E0E1C 60%, #1A0A10 100%);
-    }
-
-    /* ─── BADGE ─── */
-    .hero-badge {
-      position: relative; z-index: 10;
-      margin-bottom: 28px;
-    }
-
-    /* ─── TITLE ─── */
-    .hero-title { position: relative; z-index: 10; }
-
-    /* ─── SUBTITLE ─── */
-    .hero-sub {
-      position: relative; z-index: 10;
-      margin-bottom: 32px;
-    }
-
-    /* ─── INFO CHIPS ─── */
-    .hero-info {
-      display: flex; flex-wrap: wrap; gap: 10px;
-      justify-content: center;
-      margin-bottom: 32px;
-      position: relative; z-index: 10;
-    }
-
-    /* ─── COUNTDOWN ─── */
-    .countdown {
-      display: flex; gap: 10px; justify-content: center;
-      margin-bottom: 44px;
-      position: relative; z-index: 10;
-    }
-    .cd-item {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 14px; padding: 14px 16px;
-      text-align: center; min-width: 64px;
-    }
-    .cd-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 34px; color: #fff; display: block; line-height: 1;
-    }
-    .cd-label {
-      font-size: 9px; color: rgba(255,255,255,0.35);
-      text-transform: uppercase; letter-spacing: 1.5px; margin-top: 5px;
-    }
-
-    /* ─── FLIGHT TICKET ─── */
-    .flight-ticket {
-      display: flex; align-items: stretch;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 22px;
-      backdrop-filter: blur(16px);
-      width: 100%; max-width: 440px;
-      overflow: hidden;
-      margin-bottom: 28px;
-      position: relative; z-index: 10;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.35);
-    }
-    .ft-side {
-      flex: 1; padding: 22px 18px; text-align: center;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 4px;
-    }
-    .ft-brasil { border-left: 3px solid #009C3B; }
-    .ft-canada  { border-right: 3px solid #C8102E; }
-
-    /* Mini CSS flags */
-    .mini-flag { width: 48px; height: 32px; border-radius: 5px; margin-bottom: 6px; overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
-    .flag-br { background: #009C3B; position: relative; display: flex; align-items: center; justify-content: center; }
-    .flag-br::before { content:''; position:absolute; width:28px;height:28px;background:#FFDF00;transform:rotate(45deg); }
-    .flag-br::after  { content:''; position:absolute; width:14px;height:14px;border-radius:50%;background:#002776;z-index:1; }
-    .flag-ca { display: flex; }
-    .flag-ca-r { width: 12px; background: #C8102E; }
-    .flag-ca-w { flex: 1; background: #fff; display: flex; align-items: center; justify-content: center; }
-    .flag-ca-w svg { width: 14px; height: 14px; }
-    .maple { fill: #C8102E; }
-
-    .ft-code {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px; font-weight: 700; line-height: 1;
-    }
-    .ft-brasil .ft-code { color: #5AFFAA; }
-    .ft-canada .ft-code  { color: #FF9999; }
-    .ft-city {
-      font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.75);
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .ft-country { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; }
-
-    .ft-center {
-      width: 110px; flex-shrink: 0; padding: 16px 8px;
-      border-left: 1px dashed rgba(255,255,255,0.1);
-      border-right: 1px dashed rgba(255,255,255,0.1);
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
-    }
-    .ft-date { font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1.5px; }
-    .ft-path { display: flex; align-items: center; gap: 3px; width: 100%; }
-    .ft-dot-g { width: 7px; height: 7px; border-radius: 50%; background: #009C3B; box-shadow: 0 0 8px #009C3B; flex-shrink:0; }
-    .ft-dot-r { width: 7px; height: 7px; border-radius: 50%; background: #C8102E; box-shadow: 0 0 8px #C8102E; flex-shrink:0; }
-    .ft-line { flex: 1; height: 1px; background: linear-gradient(90deg, #009C3B50, #C8102E50); }
-    .ft-plane-ico { color: rgba(255,255,255,0.6); display:flex; align-items:center; }
-    .ft-sub { font-size: 8px; color: rgba(255,255,255,0.25); text-transform: uppercase; letter-spacing: 1px; text-align: center; line-height: 1.4; }
-
-    /* ─── CTA BUTTONS ─── */
-    .cta-block {
-      display: flex; flex-direction: column; gap: 12px;
-      width: 100%; max-width: 420px;
-      position: relative; z-index: 10;
-      margin-bottom: 48px;
-    }
-    .cta-btn {
-      display: flex; align-items: center; gap: 16px;
-      padding: 18px 22px;
-      border-radius: 18px;
-      text-decoration: none;
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; overflow:hidden; }
+    body {
       font-family: 'Inter', sans-serif;
-      transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
-    }
-    .cta-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
-    .cta-btn:active { transform: translateY(0); }
-
-    .cta-br {
-      background: linear-gradient(135deg, #009C3B 0%, #007A2E 100%);
-      box-shadow: 0 12px 36px rgba(0,156,59,0.35);
-      border: 1px solid rgba(255,223,0,0.2);
-    }
-    .cta-ca {
-      background: linear-gradient(135deg, #C8102E 0%, #8F0C20 100%);
-      box-shadow: 0 12px 36px rgba(200,16,46,0.35);
-      border: 1px solid rgba(255,255,255,0.12);
+      background: #F4F4F6;
+      color: #1A0A0A;
     }
 
-    .cta-ico {
-      width: 44px; height: 44px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    /* ═══ BACKGROUND BLOBS ═══ */
+    .bg-blobs {
+      position: fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
     }
-    .cta-br .cta-ico { background: rgba(0,0,0,0.2); color: #FFDF00; }
-    .cta-ca .cta-ico { background: rgba(0,0,0,0.2); color: #fff; }
+    .blob {
+      position:absolute; border-radius:50%;
+      background: radial-gradient(circle, rgba(200,16,46,0.09) 0%, transparent 65%);
+    }
+    .b1 { width:500px;height:500px;top:-120px;left:-80px; }
+    .b2 { width:400px;height:400px;bottom:-60px;right:-80px; }
+    .b3 { width:300px;height:300px;top:35%;left:20%; animation:blobFloat 8s ease-in-out infinite; }
+    @keyframes blobFloat {
+      0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)}
+    }
 
-    .cta-text { flex: 1; }
-    .cta-title { font-size: 16px; font-weight: 700; line-height: 1.2; }
-    .cta-br .cta-title { color: #FFDF00; }
-    .cta-ca .cta-title { color: #fff; }
-    .cta-sub { font-size: 12px; margin-top: 2px; }
-    .cta-br .cta-sub { color: rgba(255,223,0,0.55); }
-    .cta-ca .cta-sub { color: rgba(255,255,255,0.5); }
-    .cta-arrow { color: rgba(255,255,255,0.35); flex-shrink:0; }
+    /* ═══ FIXED HEADER ═══ */
+    .app-header {
+      position: fixed; top:0; left:0; right:0; height:52px;
+      background:#fff; border-bottom:1px solid #EEECEC;
+      display:flex; align-items:center; padding:0 18px; gap:8px;
+      z-index:200; box-shadow:0 1px 8px rgba(0,0,0,0.06);
+    }
+    .hd-icon { color:#C8102E; display:flex; }
+    .hd-brand {
+      font-family:'Oswald',sans-serif; font-size:18px;
+      font-weight:700; color:#C8102E; letter-spacing:0.5px;
+      line-height:1.1;
+    }
 
-    /* ─── STATS ─── */
-    .hero-stats {
-      display: flex; gap: 0;
-      position: relative; z-index: 10;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 16px; overflow: hidden;
-      backdrop-filter: blur(10px);
+    /* ═══ MAIN CONTENT (scrollable) ═══ */
+    .app-main {
+      position:fixed; top:52px; bottom:60px; left:0; right:0;
+      overflow-y:auto; z-index:1; -webkit-overflow-scrolling:touch;
     }
-    .stat-item { flex: 1; text-align: center; padding: 16px 12px; }
-    .stat-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px; color: #fff; display: block; line-height: 1;
-    }
-    .stat-label {
-      font-size: 9px; color: rgba(255,255,255,0.35);
-      text-transform: uppercase; letter-spacing: 1.2px; margin-top: 5px;
-    }
-    .stat-divider { width: 1px; background: rgba(255,255,255,0.09); }
 
-    /* ─── WAVE ─── */
-    .wave { position: absolute; bottom: 0; left: 0; width: 100%; line-height: 0; pointer-events: none; }
+    /* ═══ SECTIONS ═══ */
+    .sec { display:none; min-height:100%; padding-bottom:20px; }
+    .sec.active { display:block; }
 
-    /* ─── HOW IT WORKS ─── */
-    .about-section { padding: 64px 20px; text-align: center; background: var(--bg); }
-    .about-section h2 { font-family: 'Playfair Display', serif; font-size: 34px; color: var(--text); margin-bottom: 10px; }
-    .about-section > p { color: var(--text-mid); max-width: 420px; margin: 0 auto 44px; font-size: 16px; line-height: 1.7; }
-    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 16px; max-width: 780px; margin: 0 auto; }
-    .step-card {
-      background: #fff; border: 1px solid var(--border); border-radius: 20px;
-      padding: 28px 20px; text-align: center;
-      box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s;
+    /* ═══ CHECK-IN SECTION ═══ */
+    /* Landing view */
+    #view-land { position:relative; padding:24px 20px 32px; }
+    .land-watermark {
+      position:absolute; top:20px; left:0; right:0;
+      font-family:'Oswald',sans-serif; font-size:28px; font-weight:700;
+      color:rgba(0,0,0,0.045); text-align:center; line-height:1.4;
+      pointer-events:none; user-select:none;
+      font-style:italic; padding:0 12px;
     }
-    .step-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-    .step-ic { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-    .step-ic.g { background: #E8FAF0; color: #009C3B; }
-    .step-ic.y { background: #FFF8E6; color: var(--gold); }
-    .step-ic.b { background: #EEF4FF; color: #3B6FD4; }
-    .step-card h3 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
-    .step-card p  { font-size: 13px; color: var(--text-light); line-height: 1.6; }
+    .hero-card {
+      position:relative; z-index:2;
+      background:#fff; border-radius:18px;
+      padding:28px 22px; text-align:center;
+      box-shadow:0 6px 32px rgba(0,0,0,0.09);
+      margin-bottom:28px;
+    }
+    .hero-title {
+      font-family:'Oswald',sans-serif;
+      font-size:clamp(28px,8vw,40px);
+      font-weight:700; color:#8B0C1F;
+      line-height:1.1; margin-bottom:14px; text-transform:uppercase;
+    }
+    .hero-body {
+      font-size:15px; color:#555; line-height:1.65; margin-bottom:14px;
+    }
+    .hero-cta-text {
+      font-size:15px; font-weight:700; color:#1A0A0A; margin-bottom:22px;
+    }
+    .btn-red {
+      display:block; width:100%; padding:17px; border-radius:50px;
+      background:#C8102E; color:#fff; border:none; cursor:pointer;
+      font-family:'Oswald',sans-serif; font-size:17px; font-weight:600;
+      letter-spacing:1.5px; text-transform:uppercase;
+      transition:all 0.2s; text-decoration:none; text-align:center;
+    }
+    .btn-red:hover { filter:brightness(1.08); transform:translateY(-1px); }
+    .btn-red:active { transform:none; filter:brightness(0.95); }
+    .btn-red:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
 
-    /* ─── FINAL CTA ─── */
-    .final-cta {
-      background:
-        radial-gradient(ellipse at 15% 50%, rgba(0,120,50,0.2) 0%, transparent 60%),
-        radial-gradient(ellipse at 85% 50%, rgba(200,16,46,0.2) 0%, transparent 60%),
-        linear-gradient(170deg, #0C1A0E 0%, #18101A 40%, #2E0E1C 70%, #1A0A10 100%);
-      padding: 64px 20px; text-align: center;
+    /* Countdown */
+    .countdown-wrap { position:relative; z-index:2; text-align:center; padding:4px 0 8px; }
+    .cd-label {
+      font-size:10px; font-weight:700; letter-spacing:2.5px;
+      text-transform:uppercase; color:#999; margin-bottom:16px;
     }
-    .final-cta h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: #fff; margin-bottom: 12px; }
-    .final-cta p  { color: rgba(255,255,255,0.5); margin-bottom: 36px; max-width: 400px; margin-left: auto; margin-right: auto; }
-    .final-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; max-width: 420px; margin: 0 auto; }
-    .final-btns a {
-      flex: 1; min-width: 160px;
-      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-      padding: 16px 24px; border-radius: 14px;
-      font-size: 15px; font-weight: 700; text-decoration: none; font-family: 'Inter', sans-serif;
-      transition: transform 0.2s, filter 0.2s;
+    .cd-row {
+      display:flex; align-items:flex-start; justify-content:center; gap:0;
     }
-    .final-btns a:hover { filter: brightness(1.1); transform: translateY(-2px); }
-    .fb-br { background: linear-gradient(135deg,#009C3B,#007A2E); color: #FFDF00; box-shadow: 0 8px 24px rgba(0,156,59,0.3); }
-    .fb-ca { background: linear-gradient(135deg,#C8102E,#8F0C20); color: #fff; box-shadow: 0 8px 24px rgba(200,16,46,0.3); }
+    .cd-group { display:flex; flex-direction:column; align-items:center; min-width:60px; }
+    .cd-n {
+      font-family:'Oswald',sans-serif; font-size:clamp(38px,10vw,52px);
+      font-weight:700; color:#C8102E; line-height:1;
+    }
+    .cd-l {
+      font-size:8.5px; font-weight:700; letter-spacing:1.5px;
+      text-transform:uppercase; color:#AAA; margin-top:5px;
+    }
+    .cd-sep {
+      font-family:'Oswald',sans-serif; font-size:clamp(34px,9vw,46px);
+      font-weight:700; color:#C8102E; line-height:1;
+      padding:0 2px; align-self:flex-start; margin-top:2px;
+    }
 
-    /* ─── DIVIDER ─── */
-    .section-divider { width: 48px; height: 3px; background: linear-gradient(90deg, #009C3B, #C8102E); border-radius: 2px; margin: 0 auto 20px; }
-
-    @media (max-width: 480px) {
-      .ft-code { font-size: 22px; }
-      .ft-center { width: 80px; }
-      .countdown { gap: 8px; }
-      .cd-item { min-width: 56px; padding: 12px 10px; }
-      .cd-num { font-size: 28px; }
+    /* Form view */
+    #view-form { padding:24px 20px 32px; display:none; }
+    .form-title {
+      font-family:'Oswald',sans-serif; font-size:32px; font-weight:700;
+      color:#1A0A0A; text-align:center; text-transform:uppercase;
+      letter-spacing:2px; margin-bottom:8px;
     }
+    .form-sub {
+      font-size:14px; color:#888; text-align:center; font-style:italic;
+      line-height:1.55; margin-bottom:28px;
+    }
+    .field-line {
+      border-bottom:1.5px solid #E0DADA; padding:14px 4px; margin-bottom:6px;
+    }
+    .field-line label {
+      display:block; font-size:10px; font-weight:700;
+      letter-spacing:1.5px; text-transform:uppercase; color:#888; margin-bottom:8px;
+    }
+    .field-line input,
+    .field-line textarea {
+      width:100%; border:none; outline:none;
+      font-size:15px; font-family:'Inter',sans-serif; color:#1A0A0A;
+      background:transparent; padding:0; resize:none;
+    }
+    .field-line input::placeholder,
+    .field-line textarea::placeholder { color:#BBAAAA; }
+    .field-line textarea { min-height:64px; }
+    .field-line input[type="number"] {
+      -moz-appearance:textfield; appearance:textfield;
+    }
+    .field-line input[type="number"]::-webkit-outer-spin-button,
+    .field-line input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
+
+    /* Success (within form view) */
+    .form-success {
+      display:none; flex-direction:column; align-items:center; text-align:center;
+      padding:32px 20px;
+    }
+    .form-success.show { display:flex; }
+    .suc-circle {
+      width:80px; height:80px; border-radius:50%;
+      background:#E8FAF0; display:flex; align-items:center; justify-content:center;
+      margin-bottom:18px;
+    }
+    .suc-title {
+      font-family:'Oswald',sans-serif; font-size:28px;
+      color:#1A0A0A; text-transform:uppercase; margin-bottom:10px;
+    }
+    .suc-sub { font-size:14px; color:#888; line-height:1.6; margin-bottom:24px; }
+
+    /* ═══ MIMOS SECTION ═══ */
+    #sec-mimos { padding:24px 20px 32px; }
+    .mimos-title-row {
+      text-align:center; margin-bottom:16px;
+    }
+    .mimos-emoji { font-size:38px; display:block; margin-bottom:6px; }
+    .mimos-h {
+      font-family:'Oswald',sans-serif; font-size:32px;
+      font-weight:600; color:#C8102E; text-transform:uppercase;
+    }
+    .mimos-desc {
+      font-size:13.5px; color:#666; font-style:italic;
+      line-height:1.65; text-align:center; margin-bottom:24px;
+    }
+    .mimos-desc strong { color:#C8102E; }
+
+    /* Gift grid */
+    .gift-grid {
+      display:grid; grid-template-columns:repeat(2,1fr);
+      gap:14px; margin-bottom:32px;
+    }
+    .gift-card {
+      background:#fff; border-radius:14px; overflow:hidden;
+      box-shadow:0 3px 14px rgba(0,0,0,0.08);
+      display:flex; flex-direction:column;
+      transition:transform 0.2s,box-shadow 0.2s;
+    }
+    .gift-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.12); }
+    .gift-card.reserved { opacity:0.7; }
+    .gc-img-wrap {
+      position:relative; aspect-ratio:1; overflow:hidden;
+      background:#F5F0E8;
+    }
+    .gc-img-wrap img {
+      width:100%; height:100%; object-fit:cover; display:block;
+    }
+    .gc-placeholder {
+      width:100%; height:100%; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:6px; color:#CCC;
+    }
+    .gc-placeholder span { font-size:32px; }
+    .gc-reserved-badge {
+      position:absolute; top:8px; right:8px;
+      background:rgba(200,16,46,0.9); color:#fff;
+      font-size:9px; font-weight:700; letter-spacing:1px;
+      text-transform:uppercase; padding:3px 8px; border-radius:100px;
+    }
+    .gc-body { padding:12px 12px 6px; flex:1; }
+    .gc-name { font-size:13px; font-weight:700; color:#1A0A0A; line-height:1.3; margin-bottom:4px; }
+    .gc-desc { font-size:11.5px; color:#888; line-height:1.5; }
+    .gc-foot { padding:10px 12px 14px; }
+    .gc-btn {
+      display:block; width:100%; padding:11px; border-radius:50px;
+      background:#C8102E; color:#fff; border:none; cursor:pointer;
+      font-family:'Oswald',sans-serif; font-size:13px; font-weight:600;
+      letter-spacing:1.5px; text-transform:uppercase; transition:all 0.2s;
+    }
+    .gc-btn:hover { filter:brightness(1.08); }
+    .gc-btn.taken { background:#DDD; color:#999; cursor:not-allowed; }
+
+    /* Mimos message form */
+    .mimos-msg { border-top:1px solid #EEE; padding-top:24px; }
+
+    /* ═══ MENSAGEM SECTION ═══ */
+    #sec-mensagem { padding:24px 20px 32px; }
+    .sec-title-bar {
+      text-align:center; margin-bottom:22px;
+    }
+    .sec-title {
+      font-family:'Oswald',sans-serif; font-size:26px;
+      font-weight:700; color:#1A0A0A; text-transform:uppercase;
+    }
+    .sec-sub { font-size:13px; color:#999; margin-top:4px; }
+
+    /* Message wall */
+    .msg-wall { display:flex; flex-direction:column; gap:14px; margin-top:24px; }
+    .msg-card {
+      background:#fff; border-radius:14px; padding:16px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.06);
+      animation:fadeUp 0.3s ease;
+    }
+    @keyframes fadeUp {from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .msg-hd { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+    .msg-av {
+      width:36px; height:36px; border-radius:50%;
+      background:linear-gradient(135deg,#E85070,#C8102E);
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-size:13px; font-weight:800; flex-shrink:0;
+    }
+    .msg-nm { font-size:14px; font-weight:700; color:#1A0A0A; }
+    .msg-dt { font-size:11px; color:#BBB; margin-top:1px; }
+    .msg-txt { font-size:14px; color:#555; line-height:1.6; }
+    .msg-empty { text-align:center; color:#BBB; font-size:14px; padding:32px 0; }
+    .msg-ok {
+      display:none; background:#E8FAF0; color:#1e6e40;
+      border-radius:10px; padding:10px 14px; font-size:13px;
+      align-items:center; gap:8px; margin-top:10px;
+    }
+    .msg-ok.show { display:flex; }
+
+    /* ═══ LOCAL SECTION ═══ */
+    #sec-local { padding:24px 20px 32px; }
+    .local-card {
+      background:#fff; border-radius:18px; padding:24px 20px;
+      box-shadow:0 4px 20px rgba(0,0,0,0.08); margin-bottom:16px;
+    }
+    .local-title {
+      font-family:'Oswald',sans-serif; font-size:24px;
+      color:#C8102E; text-transform:uppercase; margin-bottom:18px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .local-row {
+      display:flex; align-items:flex-start; gap:12px;
+      padding:12px 0; border-bottom:1px solid #F0EBE8;
+    }
+    .local-row:last-child { border-bottom:none; }
+    .local-ico {
+      width:36px; height:36px; border-radius:10px;
+      background:#FFF0E8; color:#C8102E;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .local-lbl { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#BBB; margin-bottom:2px; }
+    .local-val { font-size:14px; font-weight:700; color:#1A0A0A; line-height:1.35; }
+
+    /* ═══ BOTTOM NAV ═══ */
+    .bottom-nav {
+      position:fixed; bottom:0; left:0; right:0; height:60px;
+      background:#fff; border-top:1px solid #EEECEC;
+      display:flex; z-index:200; box-shadow:0 -2px 12px rgba(0,0,0,0.06);
+    }
+    .nav-btn {
+      flex:1; display:flex; flex-direction:column; align-items:center;
+      justify-content:center; gap:3px; border:none; background:transparent;
+      cursor:pointer; padding:8px 0; transition:all 0.15s;
+      font-family:'Inter',sans-serif;
+    }
+    .nav-btn .nav-ico { color:#BBB; transition:color 0.15s; }
+    .nav-btn .nav-lbl {
+      font-size:9px; font-weight:700; letter-spacing:0.8px;
+      text-transform:uppercase; color:#BBB; transition:color 0.15s;
+    }
+    .nav-btn.active .nav-ico,
+    .nav-btn.active .nav-lbl { color:#C8102E; }
+
+    /* ═══ RESERVE MODAL ═══ */
+    .modal-ov {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,0.5); z-index:300;
+      align-items:flex-end; justify-content:center;
+      backdrop-filter:blur(3px);
+    }
+    .modal-ov.open { display:flex; }
+    .modal {
+      background:#fff; border-radius:22px 22px 0 0;
+      padding:28px 24px 36px; width:100%; max-width:520px;
+      animation:slideUp 0.25s ease;
+    }
+    @keyframes slideUp {from{transform:translateY(100%)}to{transform:translateY(0)}}
+    .modal-drag { width:40px; height:4px; background:#E0D8D8; border-radius:2px; margin:0 auto 20px; }
+    .modal-ico { width:52px; height:52px; background:#FFF0E8; border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
+    .modal h3 { font-family:'Oswald',sans-serif; font-size:22px; color:#1A0A0A; text-transform:uppercase; margin-bottom:4px; }
+    .modal-gift { font-size:14px; color:#C8102E; font-weight:700; margin-bottom:16px; }
+    .modal-sub { font-size:13px; color:#888; margin-bottom:18px; line-height:1.5; }
+    .modal-actions { display:flex; gap:10px; margin-top:18px; }
+    .btn-cancel {
+      flex:1; padding:15px; border-radius:50px; border:2px solid #EEE;
+      background:transparent; color:#888; font-size:14px; font-weight:600;
+      cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s;
+    }
+    .btn-cancel:hover { background:#F5F5F5; }
+    .modal-err { background:#FDEDEC; color:#C0392B; border-radius:10px; padding:10px 14px; font-size:13px; margin-top:10px; display:none; }
+    .modal-err.show { display:block; }
+
+    /* Modal success */
+    .modal-suc { display:none; flex-direction:column; align-items:center; text-align:center; }
+    .modal-suc.show { display:flex; }
+    .msuc-ico { width:64px; height:64px; background:#E8FAF0; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
+    .msuc-t { font-family:'Oswald',sans-serif; font-size:22px; color:#1A0A0A; text-transform:uppercase; margin-bottom:8px; }
+    .msuc-s { font-size:13px; color:#888; margin-bottom:20px; }
+
+    /* Alert box */
+    .alert-box {
+      padding:12px 16px; border-radius:12px; font-size:13.5px;
+      font-weight:500; margin-bottom:16px; display:none;
+      align-items:flex-start; gap:8px;
+    }
+    .alert-box.show { display:flex; }
+    .alert-err { background:#FDEDEC; color:#C0392B; border:1px solid #f4c6c2; }
+    .alert-ok  { background:#E8FAF0; color:#1e6e40; border:1px solid #A8DFBC; }
+
+    .spinner {
+      display:inline-block; width:16px; height:16px;
+      border:2.5px solid rgba(255,255,255,0.35);
+      border-top-color:#fff; border-radius:50%;
+      animation:spin 0.6s linear infinite; vertical-align:middle;
+    }
+    @keyframes spin { to{transform:rotate(360deg)} }
   </style>
 </head>
 <body>
 
-<section class="hero">
-  <div class="particles" id="particles"></div>
+<!-- Background blobs -->
+<div class="bg-blobs">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+</div>
 
-  <!-- Badge -->
-  <div class="hero-badge">
-    <i data-lucide="cake" style="width:13px;height:13px;"></i>
-    Aniversário &amp; Despedida
+<!-- Fixed header -->
+<header class="app-header">
+  <div class="hd-icon">
+    <i data-lucide="plane" style="width:20px;height:20px;transform:rotate(45deg);"></i>
   </div>
+  <div class="hd-brand">DESPEDIDA<br>JUJU</div>
+</header>
 
-  <!-- Title -->
-  <h1 class="hero-title">
-    Festa da<br /><span id="hero-nome">Juliana</span>
-  </h1>
+<!-- Main content -->
+<main class="app-main">
 
-  <p class="hero-sub" id="hero-msg">
-    Vem celebrar o aniversário e a nova aventura da nossa querida Juliana!
-  </p>
+  <!-- ══ CHECK-IN SECTION ══ -->
+  <section class="sec active" id="sec-checkin">
 
-  <!-- Info chips -->
-  <div class="hero-info">
-    <div class="info-chip">
-      <i data-lucide="calendar" style="width:14px;height:14px;"></i>
-      <span id="hero-data">15 de Agosto de 2026</span>
-    </div>
-    <div class="info-chip">
-      <i data-lucide="clock" style="width:14px;height:14px;"></i>
-      <span id="hero-hora">17:00</span>
-    </div>
-    <a href="#" id="maps-link" target="_blank" rel="noopener"
-       class="info-chip" style="text-decoration:none;cursor:pointer;transition:opacity 0.15s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
-      <i data-lucide="map-pin" style="width:14px;height:14px;"></i>
-      <span id="hero-local">...</span>
-      <i data-lucide="external-link" style="width:11px;height:11px;opacity:0.5;flex-shrink:0;"></i>
-    </a>
-  </div>
+    <!-- View: Landing -->
+    <div id="view-land">
+      <div class="land-watermark">
+        A jornada de uma vida<br>começa com um boarding
+      </div>
 
-  <!-- Countdown -->
-  <div class="countdown">
-    <div class="cd-item"><span class="cd-num" id="cd-d">--</span><div class="cd-label">Dias</div></div>
-    <div class="cd-item"><span class="cd-num" id="cd-h">--</span><div class="cd-label">Horas</div></div>
-    <div class="cd-item"><span class="cd-num" id="cd-m">--</span><div class="cd-label">Min</div></div>
-    <div class="cd-item"><span class="cd-num" id="cd-s">--</span><div class="cd-label">Seg</div></div>
-  </div>
+      <div class="hero-card">
+        <h1 class="hero-title">BEM-VINDO(A)<br>A BORDO!</h1>
+        <p class="hero-body">Você é meu convidado para celebrar meu aniversário e despedida antes do intercâmbio.</p>
+        <p class="hero-cta-text">Faça seu Check-in e confirme sua presença!</p>
+        <button class="btn-red" onclick="goToForm()">FAZER CHECK-IN</button>
+      </div>
 
-  <!-- Flight Ticket -->
-  <div class="flight-ticket">
-    <!-- Brasil -->
-    <div class="ft-side ft-brasil">
-      <div class="mini-flag flag-br"></div>
-      <div class="ft-code">GRU</div>
-      <div class="ft-city">São Paulo</div>
-      <div class="ft-country">Brasil</div>
-    </div>
-
-    <!-- Center flight path -->
-    <div class="ft-center">
-      <div class="ft-date">15 AGO 2026</div>
-      <div class="ft-path">
-        <div class="ft-dot-g"></div>
-        <div class="ft-line"></div>
-        <div class="ft-plane-ico">
-          <i data-lucide="plane" style="width:14px;height:14px;transform:rotate(45deg);"></i>
+      <div class="countdown-wrap">
+        <p class="cd-label">CONTAGEM REGRESSIVA PARA A DECOLAGEM</p>
+        <div class="cd-row">
+          <div class="cd-group"><span class="cd-n" id="cd-d">--</span><span class="cd-l">DIAS</span></div>
+          <span class="cd-sep">:</span>
+          <div class="cd-group"><span class="cd-n" id="cd-h">--</span><span class="cd-l">HORAS</span></div>
+          <span class="cd-sep">:</span>
+          <div class="cd-group"><span class="cd-n" id="cd-m">--</span><span class="cd-l">MINUTOS</span></div>
+          <span class="cd-sep">:</span>
+          <div class="cd-group"><span class="cd-n" id="cd-s">--</span><span class="cd-l">SEGUNDOS</span></div>
         </div>
-        <div class="ft-line"></div>
-        <div class="ft-dot-r"></div>
       </div>
-      <div class="ft-sub">Despedida<br>&amp; Aniversário</div>
     </div>
 
-    <!-- Canadá -->
-    <div class="ft-side ft-canada">
-      <div class="mini-flag flag-ca">
-        <div class="flag-ca-r"></div>
-        <div class="flag-ca-w">
-          <!-- Maple leaf (simplified polygon) -->
-          <svg viewBox="0 0 20 22" xmlns="http://www.w3.org/2000/svg">
-            <path class="maple" d="M10 0 L11.5 5.5 L17 3 L14 8 L20 8.5 L16 12 L18 18 L12 15.5 L12 22 L8 22 L8 15.5 L2 18 L4 12 L0 8.5 L6 8 L3 3 L8.5 5.5 Z"/>
-          </svg>
+    <!-- View: Form -->
+    <div id="view-form">
+      <!-- Success screen -->
+      <div class="form-success" id="ci-success">
+        <div class="suc-circle">
+          <i data-lucide="check-circle" style="width:38px;height:38px;color:#27AE60;"></i>
         </div>
-        <div class="flag-ca-r"></div>
+        <h2 class="suc-title" id="ci-suc-title">Check-in realizado!</h2>
+        <p class="suc-sub" id="ci-suc-sub">Seu embarque para a festa está confirmado. Nos vemos em breve!</p>
+        <button class="btn-red" onclick="goToLand()" style="margin-bottom:12px;">VOLTAR AO INÍCIO</button>
+        <button class="btn-red" onclick="switchSection('mimos')" style="background:#1A0A0A;">VER MIMOS PARA JUJU</button>
       </div>
-      <div class="ft-code">YYZ</div>
-      <div class="ft-city">Toronto</div>
-      <div class="ft-country">Canadá</div>
-    </div>
-  </div>
 
-  <!-- CTA Buttons -->
-  <div class="cta-block">
-    <a href="rsvp.html" class="cta-btn cta-br">
-      <div class="cta-ico">
-        <i data-lucide="check-circle-2" style="width:22px;height:22px;"></i>
+      <!-- Form -->
+      <div id="ci-form-wrap">
+        <h2 class="form-title">CHECK-IN</h2>
+        <p class="form-sub">Preencha as informações abaixo para garantir seu acesso à comemoração.</p>
+
+        <div class="alert-box alert-err" id="ci-err">
+          <i data-lucide="alert-circle" style="width:16px;height:16px;flex-shrink:0;"></i>
+          <span id="ci-err-msg">Erro ao enviar.</span>
+        </div>
+
+        <form onsubmit="submitCheckin(event)">
+          <div class="field-line">
+            <label>Nome</label>
+            <input type="text" id="ci-name" placeholder="Digite seu nome e sobrenome" required autocomplete="name" />
+          </div>
+          <div class="field-line">
+            <label>WhatsApp</label>
+            <input type="tel" id="ci-phone" placeholder="(11) 99999-9999" required oninput="phoneMask(this)" />
+          </div>
+          <div class="field-line">
+            <label>Terá acompanhante? Quantos?</label>
+            <input type="number" id="ci-qty" value="0" min="0" max="20" />
+          </div>
+          <div class="field-line">
+            <label>Nomes dos acompanhantes</label>
+            <input type="text" id="ci-companions" placeholder="Ex: Maria Silva, João Santos" />
+          </div>
+          <div class="field-line" style="border-bottom:none;padding-bottom:0;margin-bottom:24px;">
+            <label>Mensagem para a Juliana <span style="font-weight:400;text-transform:none;letter-spacing:0;"> — opcional</span></label>
+            <textarea id="ci-msg" placeholder="Deixe um recadinho carinhoso..."></textarea>
+          </div>
+          <button type="submit" class="btn-red" id="ci-btn">ENVIAR CONFIRMAÇÃO</button>
+        </form>
       </div>
-      <div class="cta-text">
-        <div class="cta-title">Confirmar Presença</div>
-        <div class="cta-sub">Avise se você vai comparecer</div>
+    </div>
+
+  </section>
+
+  <!-- ══ MIMOS SECTION ══ -->
+  <section class="sec" id="sec-mimos">
+    <div class="mimos-title-row">
+      <span class="mimos-emoji">🎁</span>
+      <h2 class="mimos-h">Mimos</h2>
+    </div>
+    <p class="mimos-desc">
+      <strong>Sua presença é o meu maior presente! ❤️</strong><br>
+      Se desejar me mimar, escolha um item da lista e reserve-o para evitar duplicidade.
+      Os links são apenas sugestões de compra, e você pode comprar onde preferir.
+    </p>
+
+    <div class="gift-grid" id="gift-grid">
+      <div style="grid-column:1/-1;text-align:center;padding:24px;color:#CCC;">Carregando presentes...</div>
+    </div>
+
+    <!-- Message form at bottom -->
+    <div class="mimos-msg">
+      <div class="field-line">
+        <label>Mensagem para Juliana ❤️</label>
+        <textarea id="mi-text" placeholder="Deixe uma mensagem especial para a Juju..."></textarea>
       </div>
-      <i data-lucide="arrow-right" class="cta-arrow" style="width:18px;height:18px;"></i>
+      <div class="field-line">
+        <label>Nome do passageiro</label>
+        <input type="text" id="mi-name" placeholder="Seu nome completo..." />
+      </div>
+      <div class="msg-ok" id="mi-ok">
+        <i data-lucide="check-circle" style="width:15px;height:15px;"></i>
+        Mensagem enviada com sucesso!
+      </div>
+      <br>
+      <button class="btn-red" onclick="submitMimoMsg()" id="mi-btn">ENVIAR MENSAGEM</button>
+    </div>
+  </section>
+
+  <!-- ══ MENSAGEM SECTION ══ -->
+  <section class="sec" id="sec-mensagem">
+    <div class="sec-title-bar">
+      <div class="sec-title">Mural de Mensagens</div>
+      <div class="sec-sub">Veja o que os convidados escreveram para a Juju</div>
+    </div>
+    <div id="msg-wall" class="msg-wall">
+      <div class="msg-empty">Nenhuma mensagem ainda.</div>
+    </div>
+  </section>
+
+  <!-- ══ LOCAL SECTION ══ -->
+  <section class="sec" id="sec-local">
+    <div class="sec-title-bar">
+      <div class="sec-title">Local do Evento</div>
+      <div class="sec-sub">Voo JU19ANOS — 15 de Agosto de 2026</div>
+    </div>
+
+    <div class="local-card">
+      <div class="local-title">
+        <i data-lucide="map-pin" style="width:20px;height:20px;"></i>
+        Informações
+      </div>
+      <div class="local-row">
+        <div class="local-ico"><i data-lucide="calendar" style="width:16px;height:16px;"></i></div>
+        <div>
+          <div class="local-lbl">Data</div>
+          <div class="local-val" id="loc-data">15 de Agosto de 2026</div>
+        </div>
+      </div>
+      <div class="local-row">
+        <div class="local-ico"><i data-lucide="clock" style="width:16px;height:16px;"></i></div>
+        <div>
+          <div class="local-lbl">Horário</div>
+          <div class="local-val" id="loc-hora">17:00h</div>
+        </div>
+      </div>
+      <div class="local-row">
+        <div class="local-ico"><i data-lucide="plane" style="width:16px;height:16px;transform:rotate(45deg);"></i></div>
+        <div>
+          <div class="local-lbl">Voo</div>
+          <div class="local-val">JU19ANOS &nbsp;·&nbsp; GRU → YYZ</div>
+        </div>
+      </div>
+      <div class="local-row">
+        <div class="local-ico"><i data-lucide="navigation" style="width:16px;height:16px;"></i></div>
+        <div>
+          <div class="local-lbl">Endereço</div>
+          <div class="local-val" id="loc-addr">Rua Saturnino de Sousa, 299<br>Vila Nhocuné, São Paulo – SP</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="#" id="loc-maps" target="_blank" rel="noopener" class="btn-red" style="display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;">
+      <i data-lucide="map" style="width:18px;height:18px;"></i>
+      ABRIR NO GOOGLE MAPS
     </a>
-    <a href="presentes.html" class="cta-btn cta-ca">
-      <div class="cta-ico">
-        <i data-lucide="gift" style="width:22px;height:22px;"></i>
+  </section>
+
+</main>
+
+<!-- Bottom navigation -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-checkin" onclick="switchSection('checkin')">
+    <div class="nav-ico"><i data-lucide="user-check" style="width:20px;height:20px;"></i></div>
+    <span class="nav-lbl">CHECK-IN</span>
+  </button>
+  <button class="nav-btn" id="nav-mimos" onclick="switchSection('mimos')">
+    <div class="nav-ico"><i data-lucide="gift" style="width:20px;height:20px;"></i></div>
+    <span class="nav-lbl">MIMOS</span>
+  </button>
+  <button class="nav-btn" id="nav-mensagem" onclick="switchSection('mensagem')">
+    <div class="nav-ico"><i data-lucide="message-circle" style="width:20px;height:20px;"></i></div>
+    <span class="nav-lbl">MENSAGEM</span>
+  </button>
+  <button class="nav-btn" id="nav-local" onclick="switchSection('local')">
+    <div class="nav-ico"><i data-lucide="map-pin" style="width:20px;height:20px;"></i></div>
+    <span class="nav-lbl">LOCAL</span>
+  </button>
+</nav>
+
+<!-- Reserve Modal -->
+<div class="modal-ov" id="reserveModal">
+  <div class="modal">
+    <div class="modal-drag"></div>
+
+    <!-- Form state -->
+    <div id="modal-form-state">
+      <div class="modal-ico">
+        <i data-lucide="gift" style="width:24px;height:24px;color:#C8102E;"></i>
       </div>
-      <div class="cta-text">
-        <div class="cta-title">Escolher Presente</div>
-        <div class="cta-sub">Reserve um item da lista</div>
+      <h3>Reservar Presente</h3>
+      <div class="modal-gift" id="modal-gift-name"></div>
+      <p class="modal-sub">Informe seu nome para registrar a reserva e evitar duplicidade.</p>
+      <div class="field-line">
+        <label>Seu Nome</label>
+        <input type="text" id="modal-name" placeholder="Nome completo..." />
       </div>
-      <i data-lucide="arrow-right" class="cta-arrow" style="width:18px;height:18px;"></i>
-    </a>
-  </div>
-
-
-</section>
-
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <i data-lucide="plane" style="width:14px;height:14px;transform:rotate(45deg);color:rgba(255,255,255,0.3);flex-shrink:0;"></i>
-      <span class="footer-brand-name">Festa da Juliana</span>
+      <div class="modal-err" id="modal-err"></div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="btn-red" id="modal-confirm-btn" onclick="confirmReserve()" style="flex:2;">CONFIRMAR</button>
+      </div>
     </div>
-    <div class="footer-route">São Paulo, Brasil &rarr; Toronto, Canadá</div>
-    <div class="footer-sep"></div>
-    <div class="footer-credit">
-      Desenvolvido por &nbsp;
-      <a href="https://instagram.com/tortelliweb" target="_blank" rel="noopener" class="footer-insta">
-        <i data-lucide="instagram" style="width:14px;height:14px;"></i>
-        @tortelliweb
-      </a>
+
+    <!-- Success state -->
+    <div class="modal-suc" id="modal-suc-state">
+      <div class="msuc-ico">
+        <i data-lucide="check-circle" style="width:30px;height:30px;color:#27AE60;"></i>
+      </div>
+      <div class="msuc-t">Presente reservado!</div>
+      <div class="msuc-s">Sua reserva foi registrada. Obrigada pelo carinho!</div>
+      <button class="btn-red" onclick="closeModal()">FECHAR</button>
     </div>
   </div>
-</footer>
+</div>
 
 <script>
   lucide.createIcons();
 
-  fetch('/api/evento').then(r=>r.json()).then(e=>{
-    document.getElementById('hero-nome').textContent = e.nome;
-    document.getElementById('hero-msg').textContent  = e.mensagem;
-    document.getElementById('hero-data').textContent = e.data;
-    document.getElementById('hero-hora').textContent = e.horario;
-    document.getElementById('hero-local').textContent = e.local;
-    document.getElementById('maps-link').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.local + ', ' + e.cidade)}`;
-    document.title = `Festa da ${e.nome}`;
-  });
+  /* ═══ NAVIGATION ═══ */
+  const SECS = ['checkin','mimos','mensagem','local'];
 
+  function switchSection(id) {
+    SECS.forEach(s => {
+      document.getElementById('sec-'+s).classList.toggle('active', s===id);
+      document.getElementById('nav-'+s).classList.toggle('active', s===id);
+    });
+    document.querySelector('.app-main').scrollTop = 0;
+    if (id === 'mimos')    loadGifts();
+    if (id === 'mensagem') loadMessages();
+    if (id === 'local')    loadLocal();
+  }
 
+  /* ═══ CHECK-IN ═══ */
+  function goToForm() {
+    document.getElementById('view-land').style.display = 'none';
+    document.getElementById('view-form').style.display = 'block';
+    document.querySelector('.app-main').scrollTop = 0;
+  }
+  function goToLand() {
+    document.getElementById('view-land').style.display = 'block';
+    document.getElementById('view-form').style.display = 'none';
+    document.getElementById('ci-success').classList.remove('show');
+    document.getElementById('ci-form-wrap').style.display = 'block';
+    document.querySelector('.app-main').scrollTop = 0;
+  }
+
+  function phoneMask(el) {
+    let v = el.value.replace(/\D/g,'');
+    if (v.length <= 10) v = v.replace(/(\d{2})(\d{4})(\d{0,4})/,'($1) $2-$3');
+    else v = v.replace(/(\d{2})(\d{5})(\d{0,4})/,'($1) $2-$3');
+    el.value = v;
+  }
+
+  async function submitCheckin(e) {
+    e.preventDefault();
+    const errEl = document.getElementById('ci-err');
+    errEl.classList.remove('show');
+
+    const name    = document.getElementById('ci-name').value.trim();
+    const phone   = document.getElementById('ci-phone').value.trim();
+    const qtyVal  = parseInt(document.getElementById('ci-qty').value)||0;
+    const compTxt = document.getElementById('ci-companions').value.trim();
+    const msg     = document.getElementById('ci-msg').value.trim();
+
+    if (!phone) {
+      document.getElementById('ci-err-msg').textContent = 'Informe seu WhatsApp.';
+      errEl.classList.add('show'); return;
+    }
+
+    // Parse companions from comma-separated text
+    const companions = qtyVal > 0 && compTxt
+      ? compTxt.split(',').map(s=>({name:s.trim()})).filter(c=>c.name)
+      : [];
+
+    const btn = document.getElementById('ci-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> ENVIANDO...';
+
+    try {
+      const res = await fetch('/api/rsvp', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ name, phone, attending:'yes', companions, message:msg, guestId:null })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        document.getElementById('ci-err-msg').textContent = data.error || 'Erro ao enviar.';
+        errEl.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = 'ENVIAR CONFIRMAÇÃO'; return;
+      }
+
+      // Show success
+      document.getElementById('ci-form-wrap').style.display = 'none';
+      const first = name.split(' ')[0];
+      document.getElementById('ci-suc-title').textContent = 'Check-in realizado com sucesso!';
+      document.getElementById('ci-suc-sub').textContent =
+        `Seu embarque está confirmado, ${first}! ${companions.length ? 'Registramos você e seus acompanhantes.' : ''} Nos vemos em breve!`;
+      document.getElementById('ci-success').classList.add('show');
+      lucide.createIcons();
+
+    } catch {
+      document.getElementById('ci-err-msg').textContent = 'Erro de conexão. Tente novamente.';
+      errEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'ENVIAR CONFIRMAÇÃO';
+    }
+  }
+
+  /* ═══ COUNTDOWN ═══ */
+  const TARGET = new Date('2026-08-15T17:00:00');
   function tick() {
-    const diff = new Date('2026-08-15T17:00:00') - new Date();
-    if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='0'); return; }
+    const diff = TARGET - new Date();
+    if (diff <= 0) {
+      ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='0');
+      return;
+    }
     document.getElementById('cd-d').textContent = Math.floor(diff/86400000);
     document.getElementById('cd-h').textContent = String(Math.floor(diff%86400000/3600000)).padStart(2,'0');
     document.getElementById('cd-m').textContent = String(Math.floor(diff%3600000/60000)).padStart(2,'0');
     document.getElementById('cd-s').textContent = String(Math.floor(diff%60000/1000)).padStart(2,'0');
   }
-  tick(); setInterval(tick, 1000);
+  tick(); setInterval(tick,1000);
 
-  /* Particles */
-  const pc = document.getElementById('particles');
-  const cols = ['rgba(0,168,79,0.35)','rgba(255,223,0,0.3)','rgba(200,16,46,0.35)','rgba(255,255,255,0.2)'];
-  for (let i=0;i<20;i++){
-    const p=document.createElement('div'); p.className='particle';
-    const s=Math.random()*6+2;
-    p.style.cssText=`width:${s}px;height:${s}px;background:${cols[Math.floor(Math.random()*cols.length)]};left:${Math.random()*100}%;animation-duration:${Math.random()*14+8}s;animation-delay:${Math.random()*10}s;border-radius:${Math.random()>.5?'50%':'3px'};`;
-    pc.appendChild(p);
+  /* ═══ GIFTS ═══ */
+  let giftData = [];
+  let currentReserveId = null;
+
+  async function loadGifts() {
+    try {
+      const { giftList } = await fetch('/api/presentes').then(r=>r.json());
+      giftData = giftList;
+      renderGifts(giftList);
+    } catch { document.getElementById('gift-grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#CCC;padding:24px;">Erro ao carregar presentes.</div>'; }
   }
+
+  function isFullyReserved(g) { return (g.reservations||[]).length >= (g.quantity||1); }
+
+  function renderGifts(gifts) {
+    const el = document.getElementById('gift-grid');
+    if (!gifts.length) { el.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#CCC;padding:24px;">Nenhum presente cadastrado ainda.</div>'; return; }
+
+    el.innerHTML = gifts.map(g => {
+      const reserved = isFullyReserved(g);
+      const imgHtml = g.imageUrl
+        ? `<img src="${g.imageUrl}" alt="${g.name}" onerror="this.parentElement.innerHTML='<div class=\\'gc-placeholder\\'><span>${g.emoji||'🎁'}</span></div>'" />`
+        : `<div class="gc-placeholder"><span>${g.emoji||'🎁'}</span></div>`;
+      return `
+        <div class="gift-card${reserved?' reserved':''}">
+          <div class="gc-img-wrap">
+            ${imgHtml}
+            ${reserved ? '<div class="gc-reserved-badge">Reservado</div>' : ''}
+          </div>
+          <div class="gc-body">
+            <div class="gc-name">${g.name}</div>
+            ${g.description ? `<div class="gc-desc">${g.description}</div>` : ''}
+          </div>
+          <div class="gc-foot">
+            <button class="gc-btn${reserved?' taken':''}" ${reserved?'disabled':''} onclick="openReserve('${g.id}')">
+              ${reserved ? 'RESERVADO' : 'RESERVAR'}
+            </button>
+          </div>
+        </div>`;
+    }).join('');
+    lucide.createIcons();
+  }
+
+  function openReserve(id) {
+    const g = giftData.find(x=>x.id===id);
+    if (!g || isFullyReserved(g)) return;
+    currentReserveId = id;
+    document.getElementById('modal-gift-name').textContent = g.name;
+    document.getElementById('modal-name').value = '';
+    document.getElementById('modal-err').classList.remove('show');
+    document.getElementById('modal-form-state').style.display = 'block';
+    document.getElementById('modal-suc-state').className = 'modal-suc';
+    document.getElementById('reserveModal').classList.add('open');
+    setTimeout(()=>document.getElementById('modal-name').focus(),100);
+  }
+
+  function closeModal() {
+    document.getElementById('reserveModal').classList.remove('open');
+    const btn = document.getElementById('modal-confirm-btn');
+    btn.disabled = false; btn.textContent = 'CONFIRMAR';
+    currentReserveId = null;
+  }
+
+  document.getElementById('reserveModal').addEventListener('click', function(e){
+    if(e.target===this) closeModal();
+  });
+
+  async function confirmReserve() {
+    const name = document.getElementById('modal-name').value.trim();
+    const errEl = document.getElementById('modal-err');
+    errEl.textContent = ''; errEl.classList.remove('show');
+    if (!name) { errEl.textContent='Informe seu nome para reservar.'; errEl.classList.add('show'); return; }
+    const btn = document.getElementById('modal-confirm-btn');
+    btn.disabled=true; btn.innerHTML='<span class="spinner"></span>';
+    try {
+      const res = await fetch(`/api/presentes/list/${currentReserveId}/reserve`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({personName:name})
+      });
+      const data = await res.json();
+      if (!res.ok) { errEl.textContent=data.error||'Erro ao reservar.'; errEl.classList.add('show'); btn.disabled=false; btn.textContent='CONFIRMAR'; return; }
+      document.getElementById('modal-form-state').style.display='none';
+      document.getElementById('modal-suc-state').className='modal-suc show';
+      await loadGifts();
+    } catch { errEl.textContent='Erro de conexão.'; errEl.classList.add('show'); btn.disabled=false; btn.textContent='CONFIRMAR'; }
+  }
+
+  /* ═══ MESSAGES ═══ */
+  async function submitMimoMsg() {
+    const name = document.getElementById('mi-name').value.trim();
+    const text = document.getElementById('mi-text').value.trim();
+    const okEl = document.getElementById('mi-ok');
+    okEl.classList.remove('show');
+    if (!name||!text) { alert('Preencha seu nome e a mensagem.'); return; }
+    const btn = document.getElementById('mi-btn');
+    btn.disabled=true; btn.innerHTML='<span class="spinner"></span> ENVIANDO...';
+    try {
+      const res = await fetch('/api/messages', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({name,text})
+      });
+      if (res.ok) {
+        document.getElementById('mi-name').value='';
+        document.getElementById('mi-text').value='';
+        okEl.classList.add('show');
+        setTimeout(()=>okEl.classList.remove('show'),3500);
+      }
+    } catch { alert('Erro de conexão.'); }
+    btn.disabled=false; btn.innerHTML='ENVIAR MENSAGEM';
+  }
+
+  function initials(n) { return n.trim().split(' ').slice(0,2).map(p=>p[0]?.toUpperCase()||'').join(''); }
+  function fmtDate(iso) {
+    const d=new Date(iso);
+    return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})+' às '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  }
+
+  async function loadMessages() {
+    try {
+      const msgs = await fetch('/api/messages').then(r=>r.json());
+      const wall = document.getElementById('msg-wall');
+      if (!msgs.length) { wall.innerHTML='<div class="msg-empty">Seja o primeiro a escrever para a Juju!</div>'; return; }
+      wall.innerHTML = [...msgs].reverse().map(m=>`
+        <div class="msg-card">
+          <div class="msg-hd">
+            <div class="msg-av">${initials(m.name)}</div>
+            <div><div class="msg-nm">${m.name}</div><div class="msg-dt">${fmtDate(m.createdAt)}</div></div>
+          </div>
+          <div class="msg-txt">${m.text.replace(/\n/g,'<br>')}</div>
+        </div>`
+      ).join('');
+    } catch {}
+  }
+
+  /* ═══ LOCAL ═══ */
+  async function loadLocal() {
+    try {
+      const e = await fetch('/api/evento').then(r=>r.json());
+      document.getElementById('loc-data').textContent  = e.data;
+      document.getElementById('loc-hora').textContent  = e.horario+'h';
+      document.getElementById('loc-addr').innerHTML    = e.local+'<br>'+e.cidade;
+      document.getElementById('loc-maps').href =
+        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.local+', '+e.cidade)}`;
+      lucide.createIcons();
+    } catch {}
+  }
+
+  /* ── init ── */
+  loadGifts();
 </script>
 </body>
 </html>

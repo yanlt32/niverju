@@ -3,205 +3,239 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lista de Presentes</title>
+  <title>Mimos para Juju — Festa da Juliana</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
-    .gift-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+    body { background:#F2F3F5; }
 
-    /* ── Gift item wrapper ── */
-    .gift-item-wrap {
-      border: 2px solid var(--border); border-radius: 16px;
-      background: var(--bg); transition: all 0.2s; overflow: hidden;
+    .top-nav {
+      background:linear-gradient(135deg,#7A0A1A,#C8102E);
+      padding:0 20px;display:flex;align-items:center;justify-content:space-between;
+      height:52px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);
     }
-    .gift-item-wrap:hover:not(.taken) { border-color: var(--rose-light); background: #fff; }
-    .gift-item-wrap.selected { border-color: var(--rose); background: #FFF0F4; box-shadow: var(--shadow-sm); }
-    .gift-item-wrap.taken { opacity: 0.5; }
+    .nav-brand{font-family:'Dancing Script',cursive;font-size:22px;color:#fff;text-decoration:none;}
+    .nav-links{display:flex;gap:4px;}
+    .nav-link{display:flex;align-items:center;gap:5px;color:rgba(255,255,255,0.75);text-decoration:none;font-size:12px;font-weight:600;padding:6px 10px;border-radius:8px;transition:all 0.15s;}
+    .nav-link:hover,.nav-link.active{background:rgba(255,255,255,0.15);color:#fff;}
+    @media(max-width:480px){.nav-link span{display:none;}.nav-link{padding:6px 8px;}}
 
-    /* ── Clickable top row ── */
-    .gift-row-top {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px 16px; cursor: pointer;
+    /* Header */
+    .page-header{background:linear-gradient(135deg,#5C0412,#C8102E);padding:32px 20px 52px;text-align:center;position:relative;}
+    .page-header h1{font-family:'Playfair Display',serif;font-size:32px;color:#fff;margin-bottom:6px;}
+    .page-header p{color:rgba(255,255,255,0.7);font-size:14px;}
+    .page-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:#F2F3F5;border-radius:40px 40px 0 0;}
+
+    .container{max-width:1000px;margin:0 auto;padding:0 16px 80px;}
+
+    /* Intro card */
+    .intro-card {
+      background:#fff;border-radius:18px;padding:22px 24px;
+      box-shadow:0 4px 20px rgba(0,0,0,0.07);border:1px solid #EEE8DC;
+      margin-top:-20px;margin-bottom:24px;
     }
-    .gift-item-wrap.taken .gift-row-top { cursor: not-allowed; }
+    .intro-card p{font-size:14px;color:#5A3528;line-height:1.7;margin-bottom:10px;}
+    .intro-card p:last-child{margin-bottom:0;color:#7A5540;}
+    .intro-heart{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:#C8102E;margin-bottom:8px;}
 
-    .gift-check {
-      width: 22px; height: 22px; border-radius: 50%;
-      border: 2px solid var(--border); background: #fff;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; transition: all 0.2s; color: transparent;
+    /* Category label */
+    .cat-label {
+      font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+      color:#9A8070;margin:20px 0 10px;display:flex;align-items:center;gap:8px;
     }
-    .gift-item-wrap.selected .gift-check { background: var(--rose); border-color: var(--rose); color: #fff; }
-    .gift-item-wrap.taken .gift-check { background: var(--text-light); border-color: var(--text-light); color: #fff; }
+    .cat-label::after{content:'';flex:1;height:1px;background:#E0D8CC;}
 
-    .gift-icon-sm {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: #F0EEF8; color: #7C5CBF;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; transition: background 0.2s;
-    }
-    .gift-item-wrap.selected .gift-icon-sm { background: var(--rose-dark); color: #fff; }
-    .gift-item-wrap.taken .gift-icon-sm { background: var(--border); color: var(--text-light); }
-
-    .gift-info { flex: 1; min-width: 0; }
-    .gift-title { font-size: 14px; font-weight: 600; color: var(--text); }
-    .gift-sub   { font-size: 12px; color: var(--text-light); margin-top: 2px; }
-
-    .taken-badge {
-      font-size: 10px; font-weight: 700; color: var(--text-mid);
-      background: var(--border); padding: 3px 8px;
-      border-radius: 100px; white-space: nowrap; flex-shrink: 0;
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
-
-    /* ── Links section (bottom of each gift) ── */
-    .gift-links-strip {
-      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
-      padding: 0 16px 14px 70px; /* aligns under title */
-    }
-    .gift-links-strip.hidden { display: none; }
-
-    .gift-links-label {
-      font-size: 11px; font-weight: 700; color: var(--text-light);
-      text-transform: uppercase; letter-spacing: 0.8px;
-      white-space: nowrap;
+    /* Gift grid */
+    .gift-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+      gap:16px;
+      margin-bottom:8px;
     }
 
-    .gift-link-chip {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-size: 12px; font-weight: 600;
-      color: var(--rose-dark); background: #FFF0F4;
-      border: 1px solid rgba(201,69,111,0.2);
-      padding: 5px 12px; border-radius: 100px;
-      text-decoration: none; white-space: nowrap;
-      transition: all 0.15s; cursor: pointer;
+    /* Gift card */
+    .gc {
+      background:#fff;border-radius:18px;overflow:hidden;
+      box-shadow:0 4px 16px rgba(0,0,0,0.07);border:1px solid #EEE8DC;
+      display:flex;flex-direction:column;transition:transform 0.2s,box-shadow 0.2s;
+      position:relative;
     }
-    .gift-link-chip:hover { background: var(--rose); color: #fff; border-color: var(--rose); }
-    .gift-link-chip svg { flex-shrink: 0; }
+    .gc:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,0.12);}
+    .gc.reserved{opacity:0.75;}
 
-    /* ── Category groups ── */
-    .gift-category-group { margin-bottom: 18px; }
-    .gift-category-group:last-child { margin-bottom: 0; }
-    .gift-category-header {
-      display: flex; align-items: center; gap: 7px;
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1.4px; color: var(--text-light);
-      margin-bottom: 8px; padding: 0 2px;
+    /* Gift image */
+    .gc-img{
+      height:160px;overflow:hidden;background:#FAF5E8;
+      display:flex;align-items:center;justify-content:center;
+      position:relative;
     }
-    .gift-category-header i { flex-shrink: 0; }
+    .gc-img img{width:100%;height:100%;object-fit:cover;}
+    .gc-img-placeholder{
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      color:#D4C4A0;
+    }
+    .gc-img-placeholder span{font-size:36px;}
+    .gc-img-placeholder small{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 
-    /* ── Custom row ── */
-    .custom-row {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px 16px;
-      border: 2px dashed var(--border); border-radius: 14px;
-      cursor: pointer; background: var(--bg); transition: all 0.2s;
+    /* Reserved seal */
+    .reserved-seal {
+      position:absolute;top:10px;right:10px;
+      background:#C8102E;color:#fff;
+      font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+      padding:4px 10px;border-radius:100px;
+      box-shadow:0 2px 8px rgba(200,16,46,0.4);
     }
-    .custom-row:hover { border-color: var(--rose-light); background: #fff; }
-    .custom-row.selected { border-color: var(--rose); background: #FFF0F4; border-style: solid; }
-    .custom-row .gift-icon-sm { background: #FFF0F4; color: var(--rose); }
-    .custom-row.selected .gift-icon-sm { background: var(--rose); color: #fff; }
-    .custom-row .gift-check { border-color: var(--border); }
-    .custom-row.selected .gift-check { background: var(--rose); border-color: var(--rose); color: #fff; }
+    .available-seal {
+      position:absolute;top:10px;right:10px;
+      background:#E8FAF0;color:#009C3B;
+      font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+      padding:4px 10px;border-radius:100px;border:1px solid #A8DFBC;
+    }
+
+    /* Qty badge */
+    .qty-badge {
+      position:absolute;top:10px;left:10px;
+      background:rgba(0,0,0,0.55);color:#fff;
+      font-size:9px;font-weight:800;padding:3px 8px;border-radius:100px;
+    }
+
+    /* Card body */
+    .gc-body{padding:14px 16px;flex:1;display:flex;flex-direction:column;gap:6px;}
+    .gc-name{font-size:14px;font-weight:700;color:#1A0805;line-height:1.3;}
+    .gc-desc{font-size:12px;color:#7A5540;line-height:1.55;flex:1;}
+
+    /* Card actions */
+    .gc-actions{padding:0 16px 16px;display:flex;gap:8px;}
+    .gc-btn{
+      flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+      padding:10px 8px;border-radius:10px;font-size:12px;font-weight:700;
+      text-decoration:none;font-family:'Inter',sans-serif;cursor:pointer;
+      border:none;transition:all 0.2s;letter-spacing:0.2px;
+    }
+    .gc-btn:hover{transform:translateY(-1px);filter:brightness(1.05);}
+    .gc-btn-link{background:#F2F3F5;color:#3A2018;border:1px solid #E0D8CC;}
+    .gc-btn-link:hover{background:#EEE8DC;color:#1A0805;}
+    .gc-btn-reserve{background:linear-gradient(135deg,#C8102E,#8B0C1F);color:#fff;box-shadow:0 4px 12px rgba(200,16,46,0.3);}
+    .gc-btn-taken{background:#F2F3F5;color:#9A8070;cursor:not-allowed;border:1px solid #E0D8CC;}
+    .gc-btn-taken:hover{transform:none;filter:none;}
+
+    /* ── RESERVE MODAL ── */
+    .modal-overlay{
+      display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);
+      z-index:200;align-items:center;justify-content:center;padding:20px;
+      backdrop-filter:blur(4px);
+    }
+    .modal-overlay.open{display:flex;}
+    .modal{
+      background:#fff;border-radius:22px;padding:28px 24px;
+      max-width:420px;width:100%;
+      box-shadow:0 24px 64px rgba(0,0,0,0.25);
+      animation:modalIn 0.2s ease;
+    }
+    @keyframes modalIn{from{opacity:0;transform:scale(0.94) translateY(10px)}to{opacity:1;transform:none}}
+    .modal-icon{width:56px;height:56px;background:#FFF0E8;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+    .modal h2{font-family:'Playfair Display',serif;font-size:22px;color:#1A0805;margin-bottom:6px;}
+    .modal .modal-gift-name{font-size:14px;color:#C8102E;font-weight:700;margin-bottom:16px;}
+    .modal p.modal-sub{font-size:13px;color:#7A5540;margin-bottom:16px;line-height:1.55;}
+    .modal label{display:block;font-size:12px;font-weight:700;color:#5A3528;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px;}
+    .modal input{
+      width:100%;padding:13px 16px;border:1.5px solid #E8D5C0;border-radius:12px;
+      font-size:15px;font-family:'Inter',sans-serif;color:#1A0805;background:#FAF5E8;
+      outline:none;transition:all 0.2s;
+    }
+    .modal input:focus{border-color:#C8102E;background:#fff;box-shadow:0 0 0 4px rgba(200,16,46,0.08);}
+    .modal-alert{background:#FDEDEC;color:#C0392B;border:1px solid #f4c6c2;border-radius:10px;padding:10px 14px;font-size:13px;margin-top:10px;display:none;}
+    .modal-alert.show{display:block;}
+    .modal-actions{display:flex;gap:10px;margin-top:20px;}
+    .modal-cancel{flex:1;padding:14px;border-radius:12px;border:2px solid #E0D8CC;background:transparent;color:#7A5540;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
+    .modal-cancel:hover{background:#F2F3F5;}
+    .modal-confirm{flex:2;padding:14px;border-radius:12px;background:linear-gradient(135deg,#C8102E,#8B0C1F);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;box-shadow:0 6px 18px rgba(200,16,46,0.3);}
+    .modal-confirm:hover{filter:brightness(1.05);}
+    .modal-confirm:disabled{opacity:0.6;cursor:not-allowed;}
+
+    /* Success modal state */
+    .modal-success{display:none;flex-direction:column;align-items:center;text-align:center;padding:10px 0;}
+    .modal-success.show{display:flex;}
+    .ms-icon{width:64px;height:64px;background:#E8FAF0;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+    .ms-title{font-family:'Playfair Display',serif;font-size:22px;color:#1A0805;margin-bottom:8px;}
+    .ms-sub{font-size:13px;color:#7A5540;line-height:1.6;margin-bottom:20px;}
+    .ms-close{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#C8102E,#8B0C1F);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+
+    @media(max-width:600px){
+      .gift-grid{grid-template-columns:repeat(2,1fr);}
+      .gc-img{height:130px;}
+    }
+    @media(max-width:360px){
+      .gift-grid{grid-template-columns:1fr;}
+    }
   </style>
 </head>
 <body>
 
-<div class="page-header" style="padding-top:72px;padding-bottom:58px;">
-  <a href="index.html" class="back-btn">
-    <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
-    Voltar
-  </a>
-  <h1>Lista de Presentes</h1>
-  <p>Reserve um item ou sugira outro presente.</p>
+<nav class="top-nav">
+  <a href="index.html" class="nav-brand">Festa da Juliana</a>
+  <div class="nav-links">
+    <a href="rsvp.html" class="nav-link">
+      <i data-lucide="check-circle-2" style="width:15px;height:15px;"></i><span>Check-in</span>
+    </a>
+    <a href="presentes.html" class="nav-link active">
+      <i data-lucide="gift" style="width:15px;height:15px;"></i><span>Presentes</span>
+    </a>
+    <a href="festa.html" class="nav-link">
+      <i data-lucide="calendar-heart" style="width:15px;height:15px;"></i><span>A Festa</span>
+    </a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>Mimos para Juju</h1>
+  <p>Sugestões de presentes para a nova fase no Canadá</p>
 </div>
 
 <div class="container">
-  <!-- Success -->
-  <div class="success-screen" id="successScreen">
-    <div class="success-icon">
-      <i data-lucide="gift" style="width:40px;height:40px;color:var(--gold);"></i>
+  <div class="intro-card">
+    <div class="intro-heart">
+      <i data-lucide="heart" style="width:18px;height:18px;"></i>
+      Sua presença é o meu maior presente!
     </div>
-    <h2>Presente registrado!</h2>
-    <p id="successMsg">A Juliana vai adorar.</p>
-    <a href="index.html" class="btn btn-primary">
-      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
-      Voltar ao início
-    </a>
+    <p>Mas, se desejar me presentear neste momento tão especial, preparei uma seleção de itens que serão muito úteis na minha nova fase no Canadá.</p>
+    <p>Os links servem apenas como referência — você pode comprar em qualquer loja ou escolher um modelo semelhante. Caso escolha um presente, faça a reserva para que outros convidados saibam que ele já foi escolhido.</p>
   </div>
 
-  <div id="mainContent">
-    <div class="alert alert-error" id="alertError">
-      <i data-lucide="alert-circle" style="width:18px;height:18px;flex-shrink:0;"></i>
-      <span id="errorMsg">Erro ao enviar.</span>
+  <div id="giftListRoot"></div>
+</div>
+
+<!-- Reserve Modal -->
+<div class="modal-overlay" id="reserveModal">
+  <div class="modal">
+    <!-- Form state -->
+    <div id="modalForm">
+      <div class="modal-icon">
+        <i data-lucide="gift" style="width:26px;height:26px;color:#C8102E;"></i>
+      </div>
+      <h2>Reservar Presente</h2>
+      <div class="modal-gift-name" id="modalGiftName"></div>
+      <p class="modal-sub">Deseja reservar este presente? Informe seu nome para registrar a reserva.</p>
+      <label>Seu nome</label>
+      <input type="text" id="modalPersonName" placeholder="Nome completo..." />
+      <div class="modal-alert" id="modalAlert"></div>
+      <div class="modal-actions">
+        <button class="modal-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="modal-confirm" id="modalConfirmBtn" onclick="confirmReserve()">
+          <i data-lucide="check" style="width:15px;height:15px;display:inline;vertical-align:middle;"></i>
+          Confirmar Reserva
+        </button>
+      </div>
     </div>
-
-    <div class="card">
-      <div class="section-title">Sugestões de presentes</div>
-
-      <!-- Progress -->
-      <div style="margin-bottom:20px;">
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-light);margin-bottom:6px;">
-          <span>Itens reservados</span>
-          <span id="progressText">— / —</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill" style="width:0%"></div>
-        </div>
+    <!-- Success state -->
+    <div class="modal-success" id="modalSuccess">
+      <div class="ms-icon">
+        <i data-lucide="check-circle-2" style="width:32px;height:32px;color:#27AE60;"></i>
       </div>
-
-      <div class="gift-list" id="giftList">
-        <div style="padding:24px;text-align:center;color:var(--text-light);display:flex;align-items:center;justify-content:center;gap:10px;">
-          <span class="spinner" style="border-color:rgba(201,69,111,0.25);border-top-color:var(--rose);"></span>
-          Carregando lista...
-        </div>
-      </div>
-
-      <!-- Custom gift -->
-      <div class="section-title">Outro presente</div>
-      <div class="custom-row" id="customRow" onclick="toggleCustom()">
-        <div class="gift-check" id="customCheck">
-          <i data-lucide="check" style="width:13px;height:13px;"></i>
-        </div>
-        <div class="gift-icon-sm">
-          <i data-lucide="pencil" style="width:18px;height:18px;"></i>
-        </div>
-        <div class="gift-info">
-          <div class="gift-title">Quero dar outro presente</div>
-          <div class="gift-sub">Descreva o presente no campo abaixo</div>
-        </div>
-      </div>
-
-      <div id="customGiftInput" style="display:none;margin-top:12px;" class="form-group">
-        <label for="customGiftText">Qual presente você vai dar?</label>
-        <input type="text" id="customGiftText" placeholder="Ex: Livro, perfume, roupas..." />
-      </div>
-
-      <hr style="border:none;border-top:1px solid var(--border);margin:28px 0 24px;" />
-
-      <div class="section-title">Seus dados</div>
-
-      <div class="form-group">
-        <label for="personName">Seu nome completo</label>
-        <input type="text" id="personName" placeholder="Ex: João da Silva Santos" required autocomplete="name" />
-      </div>
-
-      <div class="form-group">
-        <label for="personPhone">WhatsApp</label>
-        <input type="tel" id="personPhone" placeholder="(11) 99999-9999" autocomplete="tel" required />
-      </div>
-
-      <div class="form-group">
-        <label for="giftMessage">
-          Mensagem no cartão
-          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-light);font-size:12px;"> — opcional</span>
-        </label>
-        <textarea id="giftMessage" placeholder="Um recadinho para colocar junto ao presente..."></textarea>
-      </div>
-
-      <button class="btn-submit" id="submitBtn" onclick="submitGift()">
-        Confirmar Presente
-      </button>
+      <div class="ms-title">Presente reservado!</div>
+      <div class="ms-sub">Sua reserva foi registrada com sucesso. Obrigada pela carinho!</div>
+      <button class="ms-close" onclick="closeModal()">Fechar</button>
     </div>
   </div>
 </div>
@@ -212,7 +246,7 @@
       <i data-lucide="plane" style="width:14px;height:14px;transform:rotate(45deg);color:rgba(255,255,255,0.3);flex-shrink:0;"></i>
       <span class="footer-brand-name">Festa da Juliana</span>
     </div>
-    <div class="footer-route">São Paulo, Brasil &rarr; Toronto, Canadá</div>
+    <div class="footer-route">Brasil &rarr; Canadá &nbsp;|&nbsp; Despedida Juju!!! &nbsp;|&nbsp; 15/08/2026</div>
     <div class="footer-sep"></div>
     <div class="footer-credit">
       Desenvolvido por &nbsp;
@@ -227,185 +261,146 @@
 <script>
   lucide.createIcons();
 
-  const GIFT_ICONS = {
-    '1':'luggage','2':'package-2','3':'sparkles','4':'moon',
-    '5':'file-text','6':'zap','7':'wallet','8':'thermometer',
-    '9':'credit-card','10':'shield'
-  };
-
-  let selectedGiftId = null;
-  let isCustom = false;
+  let currentReserveId = null;
+  let giftData = [];
 
   async function loadGifts() {
-    try {
-      const res = await fetch('/api/presentes');
-      const data = await res.json();
-      const list = data.giftList;
-      const taken = list.filter(g => g.takenBy).length;
-      document.getElementById('progressText').textContent = `${taken} / ${list.length}`;
-      document.getElementById('progressFill').style.width = list.length ? `${taken/list.length*100}%` : '0%';
-      renderList(list);
-    } catch {
-      document.getElementById('giftList').innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-light);">Erro ao carregar a lista.</div>';
-    }
+    const { giftList } = await fetch('/api/presentes').then(r=>r.json());
+    giftData = giftList;
+    render(giftData);
   }
 
-  const CATEGORY_ICONS = {
-    'Bagagem': 'luggage',
-    'Higiene & Beleza': 'sparkles',
-    'Conforto em Viagem': 'moon',
-    'Documentos & Segurança': 'shield',
-    'Eletrônicos': 'zap',
-    'Presente Especial': 'gift'
-  };
+  function isFullyReserved(g) {
+    return (g.reservations||[]).length >= (g.quantity||1);
+  }
 
-  function renderList(list) {
-    const el = document.getElementById('giftList');
-    if (!list.length) {
-      el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-light);">Nenhum item na lista.</div>';
-      return;
-    }
+  function render(gifts) {
+    const root = document.getElementById('giftListRoot');
 
-    // Group by category preserving order
-    const groups = [];
-    const seen = {};
-    list.forEach(g => {
-      const cat = g.category || 'Outros';
-      if (!seen[cat]) { seen[cat] = true; groups.push({ cat, items: [] }); }
-      groups.find(gr => gr.cat === cat).items.push(g);
+    // Group by category
+    const cats = {};
+    gifts.forEach(g => {
+      const c = g.category || 'Geral';
+      if (!cats[c]) cats[c] = [];
+      cats[c].push(g);
     });
 
-    el.innerHTML = groups.map(({ cat, items }) => {
-      const catIcon = CATEGORY_ICONS[cat] || 'tag';
-      const itemsHtml = items.map(g => {
-        const icon = GIFT_ICONS[g.id] || 'gift';
-        const isTaken = !!g.takenBy;
-        const links = g.links || [];
-
-        const linkStrip = links.length > 0 ? `
-          <div class="gift-links-strip">
-            <span class="gift-links-label">Ver opções:</span>
-            ${links.map((lk, i) => `
-              <a href="${lk.url}" target="_blank" rel="noopener" class="gift-link-chip" onclick="event.stopPropagation()">
-                <i data-lucide="external-link" style="width:11px;height:11px;"></i>
-                ${lk.label || 'Opção ' + (i + 1)}
-              </a>
-            `).join('')}
-          </div>
-        ` : '';
-
-        return `
-          <div class="gift-item-wrap ${isTaken ? 'taken' : ''}" id="gitem-${g.id}">
-            <div class="gift-row-top" onclick="${isTaken ? '' : `selectGift('${g.id}')`}">
-              <div class="gift-check" id="gcheck-${g.id}">
-                <i data-lucide="check" style="width:13px;height:13px;"></i>
-              </div>
-              <div class="gift-icon-sm">
-                <i data-lucide="${icon}" style="width:18px;height:18px;"></i>
-              </div>
-              <div class="gift-info">
-                <div class="gift-title">${g.name}</div>
-                <div class="gift-sub">${isTaken ? `Reservado por ${g.takenBy}` : 'Disponível'}</div>
-              </div>
-              ${isTaken ? '<span class="taken-badge">Reservado</span>' : ''}
-            </div>
-            ${linkStrip}
-          </div>
-        `;
-      }).join('');
-
-      return `
-        <div class="gift-category-group">
-          <div class="gift-category-header">
-            <i data-lucide="${catIcon}" style="width:14px;height:14px;"></i>
-            ${cat}
-          </div>
-          ${itemsHtml}
-        </div>
-      `;
-    }).join('');
+    root.innerHTML = Object.entries(cats).map(([cat, items]) => `
+      <div class="cat-label"><i data-lucide="tag" style="width:12px;height:12px;"></i>${cat}</div>
+      <div class="gift-grid">
+        ${items.map(g => renderCard(g)).join('')}
+      </div>
+    `).join('');
 
     lucide.createIcons();
   }
 
-  function selectGift(id) {
-    document.querySelectorAll('.gift-item-wrap:not(.taken)').forEach(el => el.classList.remove('selected'));
-    document.getElementById('customRow').classList.remove('selected');
-    const item = document.getElementById(`gitem-${id}`);
-    if (item) item.classList.add('selected');
-    selectedGiftId = id;
-    isCustom = false;
-    document.getElementById('customGiftInput').style.display = 'none';
+  function renderCard(g) {
+    const reserved = isFullyReserved(g);
+    const qty = g.quantity || 1;
+    const taken = (g.reservations||[]).length;
+    const left = qty - taken;
+    const hasImg = g.imageUrl && g.imageUrl.trim();
+    const hasLink = g.links && g.links.length > 0;
+
+    const imgHtml = hasImg
+      ? `<img src="${g.imageUrl}" alt="${g.name}" onerror="this.parentElement.innerHTML='<div class=\\'gc-img-placeholder\\'><span>${g.emoji||'🎁'}</span><small>Presente</small></div>'" />`
+      : `<div class="gc-img-placeholder"><span>${g.emoji||'🎁'}</span></div>`;
+
+    const sealHtml = reserved
+      ? `<div class="reserved-seal">Reservado</div>`
+      : `<div class="available-seal">${left > 1 ? `${left} restantes` : 'Disponível'}</div>`;
+
+    const qtyHtml = qty > 1 && !reserved
+      ? `<div class="qty-badge">${taken}/${qty} reservados</div>`
+      : '';
+
+    const linkBtn = hasLink
+      ? `<a href="${g.links[0].url}" target="_blank" rel="noopener" class="gc-btn gc-btn-link">
+           <i data-lucide="external-link" style="width:13px;height:13px;"></i>
+           Ver sugestão
+         </a>`
+      : '';
+
+    const reserveBtn = reserved
+      ? `<button class="gc-btn gc-btn-taken" disabled>
+           <i data-lucide="lock" style="width:13px;height:13px;"></i>
+           Reservado
+         </button>`
+      : `<button class="gc-btn gc-btn-reserve" onclick="openModal('${g.id}')">
+           <i data-lucide="gift" style="width:13px;height:13px;"></i>
+           Reservar
+         </button>`;
+
+    return `
+      <div class="gc${reserved?' reserved':''}">
+        <div class="gc-img">
+          ${imgHtml}
+          ${sealHtml}
+          ${qtyHtml}
+        </div>
+        <div class="gc-body">
+          <div class="gc-name">${g.name}</div>
+          ${g.description ? `<div class="gc-desc">${g.description}</div>` : ''}
+        </div>
+        <div class="gc-actions">
+          ${linkBtn}
+          ${reserveBtn}
+        </div>
+      </div>`;
   }
 
-  function toggleCustom() {
-    const row = document.getElementById('customRow');
-    const input = document.getElementById('customGiftInput');
-    if (isCustom) {
-      isCustom = false;
-      row.classList.remove('selected');
-      input.style.display = 'none';
-    } else {
-      isCustom = true;
-      selectedGiftId = null;
-      document.querySelectorAll('.gift-item-wrap').forEach(el => el.classList.remove('selected'));
-      row.classList.add('selected');
-      input.style.display = 'block';
-    }
+  /* ── Modal ── */
+  function openModal(id) {
+    const g = giftData.find(x => x.id === id);
+    if (!g || isFullyReserved(g)) return;
+    currentReserveId = id;
+    document.getElementById('modalGiftName').textContent = g.name;
+    document.getElementById('modalPersonName').value = '';
+    document.getElementById('modalAlert').className = 'modal-alert';
+    document.getElementById('modalForm').style.display = 'block';
+    document.getElementById('modalSuccess').className = 'modal-success';
+    document.getElementById('reserveModal').classList.add('open');
+    setTimeout(() => document.getElementById('modalPersonName').focus(), 100);
   }
 
-  async function submitGift() {
-    const personName = document.getElementById('personName').value.trim();
-    const phone = document.getElementById('personPhone').value.trim();
-    const message = document.getElementById('giftMessage').value.trim();
-    const customGift = document.getElementById('customGiftText').value.trim();
-    const errEl = document.getElementById('alertError');
-    errEl.classList.remove('show');
+  function closeModal() {
+    document.getElementById('reserveModal').classList.remove('open');
+    currentReserveId = null;
+  }
 
-    if (!personName) {
-      document.getElementById('errorMsg').textContent = 'Por favor, informe seu nome completo.';
-      errEl.classList.add('show'); return;
-    }
-    if (!phone) {
-      document.getElementById('errorMsg').textContent = 'Informe seu WhatsApp para continuar.';
-      errEl.classList.add('show');
-      document.getElementById('personPhone').focus();
-      return;
-    }
-    if (!selectedGiftId && !isCustom) {
-      document.getElementById('errorMsg').textContent = 'Escolha um presente da lista ou selecione "Outro presente".';
-      errEl.classList.add('show'); return;
-    }
-    if (isCustom && !customGift) {
-      document.getElementById('errorMsg').textContent = 'Descreva qual presente você vai dar.';
-      errEl.classList.add('show'); return;
-    }
+  document.getElementById('reserveModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
 
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Enviando...';
+  async function confirmReserve() {
+    const name = document.getElementById('modalPersonName').value.trim();
+    const alertEl = document.getElementById('modalAlert');
+    alertEl.className = 'modal-alert';
+    if (!name) { alertEl.textContent = 'Informe seu nome para reservar.'; alertEl.className = 'modal-alert show'; return; }
+
+    const btn = document.getElementById('modalConfirmBtn');
+    btn.disabled = true; btn.textContent = 'Reservando...';
 
     try {
-      const res = await fetch('/api/presentes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ personName, phone, message,
-          giftId: selectedGiftId || null,
-          customGift: isCustom ? customGift : null })
+      const res = await fetch(`/api/presentes/list/${currentReserveId}/reserve`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ personName: name })
       });
       const data = await res.json();
       if (!res.ok) {
-        document.getElementById('errorMsg').textContent = data.error || 'Erro ao enviar.';
-        errEl.classList.add('show');
-        btn.disabled = false; btn.textContent = 'Confirmar Presente'; return;
+        alertEl.textContent = data.error || 'Erro ao reservar.';
+        alertEl.className = 'modal-alert show';
+        btn.disabled = false; btn.textContent = 'Confirmar Reserva';
+        return;
       }
-      document.getElementById('mainContent').style.display = 'none';
-      document.getElementById('successMsg').textContent = `Obrigado, ${personName.split(' ')[0]}! Seu presente foi registrado.`;
-      document.getElementById('successScreen').classList.add('show');
+      document.getElementById('modalForm').style.display = 'none';
+      document.getElementById('modalSuccess').className = 'modal-success show';
+      await loadGifts();
     } catch {
-      document.getElementById('errorMsg').textContent = 'Erro de conexão. Tente novamente.';
-      errEl.classList.add('show');
-      btn.disabled = false; btn.textContent = 'Confirmar Presente';
+      alertEl.textContent = 'Erro de conexão. Tente novamente.';
+      alertEl.className = 'modal-alert show';
+      btn.disabled = false; btn.textContent = 'Confirmar Reserva';
     }
   }
 
