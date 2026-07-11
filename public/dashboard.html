@@ -714,9 +714,22 @@
             ${p.message ? `<div class="list-msg">"${p.message}"</div>` : ''}
           </div>
           <span class="att-tag ${tagMap[p.attending]||'att-maybe'}">${labelMap[p.attending]||p.attending}</span>
+          <button class="icon-btn-xs" onclick="cancelPresence('${p.id}')" title="Cancelar confirmação" style="margin-left:6px;flex-shrink:0;">
+            <i data-lucide="x" style="width:11px;height:11px;"></i>
+          </button>
         </div>
       `;
     }).join('');
+    lucide.createIcons();
+  }
+
+  async function cancelPresence(id) {
+    if (!confirm('Cancelar esta confirmação? A pessoa poderá confirmar novamente.')) return;
+    try {
+      const res = await fetch('/api/rsvp/' + id, { method: 'DELETE' });
+      if (res.ok) { await refresh(); }
+      else { const d = await res.json(); alert(d.error || 'Erro ao cancelar.'); }
+    } catch { alert('Erro de conexão.'); }
   }
 
   function renderGiftConfirms(gifts) {

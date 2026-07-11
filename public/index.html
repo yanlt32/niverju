@@ -774,8 +774,12 @@
     try { guestsList = await fetch('/api/guests').then(r => r.json()); } catch {}
   }
 
+  function normalize(str) {
+    return str.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  }
+
   function acHighlight(text, query) {
-    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    const idx = normalize(text).indexOf(normalize(query));
     if (idx < 0) return text;
     return text.slice(0,idx) + '<mark>' + text.slice(idx,idx+query.length) + '</mark>' + text.slice(idx+query.length);
   }
@@ -784,8 +788,8 @@
     inputEl.addEventListener('input', () => {
       const val = inputEl.value.trim();
       if (!val) { dropdownEl.style.display='none'; return; }
-      const q = val.toLowerCase();
-      const matches = guestsList.filter(g => g.name.toLowerCase().includes(q)).slice(0,10);
+      const q = normalize(val);
+      const matches = guestsList.filter(g => normalize(g.name).includes(q)).slice(0,10);
       if (!matches.length) { dropdownEl.style.display='none'; return; }
       dropdownEl.innerHTML = matches.map(g =>
         `<div class="ac-item" data-id="${g.id}" data-name="${g.name}">${acHighlight(g.name, val)}</div>`

@@ -82,6 +82,15 @@ app.post('/api/rsvp', (req, res) => {
   res.json({ success: true, entry });
 });
 
+app.delete('/api/rsvp/:id', (req, res) => {
+  const data = readData();
+  const idx = data.presences.findIndex(p => p.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ error: 'Confirmação não encontrada.' });
+  data.presences.splice(idx, 1);
+  writeData(data);
+  res.json({ success: true });
+});
+
 /* ─── MESSAGES (Mural) ─── */
 app.get('/api/messages', (req, res) => res.json(readData().messages || []));
 
