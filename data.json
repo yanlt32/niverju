@@ -9,19 +9,15 @@
   },
   "presences": [
     {
-      "id": "86e7f555-ba19-4395-88c9-58b1c1267803",
+      "id": "4ee08c77-76db-444d-9ee4-1be09066355a",
       "name": "Yan Tortelli",
       "phone": "(11) 11111-11111111",
       "attending": "yes",
-      "companions": [
-        {
-          "name": "Sérgio Tortelli"
-        }
-      ],
-      "message": "te amoooo",
+      "companions": [],
+      "message": "te amoo",
       "guestId": "fp7",
       "onList": true,
-      "createdAt": "2026-07-11T00:19:41.836Z"
+      "createdAt": "2026-07-11T00:33:40.948Z"
     }
   ],
   "messages": [],
@@ -41,14 +37,8 @@
         }
       ],
       "quantity": 1,
-      "reservations": [
-        {
-          "id": "02372086-2a1c-4d89-b97c-86db0b4514eb",
-          "personName": "sergio",
-          "createdAt": "2026-07-11T00:13:59.185Z"
-        }
-      ],
-      "takenBy": "sergio"
+      "reservations": [],
+      "takenBy": null
     },
     {
       "id": "2",
@@ -59,14 +49,8 @@
       "category": "Bagagem",
       "links": [],
       "quantity": 1,
-      "reservations": [
-        {
-          "id": "c6ee3d8d-df49-4c5c-a7bf-c7b6e65c4be7",
-          "personName": "natalia silva",
-          "createdAt": "2026-07-09T19:05:26.797Z"
-        }
-      ],
-      "takenBy": "natalia silva"
+      "reservations": [],
+      "takenBy": null
     },
     {
       "id": "10",
@@ -77,14 +61,8 @@
       "category": "Bagagem",
       "links": [],
       "quantity": 1,
-      "reservations": [
-        {
-          "id": "c895e18f-0375-4a6e-b49c-29d705a9f0fd",
-          "personName": "yannn",
-          "createdAt": "2026-07-11T00:19:55.641Z"
-        }
-      ],
-      "takenBy": "yannn"
+      "reservations": [],
+      "takenBy": null
     },
     {
       "id": "3",
