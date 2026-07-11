@@ -1010,26 +1010,34 @@
         document.getElementById('mi-text').value = '';
         okEl.classList.add('show');
         setTimeout(()=>okEl.classList.remove('show'),3500);
+        loadMessages();
+      } else {
+        let msg = 'Erro ao enviar mensagem (status ' + res.status + ').';
+        try { const d = await res.json(); if (d.error) msg = d.error; } catch {}
+        alert(msg);
       }
-    } catch { alert('Erro de conexão.'); }
+    } catch (e) { alert('Erro de conexão: ' + e.message); }
     btn.disabled = false; btn.textContent = 'ENVIAR MENSAGEM';
   }
+  function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function initials(n) { return n.trim().split(' ').slice(0,2).map(p=>p[0]?.toUpperCase()||'').join(''); }
   function fmtDate(iso) { const d=new Date(iso); return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})+' às '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); }
   async function loadMessages() {
+    const wall = document.getElementById('msg-wall');
     try {
-      const msgs = await fetch('/api/messages').then(r=>r.json());
-      const wall = document.getElementById('msg-wall');
-      if (!msgs.length) { wall.innerHTML='<div class="msg-empty">Seja o primeiro a escrever para a Juju!</div>'; return; }
+      const r = await fetch('/api/messages');
+      if (!r.ok) { wall.innerHTML='<div class="msg-empty">Não foi possível carregar as mensagens.</div>'; return; }
+      const msgs = await r.json();
+      if (!Array.isArray(msgs) || !msgs.length) { wall.innerHTML='<div class="msg-empty">Seja o primeiro a escrever para a Juju!</div>'; return; }
       wall.innerHTML = [...msgs].reverse().map(m=>`
         <div class="msg-card">
           <div class="msg-inner-hd">
             <div class="msg-av">${initials(m.name)}</div>
-            <div><div class="msg-nm">${m.name}</div><div class="msg-dt">${fmtDate(m.createdAt)}</div></div>
+            <div><div class="msg-nm">${escHtml(m.name)}</div><div class="msg-dt">${fmtDate(m.createdAt)}</div></div>
           </div>
-          <div class="msg-txt">${m.text.replace(/\n/g,'<br>')}</div>
+          <div class="msg-txt">${escHtml(m.text).replace(/\n/g,'<br>')}</div>
         </div>`).join('');
-    } catch {}
+    } catch (e) { wall.innerHTML='<div class="msg-empty">Erro ao carregar mensagens.</div>'; }
   }
 
   /* ── LOCAL ── */

@@ -750,7 +750,7 @@
     const reservations = [];
     (giftList || []).forEach(g => {
       (g.reservations || []).forEach(r => {
-        reservations.push({ ...r, giftName: g.name });
+        reservations.push({ ...r, giftName: g.name, giftId: g.id });
       });
     });
     if (!reservations.length) {
@@ -767,9 +767,24 @@
             <div class="list-sub">${escHtml(r.giftName)} &bull; ${date}</div>
           </div>
           <span class="att-tag" style="background:#FFF8E6;color:#8A5500;">Reservado</span>
+          <button class="icon-btn-xs" onclick="cancelReservation('${r.giftId}','${r.id}')" title="Cancelar reserva" style="margin-left:6px;flex-shrink:0;">
+            <i data-lucide="x" style="width:11px;height:11px;"></i>
+          </button>
         </div>
       `;
     }).join('');
+    lucide.createIcons();
+  }
+
+  async function cancelReservation(giftId, reservationId) {
+    if (!confirm('Cancelar esta reserva de presente?')) return;
+    try {
+      const res = await fetch(`/api/presentes/list/${giftId}/reserve/${reservationId}`, { method: 'DELETE' });
+      if (res.ok) { await refresh(); return; }
+      let msg = 'Erro ao cancelar (status ' + res.status + ').';
+      try { const d = await res.json(); if (d.error) msg = d.error; } catch {}
+      alert(msg);
+    } catch (e) { alert('Erro de conexão: ' + e.message); }
   }
 
   function renderMessages(messages) {
