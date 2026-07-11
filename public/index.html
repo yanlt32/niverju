@@ -3,568 +3,659 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Despedida Juju</title>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <title>Ju Airlines · Despedida Juju</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html, body { height:100%; overflow:hidden; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #F4F4F6;
-      color: #1A0A0A;
+
+    :root {
+      --pr: #D52B1E;
+      --fg: #1A1A1A;
+      --bg: #FFFFFF;
+      --muted: #F5F5F5;
+      --muted-fg: #6B6B6B;
+      --bd: rgba(0,0,0,0.10);
+      --inp: #F8F8F8;
+      --dark: #1A1A1A;
+      --f-head: 'Oswald', sans-serif;
+      --f-body: 'Montserrat', sans-serif;
+      --f-cur:  'Dancing Script', cursive;
     }
 
-    /* ═══ BACKGROUND BLOBS ═══ */
-    .bg-blobs {
-      position: fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
-    }
-    .blob {
-      position:absolute; border-radius:50%;
-      background: radial-gradient(circle, rgba(200,16,46,0.09) 0%, transparent 65%);
-    }
-    .b1 { width:500px;height:500px;top:-120px;left:-80px; }
-    .b2 { width:400px;height:400px;bottom:-60px;right:-80px; }
-    .b3 { width:300px;height:300px;top:35%;left:20%; animation:blobFloat 8s ease-in-out infinite; }
-    @keyframes blobFloat {
-      0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)}
-    }
+    body { font-family: var(--f-body); background:#fff; color: var(--fg); }
 
-    /* ═══ FIXED HEADER ═══ */
+    /* ══ HEADER ══ */
     .app-header {
-      position: fixed; top:0; left:0; right:0; height:52px;
-      background:#fff; border-bottom:1px solid #EEECEC;
-      display:flex; align-items:center; padding:0 18px; gap:8px;
+      position:fixed; top:0; left:0; right:0; height:54px;
+      background:rgba(255,255,255,0.95); backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--bd);
+      display:flex; align-items:center; padding:0 18px; gap:10px;
       z-index:200; box-shadow:0 1px 8px rgba(0,0,0,0.06);
     }
-    .hd-icon { color:#C8102E; display:flex; }
-    .hd-brand {
-      font-family:'Oswald',sans-serif; font-size:18px;
-      font-weight:700; color:#C8102E; letter-spacing:0.5px;
-      line-height:1.1;
-    }
+    .hd-maple { color:var(--pr); display:flex; }
+    .hd-brand { font-family:var(--f-head); font-size:16px; font-weight:600; color:var(--fg); letter-spacing:0.3em; text-transform:uppercase; }
 
-    /* ═══ MAIN CONTENT (scrollable) ═══ */
-    .app-main {
-      position:fixed; top:52px; bottom:60px; left:0; right:0;
-      overflow-y:auto; z-index:1; -webkit-overflow-scrolling:touch;
-    }
-
-    /* ═══ SECTIONS ═══ */
-    .sec { display:none; min-height:100%; padding-bottom:20px; }
+    /* ══ MAIN ══ */
+    .app-main { position:fixed; top:54px; bottom:60px; left:0; right:0; overflow-y:auto; z-index:1; -webkit-overflow-scrolling:touch; }
+    .sec { display:none; min-height:100%; }
     .sec.active { display:block; }
 
-    /* ═══ CHECK-IN SECTION ═══ */
-    /* Landing view */
-    #view-land { position:relative; padding:24px 20px 32px; }
-    .land-watermark {
-      position:absolute; top:20px; left:0; right:0;
-      font-family:'Oswald',sans-serif; font-size:28px; font-weight:700;
-      color:rgba(0,0,0,0.045); text-align:center; line-height:1.4;
-      pointer-events:none; user-select:none;
-      font-style:italic; padding:0 12px;
+    /* ══ SEC-TAG BADGE ══ */
+    .sec-tag {
+      display:inline-flex; align-items:center;
+      background:rgba(213,43,30,0.1); color:var(--pr);
+      padding:5px 14px; border-radius:100px;
+      font-family:var(--f-body); font-size:10px; font-weight:700;
+      letter-spacing:0.3em; text-transform:uppercase; margin-bottom:12px;
     }
-    .hero-card {
-      position:relative; z-index:2;
-      background:#fff; border-radius:18px;
-      padding:28px 22px; text-align:center;
-      box-shadow:0 6px 32px rgba(0,0,0,0.09);
-      margin-bottom:28px;
-    }
-    .hero-title {
-      font-family:'Oswald',sans-serif;
-      font-size:clamp(28px,8vw,40px);
-      font-weight:700; color:#8B0C1F;
-      line-height:1.1; margin-bottom:14px; text-transform:uppercase;
-    }
-    .hero-body {
-      font-size:15px; color:#555; line-height:1.65; margin-bottom:14px;
-    }
-    .hero-cta-text {
-      font-size:15px; font-weight:700; color:#1A0A0A; margin-bottom:22px;
-    }
-    .btn-red {
-      display:block; width:100%; padding:17px; border-radius:50px;
-      background:#C8102E; color:#fff; border:none; cursor:pointer;
-      font-family:'Oswald',sans-serif; font-size:17px; font-weight:600;
-      letter-spacing:1.5px; text-transform:uppercase;
-      transition:all 0.2s; text-decoration:none; text-align:center;
-    }
-    .btn-red:hover { filter:brightness(1.08); transform:translateY(-1px); }
-    .btn-red:active { transform:none; filter:brightness(0.95); }
-    .btn-red:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+    .sec-tag.dark { background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.6); }
 
-    /* Countdown */
-    .countdown-wrap { position:relative; z-index:2; text-align:center; padding:4px 0 8px; }
-    .cd-label {
-      font-size:10px; font-weight:700; letter-spacing:2.5px;
-      text-transform:uppercase; color:#999; margin-bottom:16px;
+    /* ══ BUTTONS ══ */
+    .btn-pr {
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      width:100%; padding:16px 24px;
+      background:var(--pr); color:#fff; border:none; cursor:pointer;
+      font-family:var(--f-head); font-size:14px; font-weight:500;
+      text-transform:uppercase; letter-spacing:0.3em;
+      transition:background 0.15s, transform 0.1s; text-decoration:none;
     }
-    .cd-row {
-      display:flex; align-items:flex-start; justify-content:center; gap:0;
-    }
-    .cd-group { display:flex; flex-direction:column; align-items:center; min-width:60px; }
-    .cd-n {
-      font-family:'Oswald',sans-serif; font-size:clamp(38px,10vw,52px);
-      font-weight:700; color:#C8102E; line-height:1;
-    }
-    .cd-l {
-      font-size:8.5px; font-weight:700; letter-spacing:1.5px;
-      text-transform:uppercase; color:#AAA; margin-top:5px;
-    }
-    .cd-sep {
-      font-family:'Oswald',sans-serif; font-size:clamp(34px,9vw,46px);
-      font-weight:700; color:#C8102E; line-height:1;
-      padding:0 2px; align-self:flex-start; margin-top:2px;
-    }
+    .btn-pr:hover { background:rgba(213,43,30,0.88); }
+    .btn-pr:active { transform:scale(0.98); }
+    .btn-pr:disabled { opacity:0.65; cursor:not-allowed; transform:none; }
 
-    /* Form view */
-    #view-form { padding:24px 20px 32px; display:none; }
-    .form-title {
-      font-family:'Oswald',sans-serif; font-size:32px; font-weight:700;
-      color:#1A0A0A; text-align:center; text-transform:uppercase;
-      letter-spacing:2px; margin-bottom:8px;
+    .btn-dk {
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      width:100%; padding:16px 24px;
+      background:var(--dark); color:#fff; border:none; cursor:pointer;
+      font-family:var(--f-head); font-size:14px; font-weight:500;
+      text-transform:uppercase; letter-spacing:0.3em; text-decoration:none;
+      transition:background 0.15s;
     }
-    .form-sub {
-      font-size:14px; color:#888; text-align:center; font-style:italic;
-      line-height:1.55; margin-bottom:28px;
-    }
-    .field-line {
-      border-bottom:1.5px solid #E0DADA; padding:14px 4px; margin-bottom:6px;
-    }
-    .field-line label {
-      display:block; font-size:10px; font-weight:700;
-      letter-spacing:1.5px; text-transform:uppercase; color:#888; margin-bottom:8px;
-    }
-    .field-line input,
-    .field-line textarea {
-      width:100%; border:none; outline:none;
-      font-size:15px; font-family:'Inter',sans-serif; color:#1A0A0A;
-      background:transparent; padding:0; resize:none;
-    }
-    .field-line input::placeholder,
-    .field-line textarea::placeholder { color:#BBAAAA; }
-    .field-line textarea { min-height:64px; }
-    .field-line input[type="number"] {
-      -moz-appearance:textfield; appearance:textfield;
-    }
-    .field-line input[type="number"]::-webkit-outer-spin-button,
-    .field-line input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
+    .btn-dk:hover { background:#333; }
 
-    /* Success (within form view) */
-    .form-success {
-      display:none; flex-direction:column; align-items:center; text-align:center;
-      padding:32px 20px;
+    .btn-outline-sm {
+      display:flex; align-items:center; justify-content:center; gap:6px;
+      padding:9px 6px; flex:1;
+      background:transparent; color:var(--muted-fg);
+      border:1px solid var(--bd); cursor:pointer;
+      font-family:var(--f-body); font-size:10px; font-weight:600;
+      text-transform:uppercase; letter-spacing:0.08em;
+      text-decoration:none; transition:border-color 0.15s, color 0.15s;
     }
-    .form-success.show { display:flex; }
-    .suc-circle {
-      width:80px; height:80px; border-radius:50%;
-      background:#E8FAF0; display:flex; align-items:center; justify-content:center;
-      margin-bottom:18px;
-    }
-    .suc-title {
-      font-family:'Oswald',sans-serif; font-size:28px;
-      color:#1A0A0A; text-transform:uppercase; margin-bottom:10px;
-    }
-    .suc-sub { font-size:14px; color:#888; line-height:1.6; margin-bottom:24px; }
+    .btn-outline-sm:hover { border-color:var(--fg); color:var(--fg); }
 
-    /* ═══ MIMOS SECTION ═══ */
-    #sec-mimos { padding:24px 20px 32px; }
-    .mimos-title-row {
-      text-align:center; margin-bottom:16px;
-    }
-    .mimos-emoji { font-size:38px; display:block; margin-bottom:6px; }
-    .mimos-h {
-      font-family:'Oswald',sans-serif; font-size:32px;
-      font-weight:600; color:#C8102E; text-transform:uppercase;
-    }
-    .mimos-desc {
-      font-size:13.5px; color:#666; font-style:italic;
-      line-height:1.65; text-align:center; margin-bottom:24px;
-    }
-    .mimos-desc strong { color:#C8102E; }
-
-    /* Gift grid */
-    .gift-grid {
-      display:grid; grid-template-columns:repeat(2,1fr);
-      gap:14px; margin-bottom:32px;
-    }
-    .gift-card {
-      background:#fff; border-radius:14px; overflow:hidden;
-      box-shadow:0 3px 14px rgba(0,0,0,0.08);
-      display:flex; flex-direction:column;
-      transition:transform 0.2s,box-shadow 0.2s;
-    }
-    .gift-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.12); }
-    .gift-card.reserved { opacity:0.7; }
-    .gc-img-wrap {
-      position:relative; aspect-ratio:1; overflow:hidden;
-      background:#F5F0E8;
-    }
-    .gc-img-wrap img {
-      width:100%; height:100%; object-fit:cover; display:block;
-    }
-    .gc-placeholder {
-      width:100%; height:100%; display:flex; flex-direction:column;
-      align-items:center; justify-content:center; gap:6px; color:#CCC;
-    }
-    .gc-placeholder span { font-size:32px; }
-    .gc-reserved-badge {
-      position:absolute; top:8px; right:8px;
-      background:rgba(200,16,46,0.9); color:#fff;
-      font-size:9px; font-weight:700; letter-spacing:1px;
-      text-transform:uppercase; padding:3px 8px; border-radius:100px;
-    }
-    .gc-body { padding:12px 12px 6px; flex:1; }
-    .gc-name { font-size:13px; font-weight:700; color:#1A0A0A; line-height:1.3; margin-bottom:4px; }
-    .gc-desc { font-size:11.5px; color:#888; line-height:1.5; }
-    .gc-foot { padding:10px 12px 14px; }
-    .gc-btn {
-      display:block; width:100%; padding:11px; border-radius:50px;
-      background:#C8102E; color:#fff; border:none; cursor:pointer;
-      font-family:'Oswald',sans-serif; font-size:13px; font-weight:600;
-      letter-spacing:1.5px; text-transform:uppercase; transition:all 0.2s;
-    }
-    .gc-btn:hover { filter:brightness(1.08); }
-    .gc-btn.taken { background:#DDD; color:#999; cursor:not-allowed; }
-
-    /* Mimos message form */
-    .mimos-msg { border-top:1px solid #EEE; padding-top:24px; }
-
-    /* ═══ MENSAGEM SECTION ═══ */
-    #sec-mensagem { padding:24px 20px 32px; }
-    .sec-title-bar {
-      text-align:center; margin-bottom:22px;
-    }
-    .sec-title {
-      font-family:'Oswald',sans-serif; font-size:26px;
-      font-weight:700; color:#1A0A0A; text-transform:uppercase;
-    }
-    .sec-sub { font-size:13px; color:#999; margin-top:4px; }
-
-    /* Message wall */
-    .msg-wall { display:flex; flex-direction:column; gap:14px; margin-top:24px; }
-    .msg-card {
-      background:#fff; border-radius:14px; padding:16px;
-      box-shadow:0 2px 10px rgba(0,0,0,0.06);
-      animation:fadeUp 0.3s ease;
-    }
-    @keyframes fadeUp {from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-    .msg-hd { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
-    .msg-av {
-      width:36px; height:36px; border-radius:50%;
-      background:linear-gradient(135deg,#E85070,#C8102E);
+    .btn-pr-sm {
       display:flex; align-items:center; justify-content:center;
-      color:#fff; font-size:13px; font-weight:800; flex-shrink:0;
+      padding:9px 6px; flex:1;
+      background:var(--pr); color:#fff; border:none; cursor:pointer;
+      font-family:var(--f-body); font-size:10px; font-weight:700;
+      text-transform:uppercase; letter-spacing:0.08em;
+      transition:background 0.15s;
     }
-    .msg-nm { font-size:14px; font-weight:700; color:#1A0A0A; }
-    .msg-dt { font-size:11px; color:#BBB; margin-top:1px; }
-    .msg-txt { font-size:14px; color:#555; line-height:1.6; }
-    .msg-empty { text-align:center; color:#BBB; font-size:14px; padding:32px 0; }
-    .msg-ok {
-      display:none; background:#E8FAF0; color:#1e6e40;
-      border-radius:10px; padding:10px 14px; font-size:13px;
-      align-items:center; gap:8px; margin-top:10px;
-    }
-    .msg-ok.show { display:flex; }
+    .btn-pr-sm:hover { background:rgba(213,43,30,0.88); }
+    .btn-pr-sm.taken { background:var(--muted); color:var(--muted-fg); cursor:not-allowed; }
 
-    /* ═══ LOCAL SECTION ═══ */
-    #sec-local { padding:24px 20px 32px; }
-    .local-card {
-      background:#fff; border-radius:18px; padding:24px 20px;
-      box-shadow:0 4px 20px rgba(0,0,0,0.08); margin-bottom:16px;
+    /* ══ FORM FIELDS ══ */
+    .fbox { margin-bottom:18px; }
+    .fbox label {
+      display:block; font-size:10px; font-weight:700;
+      letter-spacing:0.25em; text-transform:uppercase;
+      color:var(--muted-fg); margin-bottom:8px; font-family:var(--f-body);
     }
-    .local-title {
-      font-family:'Oswald',sans-serif; font-size:24px;
-      color:#C8102E; text-transform:uppercase; margin-bottom:18px;
-      display:flex; align-items:center; gap:8px;
+    .fbox input, .fbox textarea {
+      width:100%; padding:12px 14px;
+      background:var(--inp); border:1px solid var(--bd);
+      color:var(--fg); font-family:var(--f-body); font-size:14px;
+      outline:none; transition:border-color 0.15s, box-shadow 0.15s; resize:none;
     }
-    .local-row {
-      display:flex; align-items:flex-start; gap:12px;
-      padding:12px 0; border-bottom:1px solid #F0EBE8;
+    .fbox input:focus, .fbox textarea:focus {
+      border-color:var(--pr); box-shadow:0 0 0 3px rgba(213,43,30,0.1);
     }
-    .local-row:last-child { border-bottom:none; }
-    .local-ico {
-      width:36px; height:36px; border-radius:10px;
-      background:#FFF0E8; color:#C8102E;
-      display:flex; align-items:center; justify-content:center; flex-shrink:0;
-    }
-    .local-lbl { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#BBB; margin-bottom:2px; }
-    .local-val { font-size:14px; font-weight:700; color:#1A0A0A; line-height:1.35; }
+    .fbox input::placeholder, .fbox textarea::placeholder { color:#CCC; }
+    .fbox textarea { min-height:76px; }
+    .fbox input[type="number"] { -moz-appearance:textfield; appearance:textfield; }
+    .fbox input[type="number"]::-webkit-outer-spin-button,
+    .fbox input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
 
-    /* ═══ BOTTOM NAV ═══ */
-    .bottom-nav {
-      position:fixed; bottom:0; left:0; right:0; height:60px;
-      background:#fff; border-top:1px solid #EEECEC;
-      display:flex; z-index:200; box-shadow:0 -2px 12px rgba(0,0,0,0.06);
-    }
-    .nav-btn {
-      flex:1; display:flex; flex-direction:column; align-items:center;
-      justify-content:center; gap:3px; border:none; background:transparent;
-      cursor:pointer; padding:8px 0; transition:all 0.15s;
-      font-family:'Inter',sans-serif;
-    }
-    .nav-btn .nav-ico { color:#BBB; transition:color 0.15s; }
-    .nav-btn .nav-lbl {
-      font-size:9px; font-weight:700; letter-spacing:0.8px;
-      text-transform:uppercase; color:#BBB; transition:color 0.15s;
-    }
-    .nav-btn.active .nav-ico,
-    .nav-btn.active .nav-lbl { color:#C8102E; }
-
-    /* ═══ RESERVE MODAL ═══ */
-    .modal-ov {
-      display:none; position:fixed; inset:0;
-      background:rgba(0,0,0,0.5); z-index:300;
-      align-items:flex-end; justify-content:center;
-      backdrop-filter:blur(3px);
-    }
-    .modal-ov.open { display:flex; }
-    .modal {
-      background:#fff; border-radius:22px 22px 0 0;
-      padding:28px 24px 36px; width:100%; max-width:520px;
-      animation:slideUp 0.25s ease;
-    }
-    @keyframes slideUp {from{transform:translateY(100%)}to{transform:translateY(0)}}
-    .modal-drag { width:40px; height:4px; background:#E0D8D8; border-radius:2px; margin:0 auto 20px; }
-    .modal-ico { width:52px; height:52px; background:#FFF0E8; border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
-    .modal h3 { font-family:'Oswald',sans-serif; font-size:22px; color:#1A0A0A; text-transform:uppercase; margin-bottom:4px; }
-    .modal-gift { font-size:14px; color:#C8102E; font-weight:700; margin-bottom:16px; }
-    .modal-sub { font-size:13px; color:#888; margin-bottom:18px; line-height:1.5; }
-    .modal-actions { display:flex; gap:10px; margin-top:18px; }
-    .btn-cancel {
-      flex:1; padding:15px; border-radius:50px; border:2px solid #EEE;
-      background:transparent; color:#888; font-size:14px; font-weight:600;
-      cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s;
-    }
-    .btn-cancel:hover { background:#F5F5F5; }
-    .modal-err { background:#FDEDEC; color:#C0392B; border-radius:10px; padding:10px 14px; font-size:13px; margin-top:10px; display:none; }
-    .modal-err.show { display:block; }
-
-    /* Modal success */
-    .modal-suc { display:none; flex-direction:column; align-items:center; text-align:center; }
-    .modal-suc.show { display:flex; }
-    .msuc-ico { width:64px; height:64px; background:#E8FAF0; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
-    .msuc-t { font-family:'Oswald',sans-serif; font-size:22px; color:#1A0A0A; text-transform:uppercase; margin-bottom:8px; }
-    .msuc-s { font-size:13px; color:#888; margin-bottom:20px; }
-
-    /* Alert box */
-    .alert-box {
-      padding:12px 16px; border-radius:12px; font-size:13.5px;
-      font-weight:500; margin-bottom:16px; display:none;
-      align-items:flex-start; gap:8px;
-    }
-    .alert-box.show { display:flex; }
+    /* ══ ALERTS ══ */
+    .alert { padding:11px 14px; font-size:12px; font-weight:500; margin-bottom:14px; display:none; align-items:flex-start; gap:8px; font-family:var(--f-body); }
+    .alert.show { display:flex; }
     .alert-err { background:#FDEDEC; color:#C0392B; border:1px solid #f4c6c2; }
     .alert-ok  { background:#E8FAF0; color:#1e6e40; border:1px solid #A8DFBC; }
 
-    .spinner {
-      display:inline-block; width:16px; height:16px;
-      border:2.5px solid rgba(255,255,255,0.35);
-      border-top-color:#fff; border-radius:50%;
-      animation:spin 0.6s linear infinite; vertical-align:middle;
-    }
+    .spinner { display:inline-block; width:15px; height:15px; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation:spin 0.6s linear infinite; flex-shrink:0; }
     @keyframes spin { to{transform:rotate(360deg)} }
+
+    /* ══ CHECK-IN: HERO/LANDING ══ */
+    #view-land { background:#0a0a12; display:flex; flex-direction:column; min-height:100%; }
+
+    .marquee-strip { border-bottom:1px solid rgba(255,255,255,0.07); padding:7px 0; overflow:hidden; flex-shrink:0; }
+    .marquee-track { display:flex; gap:48px; white-space:nowrap; animation:mq 24s linear infinite; }
+    @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .marquee-item { font-family:var(--f-head); font-size:10px; font-weight:500; color:rgba(255,255,255,0.2); letter-spacing:0.4em; text-transform:uppercase; }
+
+    .hero-content { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px 20px 8px; }
+
+    /* Boarding Pass */
+    .bp { background:#fff; width:100%; max-width:340px; overflow:hidden; }
+    .bp-hd { background:var(--pr); padding:10px 16px; display:flex; align-items:center; justify-content:space-between; }
+    .bp-hd-l { display:flex; align-items:center; gap:8px; }
+    .bp-brand { font-family:var(--f-head); font-size:12px; font-weight:500; color:#fff; letter-spacing:0.3em; text-transform:uppercase; }
+    .bp-body { padding:18px 16px 14px; }
+    .bp-route { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px; margin-bottom:14px; }
+    .bp-code { font-family:var(--f-head); font-size:38px; font-weight:700; color:var(--fg); line-height:1; }
+    .bp-city { font-family:var(--f-body); font-size:9px; color:var(--muted-fg); margin-top:3px; }
+    .bp-dir-lbl { font-family:var(--f-body); font-size:8px; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted-fg); margin-bottom:3px; }
+    .bp-mid { display:flex; flex-direction:column; align-items:center; gap:4px; }
+    .bp-mid-line { display:flex; align-items:center; width:100%; }
+    .bp-dash { flex:1; height:1px; background:var(--bd); }
+    .bp-circle { width:20px; height:20px; border-radius:50%; border:2px solid var(--pr); display:flex; align-items:center; justify-content:center; margin:0 4px; }
+    .bp-direto { font-family:var(--f-body); font-size:8px; font-weight:600; color:var(--muted-fg); letter-spacing:0.3em; text-transform:uppercase; }
+    .bp-right { text-align:right; }
+    .bp-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding-top:12px; border-top:1px dashed rgba(0,0,0,0.1); }
+    .bp-grid-lbl { font-family:var(--f-body); font-size:7px; font-weight:700; letter-spacing:0.25em; text-transform:uppercase; color:var(--muted-fg); margin-bottom:2px; }
+    .bp-grid-val { font-family:var(--f-head); font-size:13px; font-weight:600; color:var(--fg); line-height:1.2; }
+
+    /* Hero CTA */
+    .hero-cta { text-align:center; margin-top:22px; width:100%; max-width:340px; }
+    .hero-welcome { font-family:var(--f-cur); font-size:24px; color:rgba(255,255,255,0.82); margin-bottom:8px; }
+    .hero-desc { font-family:var(--f-body); font-size:12px; color:rgba(255,255,255,0.48); line-height:1.65; margin-bottom:18px; }
+
+    /* Countdown (dark) */
+    .cd-wrap { padding:18px 20px 28px; background:#0a0a12; text-align:center; }
+    .cd-lbl { font-family:var(--f-body); font-size:9px; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:12px; }
+    .cd-row { display:flex; align-items:flex-start; justify-content:center; }
+    .cd-g { display:flex; flex-direction:column; align-items:center; min-width:62px; }
+    .cd-n { font-family:var(--f-head); font-size:clamp(38px,10vw,52px); font-weight:700; color:var(--pr); line-height:1; }
+    .cd-l { font-family:var(--f-body); font-size:8px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-top:5px; }
+    .cd-sep { font-family:var(--f-head); font-size:clamp(34px,9vw,46px); font-weight:700; color:var(--pr); line-height:1; padding:0 2px; align-self:flex-start; margin-top:3px; }
+
+    /* ══ CHECK-IN: FORM VIEW ══ */
+    #view-form { display:none; }
+
+    .term-bar { background:var(--dark); padding:11px 18px; display:flex; align-items:center; gap:12px; }
+    .term-dots { display:flex; gap:5px; }
+    .term-dot { width:11px; height:11px; border-radius:50%; }
+    .term-path { font-family:monospace; font-size:10px; color:rgba(255,255,255,0.32); letter-spacing:0.15em; }
+
+    #ci-success { display:none; }
+    .suc-card { background:#fff; border-top:4px solid var(--pr); overflow:hidden; }
+    .suc-hd { background:var(--pr); padding:28px 22px; text-align:center; position:relative; overflow:hidden; }
+    .suc-maple { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0.07; pointer-events:none; }
+    .suc-inner { position:relative; }
+    .suc-icon { display:flex; justify-content:center; margin-bottom:10px; }
+    .suc-h { font-family:var(--f-head); font-size:24px; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.05em; }
+    .suc-sub { font-family:var(--f-body); font-size:11px; color:rgba(255,255,255,0.75); margin-top:6px; }
+    .suc-perf { position:relative; height:18px; }
+    .suc-perf::before { content:''; position:absolute; top:50%; left:10px; right:10px; border-top:2px dashed rgba(0,0,0,0.08); transform:translateY(-50%); }
+    .suc-hole { position:absolute; top:50%; transform:translateY(-50%); width:22px; height:22px; border-radius:50%; background:var(--muted); }
+    .suc-hole.l { left:-11px; } .suc-hole.r { right:-11px; }
+    .suc-body { padding:18px 22px 24px; }
+    .suc-pax { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px; }
+    .suc-pax-lbl { font-family:var(--f-body); font-size:8px; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted-fg); margin-bottom:3px; }
+    .suc-pax-name { font-family:var(--f-head); font-size:20px; font-weight:700; color:var(--fg); text-transform:uppercase; }
+    .barcode { display:flex; gap:1.5px; align-items:flex-end; height:34px; margin-bottom:14px; }
+    .barcode-bar { background:rgba(0,0,0,0.28); }
+    .suc-quote { font-family:var(--f-cur); font-size:18px; color:var(--muted-fg); text-align:center; margin-bottom:18px; }
+    .suc-acts { display:flex; flex-direction:column; gap:8px; }
+
+    .form-card { background:#fff; border-top:4px solid var(--pr); padding:22px 20px; }
+    .form-title { font-family:var(--f-head); font-size:26px; font-weight:700; color:var(--fg); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
+    .form-sub { font-family:var(--f-body); font-size:11px; color:var(--muted-fg); margin-bottom:22px; }
+
+    .comp-sec { padding-top:18px; border-top:1px dashed rgba(0,0,0,0.1); margin-top:2px; }
+    .comp-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .comp-lbl { font-family:var(--f-body); font-size:10px; font-weight:700; letter-spacing:0.25em; text-transform:uppercase; color:var(--muted-fg); }
+    .btn-add { display:flex; align-items:center; gap:5px; background:transparent; border:none; cursor:pointer; color:var(--pr); font-family:var(--f-body); font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; }
+    .btn-add:hover { text-decoration:underline; }
+    .comp-rows { display:flex; flex-direction:column; gap:8px; }
+    .comp-row { display:flex; gap:8px; }
+    .comp-row input { flex:1; padding:11px 13px; background:var(--inp); border:1px solid var(--bd); color:var(--fg); font-family:var(--f-body); font-size:13px; outline:none; transition:border-color 0.15s; }
+    .comp-row input:focus { border-color:var(--pr); }
+    .comp-row input::placeholder { color:#CCC; }
+    .btn-rm { padding:11px 12px; border:1px solid var(--bd); background:transparent; cursor:pointer; color:var(--muted-fg); transition:border-color 0.15s, color 0.15s; flex-shrink:0; }
+    .btn-rm:hover { border-color:var(--pr); color:var(--pr); }
+    .comp-empty { font-family:var(--f-body); font-size:12px; color:var(--muted-fg); font-style:italic; }
+
+    /* ══ MIMOS ══ */
+    #sec-mimos { padding:24px 20px 32px; }
+    .mimos-hd { text-align:center; margin-bottom:6px; }
+    .mimos-title { font-family:var(--f-head); font-size:28px; font-weight:700; color:var(--fg); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
+    .mimos-line { font-family:var(--f-cur); font-size:20px; color:var(--pr); margin-bottom:8px; }
+    .mimos-desc { font-family:var(--f-body); font-size:12px; color:var(--muted-fg); line-height:1.65; text-align:center; margin-bottom:20px; }
+
+    .gift-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:28px; }
+    .gift-card { background:#fff; border:1px solid var(--bd); overflow:hidden; display:flex; flex-direction:column; transition:box-shadow 0.2s; }
+    .gift-card:hover { box-shadow:0 6px 20px rgba(0,0,0,0.1); }
+    .gift-card.reserved { border-color:rgba(213,43,30,0.3); }
+    .gc-img { position:relative; aspect-ratio:1; overflow:hidden; background:#F5F0E8; }
+    .gc-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s; display:block; }
+    .gift-card:hover .gc-img img { transform:scale(1.05); }
+    .gift-card.reserved .gc-img img { opacity:0.55; filter:grayscale(25%); }
+    .gc-placeholder { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; color:#CCC; }
+    .gc-placeholder span { font-size:28px; }
+    .gc-badge { position:absolute; top:7px; right:7px; z-index:2; background:var(--pr); color:#fff; font-family:var(--f-head); font-size:9px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; padding:3px 8px; display:flex; align-items:center; gap:3px; }
+    .gc-avail { position:absolute; bottom:5px; left:5px; background:rgba(0,0,0,0.58); color:#fff; font-family:var(--f-body); font-size:9px; font-weight:600; padding:2px 6px; }
+    .gc-body { padding:10px 11px; flex:1; }
+    .gc-name { font-family:var(--f-head); font-size:13px; font-weight:600; color:var(--fg); text-transform:uppercase; letter-spacing:0.05em; line-height:1.2; margin-bottom:3px; }
+    .gc-desc { font-family:var(--f-body); font-size:10px; color:var(--muted-fg); line-height:1.5; }
+    .gc-foot { padding:8px 11px 11px; display:flex; gap:5px; }
+
+    .mimos-msg { border-top:1px solid var(--bd); padding-top:22px; }
+    .mimos-msg-ttl { font-family:var(--f-body); font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted-fg); margin-bottom:14px; }
+    .msg-sent { display:none; background:#E8FAF0; color:#1e6e40; border:1px solid #A8DFBC; padding:10px 14px; font-size:12px; font-family:var(--f-body); align-items:center; gap:8px; margin-top:10px; }
+    .msg-sent.show { display:flex; }
+
+    /* ══ MENSAGEM ══ */
+    #sec-mensagem { background:var(--dark); min-height:100%; }
+    .msg-hd-wrap { padding:26px 20px 18px; }
+    .msg-sec-title { font-family:var(--f-head); font-size:26px; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
+    .msg-sec-sub { font-family:var(--f-body); font-size:11px; color:rgba(255,255,255,0.38); }
+    .msg-wall { padding:0 20px 32px; display:flex; flex-direction:column; gap:12px; }
+    .msg-card { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); padding:15px; animation:fadeUp 0.3s ease; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+    .msg-inner-hd { display:flex; align-items:center; gap:10px; margin-bottom:9px; }
+    .msg-av { width:34px; height:34px; background:var(--pr); display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px; font-weight:800; flex-shrink:0; font-family:var(--f-head); }
+    .msg-nm { font-family:var(--f-head); font-size:13px; font-weight:600; color:#fff; letter-spacing:0.05em; text-transform:uppercase; }
+    .msg-dt { font-family:var(--f-body); font-size:10px; color:rgba(255,255,255,0.32); margin-top:1px; }
+    .msg-txt { font-family:var(--f-body); font-size:13px; color:rgba(255,255,255,0.68); line-height:1.65; }
+    .msg-empty { text-align:center; color:rgba(255,255,255,0.3); font-size:12px; padding:32px 0; font-family:var(--f-body); font-style:italic; }
+
+    /* ══ LOCAL ══ */
+    #sec-local { background:var(--dark); min-height:100%; position:relative; overflow:hidden; }
+    .loc-maple-r { position:absolute; right:-55px; top:50%; transform:translateY(-50%); opacity:0.04; pointer-events:none; }
+    .loc-maple-l { position:absolute; left:-50px; bottom:-10px; opacity:0.04; pointer-events:none; }
+    .loc-hd { padding:26px 20px 18px; position:relative; }
+    .loc-sec-title { font-family:var(--f-head); font-size:26px; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
+    .loc-sec-sub { font-family:var(--f-body); font-size:11px; color:rgba(255,255,255,0.38); }
+    .loc-card { margin:0 20px; border:1px solid rgba(255,255,255,0.1); position:relative; }
+    .loc-card-hd { border-top:2px solid var(--pr); padding:16px 18px 12px; }
+    .loc-card-tag { font-family:var(--f-body); font-size:9px; font-weight:700; letter-spacing:0.4em; text-transform:uppercase; color:var(--pr); margin-bottom:4px; }
+    .loc-card-title { font-family:var(--f-head); font-size:18px; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.05em; }
+    .loc-rows { padding:0 18px; }
+    .loc-row { display:flex; align-items:flex-start; gap:12px; padding:13px 0; border-bottom:1px solid rgba(255,255,255,0.07); }
+    .loc-row:last-child { border-bottom:none; }
+    .loc-ico { width:34px; height:34px; border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; color:var(--pr); flex-shrink:0; margin-top:2px; }
+    .loc-lbl { font-family:var(--f-body); font-size:8px; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:rgba(255,255,255,0.32); margin-bottom:3px; }
+    .loc-val { font-family:var(--f-head); font-size:16px; font-weight:600; color:#fff; line-height:1.3; }
+    .loc-sub-txt { font-family:var(--f-body); font-size:10px; color:rgba(255,255,255,0.38); margin-top:2px; }
+    .loc-cta { padding:18px 20px 28px; }
+    .btn-maps { display:flex; align-items:center; justify-content:center; gap:10px; padding:13px 24px; width:100%; border:1px solid var(--pr); color:var(--pr); background:transparent; cursor:pointer; font-family:var(--f-head); font-size:13px; font-weight:500; text-transform:uppercase; letter-spacing:0.25em; text-decoration:none; transition:background 0.15s, color 0.15s; }
+    .btn-maps:hover { background:var(--pr); color:#fff; }
+
+    .loc-footer { background:var(--fg); padding:18px 20px 24px; }
+    .loc-ft-brand { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
+    .loc-ft-name { font-family:var(--f-head); font-size:14px; font-weight:600; color:#fff; letter-spacing:0.3em; text-transform:uppercase; }
+    .loc-ft-tag { font-family:var(--f-cur); font-size:15px; color:rgba(255,255,255,0.38); margin-bottom:14px; }
+    .loc-ft-grid { border:1px solid rgba(255,255,255,0.1); padding:12px 14px; margin-bottom:14px; }
+    .loc-ft-grid-lbl { font-family:var(--f-body); font-size:8px; font-weight:700; letter-spacing:0.4em; text-transform:uppercase; color:rgba(255,255,255,0.22); margin-bottom:8px; }
+    .loc-ft-row { display:flex; align-items:center; justify-content:space-between; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .loc-ft-row:last-child { border-bottom:none; }
+    .loc-ft-rl { font-family:var(--f-body); font-size:11px; color:rgba(255,255,255,0.28); }
+    .loc-ft-rv { font-family:var(--f-head); font-size:13px; font-weight:500; color:#fff; letter-spacing:0.1em; }
+    .loc-ft-copy { font-family:var(--f-body); font-size:10px; color:rgba(255,255,255,0.18); text-align:center; }
+
+    /* ══ BOTTOM NAV ══ */
+    .bottom-nav { position:fixed; bottom:0; left:0; right:0; height:60px; background:#fff; border-top:1px solid var(--bd); display:flex; z-index:200; box-shadow:0 -2px 12px rgba(0,0,0,0.06); }
+    .nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; border:none; background:transparent; cursor:pointer; padding:8px 0; transition:all 0.15s; }
+    .nav-btn .nav-ico { color:#CCC; transition:color 0.15s; }
+    .nav-btn .nav-lbl { font-family:var(--f-body); font-size:8px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#CCC; transition:color 0.15s; }
+    .nav-btn.active .nav-ico, .nav-btn.active .nav-lbl { color:var(--pr); }
+
+    /* ══ MODAL ══ */
+    .modal-ov { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:300; align-items:flex-end; justify-content:center; backdrop-filter:blur(3px); }
+    .modal-ov.open { display:flex; }
+    .modal { background:#fff; border-top:4px solid var(--pr); padding:22px 22px 34px; width:100%; max-width:520px; animation:slideUp 0.25s ease; }
+    @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+    .modal-drag { width:36px; height:3px; background:#E0D8D8; border-radius:2px; margin:0 auto 18px; }
+    .modal-gift-ico { width:46px; height:46px; background:rgba(213,43,30,0.08); display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+    .modal h3 { font-family:var(--f-head); font-size:19px; color:var(--fg); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
+    .modal-gift-name { font-family:var(--f-body); font-size:13px; color:var(--pr); font-weight:700; margin-bottom:13px; }
+    .modal-sub { font-family:var(--f-body); font-size:12px; color:var(--muted-fg); margin-bottom:14px; line-height:1.5; }
+    .modal-err { background:#FDEDEC; color:#C0392B; padding:10px 13px; font-size:12px; margin-top:10px; display:none; font-family:var(--f-body); }
+    .modal-err.show { display:block; }
+    .modal-acts { display:flex; gap:8px; margin-top:14px; }
+    .btn-cancel { flex:1; padding:13px; border:1px solid var(--bd); background:transparent; color:var(--muted-fg); font-size:12px; font-weight:600; cursor:pointer; font-family:var(--f-body); transition:border-color 0.15s; }
+    .btn-cancel:hover { border-color:var(--fg); }
+    .btn-modal-confirm { flex:2; padding:13px; background:var(--pr); color:#fff; border:none; cursor:pointer; font-family:var(--f-head); font-size:13px; font-weight:500; text-transform:uppercase; letter-spacing:0.25em; transition:background 0.15s; display:flex; align-items:center; justify-content:center; gap:8px; }
+    .btn-modal-confirm:hover { background:rgba(213,43,30,0.88); }
+    .btn-modal-confirm:disabled { opacity:0.65; cursor:not-allowed; }
+    .modal-suc { display:none; flex-direction:column; align-items:center; text-align:center; }
+    .modal-suc.show { display:flex; }
+    .msuc-ico { width:58px; height:58px; background:#E8FAF0; display:flex; align-items:center; justify-content:center; margin-bottom:13px; }
+    .msuc-t { font-family:var(--f-head); font-size:19px; color:var(--fg); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:7px; }
+    .msuc-s { font-family:var(--f-body); font-size:12px; color:var(--muted-fg); margin-bottom:18px; }
   </style>
 </head>
 <body>
 
-<!-- Background blobs -->
-<div class="bg-blobs">
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <div class="blob b3"></div>
-</div>
+<!-- Maple leaf symbol (reused via SVG <use>) -->
+<svg style="display:none">
+  <symbol id="maple" viewBox="0 0 100 120">
+    <path d="M50 8 L56 32 L74 22 L64 44 L90 42 L72 58 L82 82 L58 70 L58 108 L42 108 L42 70 L18 82 L28 58 L10 42 L36 44 L26 22 L44 32 Z"/>
+  </symbol>
+</svg>
 
-<!-- Fixed header -->
+<!-- Header -->
 <header class="app-header">
-  <div class="hd-icon">
-    <i data-lucide="plane" style="width:20px;height:20px;transform:rotate(45deg);"></i>
+  <div class="hd-maple">
+    <svg viewBox="0 0 100 120" fill="currentColor" width="18" height="22"><use href="#maple"/></svg>
   </div>
-  <div class="hd-brand">DESPEDIDA<br>JUJU</div>
+  <div class="hd-brand">Ju Airlines</div>
 </header>
 
-<!-- Main content -->
 <main class="app-main">
 
-  <!-- ══ CHECK-IN SECTION ══ -->
+  <!-- ══════ CHECK-IN ══════ -->
   <section class="sec active" id="sec-checkin">
 
-    <!-- View: Landing -->
+    <!-- Landing / Hero -->
     <div id="view-land">
-      <div class="land-watermark">
-        A jornada de uma vida<br>começa com um boarding
+      <div class="marquee-strip">
+        <div class="marquee-track">
+          <span class="marquee-item">✈ GRU → YYZ &nbsp; FL JU-001 &nbsp; 15 AGO 2026 &nbsp; EMBARQUE 17H00 &nbsp; PORTÃO 01 &nbsp;&nbsp;</span>
+          <span class="marquee-item">✈ GRU → YYZ &nbsp; FL JU-001 &nbsp; 15 AGO 2026 &nbsp; EMBARQUE 17H00 &nbsp; PORTÃO 01 &nbsp;&nbsp;</span>
+          <span class="marquee-item">✈ GRU → YYZ &nbsp; FL JU-001 &nbsp; 15 AGO 2026 &nbsp; EMBARQUE 17H00 &nbsp; PORTÃO 01 &nbsp;&nbsp;</span>
+          <span class="marquee-item">✈ GRU → YYZ &nbsp; FL JU-001 &nbsp; 15 AGO 2026 &nbsp; EMBARQUE 17H00 &nbsp; PORTÃO 01 &nbsp;&nbsp;</span>
+        </div>
       </div>
 
-      <div class="hero-card">
-        <h1 class="hero-title">BEM-VINDO(A)<br>A BORDO!</h1>
-        <p class="hero-body">Você é meu convidado para celebrar meu aniversário e despedida antes do intercâmbio.</p>
-        <p class="hero-cta-text">Faça seu Check-in e confirme sua presença!</p>
-        <button class="btn-red" onclick="goToForm()">FAZER CHECK-IN</button>
+      <div class="hero-content">
+        <!-- Boarding pass card -->
+        <div class="bp">
+          <div class="bp-hd">
+            <div class="bp-hd-l">
+              <i data-lucide="plane" style="width:13px;height:13px;color:rgba(255,255,255,0.7);"></i>
+              <span class="bp-brand">Ju Airlines</span>
+            </div>
+            <svg viewBox="0 0 100 120" fill="white" width="16" height="20"><use href="#maple"/></svg>
+          </div>
+          <div class="bp-body">
+            <div class="bp-route">
+              <div>
+                <div class="bp-dir-lbl">De</div>
+                <div class="bp-code">GRU</div>
+                <div class="bp-city">São Paulo</div>
+              </div>
+              <div class="bp-mid">
+                <div class="bp-mid-line">
+                  <div class="bp-dash"></div>
+                  <div class="bp-circle">
+                    <i data-lucide="plane" style="width:10px;height:10px;color:#D52B1E;"></i>
+                  </div>
+                  <div class="bp-dash"></div>
+                </div>
+                <div class="bp-direto">Direto</div>
+              </div>
+              <div class="bp-right">
+                <div class="bp-dir-lbl" style="text-align:right;">Para</div>
+                <div class="bp-code" style="text-align:right;">YYZ</div>
+                <div class="bp-city" style="text-align:right;">Toronto, CA</div>
+              </div>
+            </div>
+            <div class="bp-grid">
+              <div><div class="bp-grid-lbl">Voo</div><div class="bp-grid-val">JU-001</div></div>
+              <div><div class="bp-grid-lbl">Data</div><div class="bp-grid-val">15 AGO</div></div>
+              <div><div class="bp-grid-lbl">Hora</div><div class="bp-grid-val">17H00</div></div>
+              <div><div class="bp-grid-lbl">Classe</div><div class="bp-grid-val">VIP</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-cta">
+          <div class="hero-welcome">Bem-vindo(a) a bordo!</div>
+          <div class="hero-desc">Antes do embarque para o Canadá, celebre meu aniversário e essa nova fase ao lado de pessoas especiais como você.</div>
+          <button class="btn-pr" onclick="goToForm()">
+            <i data-lucide="plane" style="width:15px;height:15px;"></i>
+            FAZER CHECK-IN
+          </button>
+        </div>
       </div>
 
-      <div class="countdown-wrap">
-        <p class="cd-label">CONTAGEM REGRESSIVA PARA A DECOLAGEM</p>
+      <div class="cd-wrap">
+        <p class="cd-lbl">CONTAGEM REGRESSIVA PARA A DECOLAGEM</p>
         <div class="cd-row">
-          <div class="cd-group"><span class="cd-n" id="cd-d">--</span><span class="cd-l">DIAS</span></div>
+          <div class="cd-g"><span class="cd-n" id="cd-d">--</span><span class="cd-l">DIAS</span></div>
           <span class="cd-sep">:</span>
-          <div class="cd-group"><span class="cd-n" id="cd-h">--</span><span class="cd-l">HORAS</span></div>
+          <div class="cd-g"><span class="cd-n" id="cd-h">--</span><span class="cd-l">HORAS</span></div>
           <span class="cd-sep">:</span>
-          <div class="cd-group"><span class="cd-n" id="cd-m">--</span><span class="cd-l">MINUTOS</span></div>
+          <div class="cd-g"><span class="cd-n" id="cd-m">--</span><span class="cd-l">MIN</span></div>
           <span class="cd-sep">:</span>
-          <div class="cd-group"><span class="cd-n" id="cd-s">--</span><span class="cd-l">SEGUNDOS</span></div>
+          <div class="cd-g"><span class="cd-n" id="cd-s">--</span><span class="cd-l">SEG</span></div>
         </div>
       </div>
     </div>
 
-    <!-- View: Form -->
+    <!-- Form view -->
     <div id="view-form">
-      <!-- Success screen -->
-      <div class="form-success" id="ci-success">
-        <div class="suc-circle">
-          <i data-lucide="check-circle" style="width:38px;height:38px;color:#27AE60;"></i>
+      <div class="term-bar">
+        <div class="term-dots">
+          <div class="term-dot" style="background:#ff5f57;"></div>
+          <div class="term-dot" style="background:#febc2e;"></div>
+          <div class="term-dot" style="background:#28c840;"></div>
         </div>
-        <h2 class="suc-title" id="ci-suc-title">Check-in realizado!</h2>
-        <p class="suc-sub" id="ci-suc-sub">Seu embarque para a festa está confirmado. Nos vemos em breve!</p>
-        <button class="btn-red" onclick="goToLand()" style="margin-bottom:12px;">VOLTAR AO INÍCIO</button>
-        <button class="btn-red" onclick="switchSection('mimos')" style="background:#1A0A0A;">VER MIMOS PARA JUJU</button>
+        <span class="term-path">ju-airlines / check-in / passenger</span>
       </div>
 
-      <!-- Form -->
-      <div id="ci-form-wrap">
-        <h2 class="form-title">CHECK-IN</h2>
-        <p class="form-sub">Preencha as informações abaixo para garantir seu acesso à comemoração.</p>
+      <!-- Success state -->
+      <div id="ci-success">
+        <div class="suc-card">
+          <div class="suc-hd">
+            <div class="suc-maple">
+              <svg viewBox="0 0 100 120" fill="white" width="180" height="220"><use href="#maple"/></svg>
+            </div>
+            <div class="suc-inner">
+              <div class="suc-icon"><i data-lucide="check-circle" style="width:52px;height:52px;color:white;"></i></div>
+              <div class="suc-h">Check-in realizado!</div>
+              <div class="suc-sub">Seu embarque para essa comemoração está confirmado.</div>
+            </div>
+          </div>
+          <div class="suc-perf">
+            <div class="suc-hole l"></div>
+            <div class="suc-hole r"></div>
+          </div>
+          <div class="suc-body">
+            <div class="suc-pax">
+              <div>
+                <div class="suc-pax-lbl">Passageiro</div>
+                <div class="suc-pax-name" id="ci-suc-name">—</div>
+              </div>
+              <div style="text-align:right;">
+                <div class="suc-pax-lbl">Destino</div>
+                <div class="suc-pax-name">YYZ 🍁</div>
+              </div>
+            </div>
+            <div class="barcode" id="suc-barcode"></div>
+            <div class="suc-quote">"Até breve, com muito carinho!"</div>
+            <div class="suc-acts">
+              <button class="btn-pr" onclick="switchSection('mimos')">
+                <i data-lucide="gift" style="width:15px;height:15px;"></i>
+                LISTA DE PRESENTES 🎁
+              </button>
+              <button class="btn-dk" onclick="goToLand()">VOLTAR AO INÍCIO</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <div class="alert-box alert-err" id="ci-err">
-          <i data-lucide="alert-circle" style="width:16px;height:16px;flex-shrink:0;"></i>
+      <!-- Form fields -->
+      <div id="ci-form-wrap" class="form-card">
+        <div class="sec-tag">Boarding Pass</div>
+        <div class="form-title">Check-in</div>
+        <div class="form-sub">Sistema de embarque · Confirme sua presença</div>
+
+        <div class="alert alert-err" id="ci-err">
+          <i data-lucide="alert-circle" style="width:15px;height:15px;flex-shrink:0;"></i>
           <span id="ci-err-msg">Erro ao enviar.</span>
         </div>
 
         <form onsubmit="submitCheckin(event)">
-          <div class="field-line">
-            <label>Nome</label>
-            <input type="text" id="ci-name" placeholder="Digite seu nome e sobrenome" required autocomplete="name" />
+          <div class="fbox">
+            <label>Nome completo do passageiro *</label>
+            <input type="text" id="ci-name" placeholder="Seu nome como no documento" required autocomplete="name" />
           </div>
-          <div class="field-line">
-            <label>WhatsApp</label>
+          <div class="fbox">
+            <label>WhatsApp *</label>
             <input type="tel" id="ci-phone" placeholder="(11) 99999-9999" required oninput="phoneMask(this)" />
           </div>
-          <div class="field-line">
-            <label>Terá acompanhante? Quantos?</label>
-            <input type="number" id="ci-qty" value="0" min="0" max="20" />
+
+          <div class="comp-sec">
+            <div class="comp-hd">
+              <span class="comp-lbl">Acompanhantes</span>
+              <button type="button" class="btn-add" onclick="addCompanion()">
+                <i data-lucide="plus" style="width:12px;height:12px;"></i> Adicionar
+              </button>
+            </div>
+            <div id="comp-rows" class="comp-rows">
+              <div class="comp-empty" id="comp-empty">Nenhum acompanhante adicionado.</div>
+            </div>
           </div>
-          <div class="field-line">
-            <label>Nomes dos acompanhantes</label>
-            <input type="text" id="ci-companions" placeholder="Ex: Maria Silva, João Santos" />
-          </div>
-          <div class="field-line" style="border-bottom:none;padding-bottom:0;margin-bottom:24px;">
-            <label>Mensagem para a Juliana <span style="font-weight:400;text-transform:none;letter-spacing:0;"> — opcional</span></label>
+
+          <div class="fbox" style="margin-top:20px;">
+            <label>Mensagem para a Juliana <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;">— opcional</span></label>
             <textarea id="ci-msg" placeholder="Deixe um recadinho carinhoso..."></textarea>
           </div>
-          <button type="submit" class="btn-red" id="ci-btn">ENVIAR CONFIRMAÇÃO</button>
+
+          <button type="submit" class="btn-pr" id="ci-btn">
+            <i data-lucide="plane" style="width:15px;height:15px;"></i>
+            CONFIRMAR EMBARQUE
+          </button>
         </form>
       </div>
     </div>
-
   </section>
 
-  <!-- ══ MIMOS SECTION ══ -->
+  <!-- ══════ MIMOS ══════ -->
   <section class="sec" id="sec-mimos">
-    <div class="mimos-title-row">
-      <span class="mimos-emoji">🎁</span>
-      <h2 class="mimos-h">Mimos</h2>
+    <div class="mimos-hd">
+      <div class="sec-tag">Seção 03</div>
+      <div class="mimos-title">Mimos para Juju</div>
+      <div class="mimos-line">Sua presença é o meu maior presente! ❤️</div>
     </div>
     <p class="mimos-desc">
-      <strong>Sua presença é o meu maior presente! ❤️</strong><br>
-      Se desejar me mimar, escolha um item da lista e reserve-o para evitar duplicidade.
-      Os links são apenas sugestões de compra, e você pode comprar onde preferir.
+      Se quiser me mimar, escolha um item da lista e reserve-o para evitar duplicidade.<br>
+      Os links são apenas sugestões de compra.
     </p>
 
     <div class="gift-grid" id="gift-grid">
-      <div style="grid-column:1/-1;text-align:center;padding:24px;color:#CCC;">Carregando presentes...</div>
+      <div style="grid-column:1/-1;text-align:center;padding:24px;color:#CCC;font-family:'Montserrat',sans-serif;font-size:13px;">Carregando presentes...</div>
     </div>
 
-    <!-- Message form at bottom -->
     <div class="mimos-msg">
-      <div class="field-line">
-        <label>Mensagem para Juliana ❤️</label>
+      <div class="mimos-msg-ttl">Mensagem para a Juju</div>
+      <div class="fbox">
+        <label>Mensagem ❤️</label>
         <textarea id="mi-text" placeholder="Deixe uma mensagem especial para a Juju..."></textarea>
       </div>
-      <div class="field-line">
-        <label>Nome do passageiro</label>
-        <input type="text" id="mi-name" placeholder="Seu nome completo..." />
+      <div class="fbox">
+        <label>Seu nome</label>
+        <input type="text" id="mi-name" placeholder="Nome completo..." />
       </div>
-      <div class="msg-ok" id="mi-ok">
-        <i data-lucide="check-circle" style="width:15px;height:15px;"></i>
+      <div class="msg-sent" id="mi-ok">
+        <i data-lucide="check-circle" style="width:14px;height:14px;flex-shrink:0;"></i>
         Mensagem enviada com sucesso!
       </div>
-      <br>
-      <button class="btn-red" onclick="submitMimoMsg()" id="mi-btn">ENVIAR MENSAGEM</button>
+      <button class="btn-pr" onclick="submitMimoMsg()" id="mi-btn" style="margin-top:4px;">
+        ENVIAR MENSAGEM
+      </button>
     </div>
   </section>
 
-  <!-- ══ MENSAGEM SECTION ══ -->
+  <!-- ══════ MENSAGEM ══════ -->
   <section class="sec" id="sec-mensagem">
-    <div class="sec-title-bar">
-      <div class="sec-title">Mural de Mensagens</div>
-      <div class="sec-sub">Veja o que os convidados escreveram para a Juju</div>
+    <div class="msg-hd-wrap">
+      <div class="sec-tag dark">Mensagens</div>
+      <div class="msg-sec-title">Mural de Mensagens</div>
+      <div class="msg-sec-sub">Veja o que os convidados escreveram para a Juju</div>
     </div>
     <div id="msg-wall" class="msg-wall">
       <div class="msg-empty">Nenhuma mensagem ainda.</div>
     </div>
   </section>
 
-  <!-- ══ LOCAL SECTION ══ -->
+  <!-- ══════ LOCAL ══════ -->
   <section class="sec" id="sec-local">
-    <div class="sec-title-bar">
-      <div class="sec-title">Local do Evento</div>
-      <div class="sec-sub">Voo JU19ANOS — 15 de Agosto de 2026</div>
+    <div class="loc-maple-r">
+      <svg viewBox="0 0 100 120" fill="white" width="240" height="290"><use href="#maple"/></svg>
+    </div>
+    <div class="loc-maple-l">
+      <svg viewBox="0 0 100 120" fill="white" width="160" height="195"><use href="#maple"/></svg>
     </div>
 
-    <div class="local-card">
-      <div class="local-title">
-        <i data-lucide="map-pin" style="width:20px;height:20px;"></i>
-        Informações
+    <div class="loc-hd">
+      <div class="sec-tag dark">Seção 04</div>
+      <div class="loc-sec-title">Informações da Festa</div>
+      <div class="loc-sec-sub">Voo JU-001 · GRU → YYZ</div>
+    </div>
+
+    <div class="loc-card">
+      <div class="loc-card-hd">
+        <div class="loc-card-tag">Voo JU-001</div>
+        <div class="loc-card-title">Embarque Final</div>
       </div>
-      <div class="local-row">
-        <div class="local-ico"><i data-lucide="calendar" style="width:16px;height:16px;"></i></div>
-        <div>
-          <div class="local-lbl">Data</div>
-          <div class="local-val" id="loc-data">15 de Agosto de 2026</div>
+      <div class="loc-rows">
+        <div class="loc-row">
+          <div class="loc-ico"><i data-lucide="calendar" style="width:14px;height:14px;"></i></div>
+          <div>
+            <div class="loc-lbl">Data</div>
+            <div class="loc-val" id="loc-data">15 de Agosto de 2026</div>
+            <div class="loc-sub-txt">Sábado</div>
+          </div>
         </div>
-      </div>
-      <div class="local-row">
-        <div class="local-ico"><i data-lucide="clock" style="width:16px;height:16px;"></i></div>
-        <div>
-          <div class="local-lbl">Horário</div>
-          <div class="local-val" id="loc-hora">17:00h</div>
+        <div class="loc-row">
+          <div class="loc-ico"><i data-lucide="clock" style="width:14px;height:14px;"></i></div>
+          <div>
+            <div class="loc-lbl">Horário</div>
+            <div class="loc-val" id="loc-hora">17h00</div>
+            <div class="loc-sub-txt">Abertura dos portões</div>
+          </div>
         </div>
-      </div>
-      <div class="local-row">
-        <div class="local-ico"><i data-lucide="plane" style="width:16px;height:16px;transform:rotate(45deg);"></i></div>
-        <div>
-          <div class="local-lbl">Voo</div>
-          <div class="local-val">JU19ANOS &nbsp;·&nbsp; GRU → YYZ</div>
+        <div class="loc-row">
+          <div class="loc-ico"><i data-lucide="map-pin" style="width:14px;height:14px;"></i></div>
+          <div>
+            <div class="loc-lbl">Endereço</div>
+            <div class="loc-val" id="loc-addr">Rua Saturnino de Sousa, 299<br>Vila Nhocuné, São Paulo – SP</div>
+          </div>
         </div>
-      </div>
-      <div class="local-row">
-        <div class="local-ico"><i data-lucide="navigation" style="width:16px;height:16px;"></i></div>
-        <div>
-          <div class="local-lbl">Endereço</div>
-          <div class="local-val" id="loc-addr">Rua Saturnino de Sousa, 299<br>Vila Nhocuné, São Paulo – SP</div>
+        <div class="loc-row">
+          <div class="loc-ico"><i data-lucide="plane" style="width:14px;height:14px;transform:rotate(45deg);"></i></div>
+          <div>
+            <div class="loc-lbl">Voo</div>
+            <div class="loc-val">JU19ANOS · GRU → YYZ</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <a href="#" id="loc-maps" target="_blank" rel="noopener" class="btn-red" style="display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;">
-      <i data-lucide="map" style="width:18px;height:18px;"></i>
-      ABRIR NO GOOGLE MAPS
-    </a>
+    <div class="loc-cta">
+      <a href="#" id="loc-maps" target="_blank" rel="noopener" class="btn-maps">
+        <i data-lucide="map-pin" style="width:14px;height:14px;"></i>
+        ABRIR NO GOOGLE MAPS
+      </a>
+    </div>
+
+    <div class="loc-footer">
+      <div class="loc-ft-brand">
+        <svg viewBox="0 0 100 120" fill="currentColor" style="width:15px;height:18px;color:#D52B1E;"><use href="#maple"/></svg>
+        <span class="loc-ft-name">Ju Airlines</span>
+      </div>
+      <div class="loc-ft-tag">Uma viagem que começa com uma festa...</div>
+      <div class="loc-ft-grid">
+        <div class="loc-ft-grid-lbl">Detalhes do Voo</div>
+        <div class="loc-ft-row"><span class="loc-ft-rl">✈️ Rota</span><span class="loc-ft-rv">Brasil → Canadá</span></div>
+        <div class="loc-ft-row"><span class="loc-ft-rl">❤️ Evento</span><span class="loc-ft-rv">Despedida Juju</span></div>
+        <div class="loc-ft-row"><span class="loc-ft-rl">📅 Data</span><span class="loc-ft-rv">15/08/2026</span></div>
+        <div class="loc-ft-row"><span class="loc-ft-rl">🕔 Hora</span><span class="loc-ft-rv">17h00</span></div>
+      </div>
+      <div class="loc-ft-copy">© 2026 Ju Airlines — Feito com ❤️ para a Juliana</div>
+    </div>
   </section>
 
 </main>
 
-<!-- Bottom navigation -->
+<!-- Bottom nav -->
 <nav class="bottom-nav">
   <button class="nav-btn active" id="nav-checkin" onclick="switchSection('checkin')">
     <div class="nav-ico"><i data-lucide="user-check" style="width:20px;height:20px;"></i></div>
@@ -584,38 +675,34 @@
   </button>
 </nav>
 
-<!-- Reserve Modal -->
+<!-- Reserve modal -->
 <div class="modal-ov" id="reserveModal">
   <div class="modal">
     <div class="modal-drag"></div>
-
-    <!-- Form state -->
     <div id="modal-form-state">
-      <div class="modal-ico">
-        <i data-lucide="gift" style="width:24px;height:24px;color:#C8102E;"></i>
+      <div class="modal-gift-ico">
+        <i data-lucide="gift" style="width:20px;height:20px;color:#D52B1E;"></i>
       </div>
       <h3>Reservar Presente</h3>
-      <div class="modal-gift" id="modal-gift-name"></div>
+      <div class="modal-gift-name" id="modal-gift-name"></div>
       <p class="modal-sub">Informe seu nome para registrar a reserva e evitar duplicidade.</p>
-      <div class="field-line">
+      <div class="fbox">
         <label>Seu Nome</label>
         <input type="text" id="modal-name" placeholder="Nome completo..." />
       </div>
       <div class="modal-err" id="modal-err"></div>
-      <div class="modal-actions">
+      <div class="modal-acts">
         <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
-        <button class="btn-red" id="modal-confirm-btn" onclick="confirmReserve()" style="flex:2;">CONFIRMAR</button>
+        <button class="btn-modal-confirm" id="modal-confirm-btn" onclick="confirmReserve()">CONFIRMAR</button>
       </div>
     </div>
-
-    <!-- Success state -->
     <div class="modal-suc" id="modal-suc-state">
       <div class="msuc-ico">
-        <i data-lucide="check-circle" style="width:30px;height:30px;color:#27AE60;"></i>
+        <i data-lucide="check-circle" style="width:26px;height:26px;color:#27AE60;"></i>
       </div>
       <div class="msuc-t">Presente reservado!</div>
       <div class="msuc-s">Sua reserva foi registrada. Obrigada pelo carinho!</div>
-      <button class="btn-red" onclick="closeModal()">FECHAR</button>
+      <button class="btn-pr" onclick="closeModal()" style="width:auto;padding:13px 32px;">FECHAR</button>
     </div>
   </div>
 </div>
@@ -623,32 +710,34 @@
 <script>
   lucide.createIcons();
 
-  /* ═══ NAVIGATION ═══ */
+  /* ── NAVIGATION ── */
   const SECS = ['checkin','mimos','mensagem','local'];
-
   function switchSection(id) {
     SECS.forEach(s => {
       document.getElementById('sec-'+s).classList.toggle('active', s===id);
       document.getElementById('nav-'+s).classList.toggle('active', s===id);
     });
     document.querySelector('.app-main').scrollTop = 0;
-    if (id === 'mimos')    loadGifts();
-    if (id === 'mensagem') loadMessages();
-    if (id === 'local')    loadLocal();
+    if (id==='mimos')    loadGifts();
+    if (id==='mensagem') loadMessages();
+    if (id==='local')    loadLocal();
   }
 
-  /* ═══ CHECK-IN ═══ */
+  /* ── CHECK-IN VIEWS ── */
   function goToForm() {
     document.getElementById('view-land').style.display = 'none';
     document.getElementById('view-form').style.display = 'block';
     document.querySelector('.app-main').scrollTop = 0;
   }
   function goToLand() {
-    document.getElementById('view-land').style.display = 'block';
+    document.getElementById('view-land').style.display = '';
     document.getElementById('view-form').style.display = 'none';
-    document.getElementById('ci-success').classList.remove('show');
+    document.getElementById('ci-success').style.display = 'none';
     document.getElementById('ci-form-wrap').style.display = 'block';
+    compList = []; compCount = 0;
+    document.getElementById('comp-rows').innerHTML = '<div class="comp-empty" id="comp-empty">Nenhum acompanhante adicionado.</div>';
     document.querySelector('.app-main').scrollTop = 0;
+    lucide.createIcons();
   }
 
   function phoneMask(el) {
@@ -658,70 +747,91 @@
     el.value = v;
   }
 
+  /* ── COMPANIONS ── */
+  let compCount = 0, compList = [];
+  function addCompanion() {
+    compCount++;
+    const id = 'cp_' + compCount;
+    compList.push(id);
+    const empty = document.getElementById('comp-empty');
+    if (empty) empty.remove();
+    const row = document.createElement('div');
+    row.className = 'comp-row'; row.id = 'row_' + id;
+    row.innerHTML = `<input type="text" id="${id}" placeholder="Nome completo do acompanhante ${compList.length}" /><button type="button" class="btn-rm" onclick="removeCompanion('${id}')"><i data-lucide="trash-2" style="width:15px;height:15px;"></i></button>`;
+    document.getElementById('comp-rows').appendChild(row);
+    lucide.createIcons();
+  }
+  function removeCompanion(id) {
+    const row = document.getElementById('row_'+id);
+    if (row) row.remove();
+    compList = compList.filter(c => c !== id);
+    if (!compList.length) document.getElementById('comp-rows').innerHTML = '<div class="comp-empty" id="comp-empty">Nenhum acompanhante adicionado.</div>';
+  }
+
+  /* ── BARCODE ── */
+  function buildBarcode(elId) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i=0;i<38;i++) {
+      const b = document.createElement('div');
+      b.className = 'barcode-bar';
+      b.style.width = (i%3===0?'3':'2')+'px';
+      b.style.height = (i%4===0?100:i%2===0?70:55)+'%';
+      el.appendChild(b);
+    }
+  }
+
+  /* ── SUBMIT CHECK-IN ── */
   async function submitCheckin(e) {
     e.preventDefault();
     const errEl = document.getElementById('ci-err');
     errEl.classList.remove('show');
-
-    const name    = document.getElementById('ci-name').value.trim();
-    const phone   = document.getElementById('ci-phone').value.trim();
-    const qtyVal  = parseInt(document.getElementById('ci-qty').value)||0;
-    const compTxt = document.getElementById('ci-companions').value.trim();
-    const msg     = document.getElementById('ci-msg').value.trim();
-
+    const name  = document.getElementById('ci-name').value.trim();
+    const phone = document.getElementById('ci-phone').value.trim();
+    const msg   = document.getElementById('ci-msg').value.trim();
     if (!phone) {
       document.getElementById('ci-err-msg').textContent = 'Informe seu WhatsApp.';
       errEl.classList.add('show'); return;
     }
-
-    // Parse companions from comma-separated text
-    const companions = qtyVal > 0 && compTxt
-      ? compTxt.split(',').map(s=>({name:s.trim()})).filter(c=>c.name)
-      : [];
-
+    const companions = compList
+      .map(id => ({ name: (document.getElementById(id)?.value||'').trim() }))
+      .filter(c => c.name);
     const btn = document.getElementById('ci-btn');
     btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> ENVIANDO...';
-
+    btn.innerHTML = '<span class="spinner"></span> PROCESSANDO...';
     try {
       const res = await fetch('/api/rsvp', {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ name, phone, attending:'yes', companions, message:msg, guestId:null })
       });
       const data = await res.json();
-
       if (!res.ok) {
-        document.getElementById('ci-err-msg').textContent = data.error || 'Erro ao enviar.';
+        document.getElementById('ci-err-msg').textContent = data.error||'Erro ao enviar.';
         errEl.classList.add('show');
         btn.disabled = false;
-        btn.textContent = 'ENVIAR CONFIRMAÇÃO'; return;
+        btn.innerHTML = '<i data-lucide="plane" style="width:15px;height:15px;"></i> CONFIRMAR EMBARQUE';
+        lucide.createIcons(); return;
       }
-
-      // Show success
       document.getElementById('ci-form-wrap').style.display = 'none';
-      const first = name.split(' ')[0];
-      document.getElementById('ci-suc-title').textContent = 'Check-in realizado com sucesso!';
-      document.getElementById('ci-suc-sub').textContent =
-        `Seu embarque está confirmado, ${first}! ${companions.length ? 'Registramos você e seus acompanhantes.' : ''} Nos vemos em breve!`;
-      document.getElementById('ci-success').classList.add('show');
+      document.getElementById('ci-suc-name').textContent = name.toUpperCase();
+      buildBarcode('suc-barcode');
+      document.getElementById('ci-success').style.display = 'block';
       lucide.createIcons();
-
     } catch {
       document.getElementById('ci-err-msg').textContent = 'Erro de conexão. Tente novamente.';
       errEl.classList.add('show');
       btn.disabled = false;
-      btn.textContent = 'ENVIAR CONFIRMAÇÃO';
+      btn.innerHTML = '<i data-lucide="plane" style="width:15px;height:15px;"></i> CONFIRMAR EMBARQUE';
+      lucide.createIcons();
     }
   }
 
-  /* ═══ COUNTDOWN ═══ */
+  /* ── COUNTDOWN ── */
   const TARGET = new Date('2026-08-15T17:00:00');
   function tick() {
     const diff = TARGET - new Date();
-    if (diff <= 0) {
-      ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='0');
-      return;
-    }
+    if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='0'); return; }
     document.getElementById('cd-d').textContent = Math.floor(diff/86400000);
     document.getElementById('cd-h').textContent = String(Math.floor(diff%86400000/3600000)).padStart(2,'0');
     document.getElementById('cd-m').textContent = String(Math.floor(diff%3600000/60000)).padStart(2,'0');
@@ -729,52 +839,52 @@
   }
   tick(); setInterval(tick,1000);
 
-  /* ═══ GIFTS ═══ */
-  let giftData = [];
-  let currentReserveId = null;
-
+  /* ── GIFTS ── */
+  let giftData = [], currentReserveId = null;
   async function loadGifts() {
     try {
       const { giftList } = await fetch('/api/presentes').then(r=>r.json());
-      giftData = giftList;
-      renderGifts(giftList);
-    } catch { document.getElementById('gift-grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#CCC;padding:24px;">Erro ao carregar presentes.</div>'; }
+      giftData = giftList; renderGifts(giftList);
+    } catch {
+      document.getElementById('gift-grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#CCC;padding:24px;font-family:Montserrat,sans-serif;">Erro ao carregar presentes.</div>';
+    }
   }
-
   function isFullyReserved(g) { return (g.reservations||[]).length >= (g.quantity||1); }
-
   function renderGifts(gifts) {
     const el = document.getElementById('gift-grid');
-    if (!gifts.length) { el.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#CCC;padding:24px;">Nenhum presente cadastrado ainda.</div>'; return; }
-
+    if (!gifts.length) { el.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#CCC;padding:24px;font-family:Montserrat,sans-serif;">Nenhum presente cadastrado.</div>'; return; }
     el.innerHTML = gifts.map(g => {
       const reserved = isFullyReserved(g);
+      const avail = (g.quantity||1) - (g.reservations||[]).length;
       const imgHtml = g.imageUrl
         ? `<img src="${g.imageUrl}" alt="${g.name}" onerror="this.parentElement.innerHTML='<div class=\\'gc-placeholder\\'><span>${g.emoji||'🎁'}</span></div>'" />`
         : `<div class="gc-placeholder"><span>${g.emoji||'🎁'}</span></div>`;
-      return `
-        <div class="gift-card${reserved?' reserved':''}">
-          <div class="gc-img-wrap">
-            ${imgHtml}
-            ${reserved ? '<div class="gc-reserved-badge">Reservado</div>' : ''}
-          </div>
-          <div class="gc-body">
-            <div class="gc-name">${g.name}</div>
-            ${g.description ? `<div class="gc-desc">${g.description}</div>` : ''}
-          </div>
-          <div class="gc-foot">
-            <button class="gc-btn${reserved?' taken':''}" ${reserved?'disabled':''} onclick="openReserve('${g.id}')">
-              ${reserved ? 'RESERVADO' : 'RESERVAR'}
-            </button>
-          </div>
-        </div>`;
+      const linkBtn = (g.links&&g.links[0])
+        ? `<a href="${g.links[0]}" target="_blank" rel="noopener" class="btn-outline-sm"><i data-lucide="external-link" style="width:10px;height:10px;"></i> Ver</a>`
+        : '';
+      return `<div class="gift-card${reserved?' reserved':''}">
+        <div class="gc-img">
+          ${imgHtml}
+          ${reserved ? `<div class="gc-badge"><i data-lucide="check-circle" style="width:9px;height:9px;"></i> Reservado</div>` : `<div class="gc-avail">${avail} disponível${avail>1?'is':''}</div>`}
+        </div>
+        <div class="gc-body">
+          <div class="gc-name">${g.name}</div>
+          ${g.description?`<div class="gc-desc">${g.description}</div>`:''}
+        </div>
+        <div class="gc-foot">
+          ${linkBtn}
+          <button class="btn-pr-sm${reserved?' taken':''}" ${reserved?'disabled':''} onclick="openReserve('${g.id}')">
+            ${reserved?'RESERVADO':'RESERVAR'}
+          </button>
+        </div>
+      </div>`;
     }).join('');
     lucide.createIcons();
   }
 
   function openReserve(id) {
     const g = giftData.find(x=>x.id===id);
-    if (!g || isFullyReserved(g)) return;
+    if (!g||isFullyReserved(g)) return;
     currentReserveId = id;
     document.getElementById('modal-gift-name').textContent = g.name;
     document.getElementById('modal-name').value = '';
@@ -784,25 +894,20 @@
     document.getElementById('reserveModal').classList.add('open');
     setTimeout(()=>document.getElementById('modal-name').focus(),100);
   }
-
   function closeModal() {
     document.getElementById('reserveModal').classList.remove('open');
     const btn = document.getElementById('modal-confirm-btn');
     btn.disabled = false; btn.textContent = 'CONFIRMAR';
     currentReserveId = null;
   }
-
-  document.getElementById('reserveModal').addEventListener('click', function(e){
-    if(e.target===this) closeModal();
-  });
-
+  document.getElementById('reserveModal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
   async function confirmReserve() {
     const name = document.getElementById('modal-name').value.trim();
     const errEl = document.getElementById('modal-err');
     errEl.textContent = ''; errEl.classList.remove('show');
     if (!name) { errEl.textContent='Informe seu nome para reservar.'; errEl.classList.add('show'); return; }
     const btn = document.getElementById('modal-confirm-btn');
-    btn.disabled=true; btn.innerHTML='<span class="spinner"></span>';
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>';
     try {
       const res = await fetch(`/api/presentes/list/${currentReserveId}/reserve`, {
         method:'POST', headers:{'Content-Type':'application/json'},
@@ -810,13 +915,13 @@
       });
       const data = await res.json();
       if (!res.ok) { errEl.textContent=data.error||'Erro ao reservar.'; errEl.classList.add('show'); btn.disabled=false; btn.textContent='CONFIRMAR'; return; }
-      document.getElementById('modal-form-state').style.display='none';
-      document.getElementById('modal-suc-state').className='modal-suc show';
+      document.getElementById('modal-form-state').style.display = 'none';
+      document.getElementById('modal-suc-state').className = 'modal-suc show';
       await loadGifts();
     } catch { errEl.textContent='Erro de conexão.'; errEl.classList.add('show'); btn.disabled=false; btn.textContent='CONFIRMAR'; }
   }
 
-  /* ═══ MESSAGES ═══ */
+  /* ── MESSAGES ── */
   async function submitMimoMsg() {
     const name = document.getElementById('mi-name').value.trim();
     const text = document.getElementById('mi-text').value.trim();
@@ -824,28 +929,20 @@
     okEl.classList.remove('show');
     if (!name||!text) { alert('Preencha seu nome e a mensagem.'); return; }
     const btn = document.getElementById('mi-btn');
-    btn.disabled=true; btn.innerHTML='<span class="spinner"></span> ENVIANDO...';
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> ENVIANDO...';
     try {
-      const res = await fetch('/api/messages', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({name,text})
-      });
+      const res = await fetch('/api/messages', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name,text}) });
       if (res.ok) {
-        document.getElementById('mi-name').value='';
-        document.getElementById('mi-text').value='';
+        document.getElementById('mi-name').value = '';
+        document.getElementById('mi-text').value = '';
         okEl.classList.add('show');
         setTimeout(()=>okEl.classList.remove('show'),3500);
       }
     } catch { alert('Erro de conexão.'); }
-    btn.disabled=false; btn.innerHTML='ENVIAR MENSAGEM';
+    btn.disabled = false; btn.textContent = 'ENVIAR MENSAGEM';
   }
-
   function initials(n) { return n.trim().split(' ').slice(0,2).map(p=>p[0]?.toUpperCase()||'').join(''); }
-  function fmtDate(iso) {
-    const d=new Date(iso);
-    return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})+' às '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  }
-
+  function fmtDate(iso) { const d=new Date(iso); return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})+' às '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); }
   async function loadMessages() {
     try {
       const msgs = await fetch('/api/messages').then(r=>r.json());
@@ -853,31 +950,29 @@
       if (!msgs.length) { wall.innerHTML='<div class="msg-empty">Seja o primeiro a escrever para a Juju!</div>'; return; }
       wall.innerHTML = [...msgs].reverse().map(m=>`
         <div class="msg-card">
-          <div class="msg-hd">
+          <div class="msg-inner-hd">
             <div class="msg-av">${initials(m.name)}</div>
             <div><div class="msg-nm">${m.name}</div><div class="msg-dt">${fmtDate(m.createdAt)}</div></div>
           </div>
           <div class="msg-txt">${m.text.replace(/\n/g,'<br>')}</div>
-        </div>`
-      ).join('');
+        </div>`).join('');
     } catch {}
   }
 
-  /* ═══ LOCAL ═══ */
+  /* ── LOCAL ── */
   async function loadLocal() {
     try {
       const e = await fetch('/api/evento').then(r=>r.json());
-      document.getElementById('loc-data').textContent  = e.data;
-      document.getElementById('loc-hora').textContent  = e.horario+'h';
-      document.getElementById('loc-addr').innerHTML    = e.local+'<br>'+e.cidade;
-      document.getElementById('loc-maps').href =
-        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.local+', '+e.cidade)}`;
-      lucide.createIcons();
+      document.getElementById('loc-data').textContent = e.data;
+      document.getElementById('loc-hora').textContent = e.horario+'h';
+      document.getElementById('loc-addr').innerHTML = e.local+'<br>'+e.cidade;
+      document.getElementById('loc-maps').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.local+', '+e.cidade)}`;
     } catch {}
   }
 
-  /* ── init ── */
+  /* ── INIT ── */
   loadGifts();
+  buildBarcode('suc-barcode');
 </script>
 </body>
 </html>
