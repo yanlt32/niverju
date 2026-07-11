@@ -755,7 +755,7 @@
     document.getElementById('view-form').style.display = 'none';
     document.getElementById('ci-success').style.display = 'none';
     document.getElementById('ci-form-wrap').style.display = 'block';
-    compList = []; compCount = 0; compGuestIds = {}; selectedGuestId = null;
+    compList = []; compCount = 0; selectedGuestId = null;
     document.getElementById('comp-rows').innerHTML = '<div class="comp-empty" id="comp-empty">Nenhum acompanhante adicionado.</div>';
     document.querySelector('.app-main').scrollTop = 0;
     lucide.createIcons();
@@ -810,19 +810,18 @@
   }
 
   /* ── COMPANIONS ── */
-  let compCount = 0, compList = [], compGuestIds = {};
+  let compCount = 0, compList = [];
   function addCompanion() {
     compCount++;
     const id = 'cp_' + compCount;
     compList.push(id);
-    compGuestIds[id] = null;
     const empty = document.getElementById('comp-empty');
     if (empty) empty.remove();
     const row = document.createElement('div');
     row.className = 'comp-row'; row.id = 'row_' + id;
     row.innerHTML = `
       <div class="ac-wrap" style="flex:1;">
-        <input type="text" id="${id}" placeholder="Nome do acompanhante ${compList.length}" autocomplete="off" />
+        <input type="text" id="${id}" placeholder="Nome do acompanhante ${compList.length}" autocomplete="off" data-gid="" />
         <div class="ac-dd" id="${id}_dd"></div>
       </div>
       <button type="button" class="btn-rm" onclick="removeCompanion('${id}')">
@@ -833,15 +832,14 @@
     const inp = document.getElementById(id);
     setupAutocomplete(inp, document.getElementById(id+'_dd'), (gId, name) => {
       inp.value = name;
-      compGuestIds[id] = gId;
+      inp.setAttribute('data-gid', gId);
     });
-    inp.addEventListener('input', () => { compGuestIds[id] = null; });
+    inp.addEventListener('input', () => { inp.setAttribute('data-gid', ''); });
   }
   function removeCompanion(id) {
     const row = document.getElementById('row_'+id);
     if (row) row.remove();
     compList = compList.filter(c => c !== id);
-    delete compGuestIds[id];
     if (!compList.length) document.getElementById('comp-rows').innerHTML = '<div class="comp-empty" id="comp-empty">Nenhum acompanhante adicionado.</div>';
   }
 
@@ -879,11 +877,14 @@
       errEl.classList.add('show'); return;
     }
     const companions = compList
-      .map(id => ({ name: (document.getElementById(id)?.value||'').trim(), guestId: compGuestIds[id]||null }))
+      .map(cId => {
+        const el = document.getElementById(cId);
+        return { name: (el?.value||'').trim(), guestId: el?.getAttribute('data-gid')||'' };
+      })
       .filter(c => c.name);
     const unselected = companions.find(c => !c.guestId);
     if (unselected) {
-      document.getElementById('ci-err-msg').textContent = `"${unselected.name}" não está na lista. Selecione o nome do acompanhante da lista.`;
+      document.getElementById('ci-err-msg').textContent = `Acompanhante "${unselected.name}" não está na lista. Selecione o nome do dropdown.`;
       errEl.classList.add('show'); return;
     }
     const btn = document.getElementById('ci-btn');
