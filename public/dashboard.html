@@ -391,6 +391,14 @@
     </div>
   </div>
 
+  <!-- Message wall admin -->
+  <div class="dash-section">
+    <div class="dash-section-title">Mural de Mensagens</div>
+    <div class="data-card">
+      <div id="msgWallAdmin"></div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -418,7 +426,8 @@
       renderGiftEdit(D.giftList);
       renderGuestList(D.guests || []);
       filterP(currentFilter);
-      renderGiftConfirms(D.gifts);
+      renderGiftConfirms(D.giftList);
+      renderMessages(D.messages);
       document.getElementById('lastUpd').textContent =
         'Atualizado às ' + new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
       lucide.createIcons();
@@ -705,13 +714,15 @@
     const avMap    = { yes:'av-green', no:'av-red', maybe:'av-yellow' };
     el.innerHTML = filtered.map(p => {
       const date = new Date(p.createdAt).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      const comps = (p.companions||[]).filter(c=>c.name);
       return `
-        <div class="list-item">
-          <div class="list-avatar ${avMap[p.attending]||'av-green'}">${p.name.charAt(0).toUpperCase()}</div>
-          <div class="list-info">
-            <div class="list-name">${p.name}</div>
+        <div class="list-item" style="align-items:flex-start;">
+          <div class="list-avatar ${avMap[p.attending]||'av-green'}" style="margin-top:2px;">${p.name.charAt(0).toUpperCase()}</div>
+          <div class="list-info" style="flex:1;">
+            <div class="list-name">${escHtml(p.name)}</div>
             <div class="list-sub">${p.phone||'Sem telefone'} &bull; ${date}</div>
-            ${p.message ? `<div class="list-msg">"${p.message}"</div>` : ''}
+            ${comps.length ? `<div class="list-msg">+ acompanhante${comps.length>1?'s':''}: ${comps.map(c=>escHtml(c.name)).join(', ')}</div>` : ''}
+            ${p.message ? `<div class="list-msg">"${escHtml(p.message)}"</div>` : ''}
           </div>
           <span class="att-tag ${tagMap[p.attending]||'att-maybe'}">${labelMap[p.attending]||p.attending}</span>
           <button class="icon-btn-xs" onclick="cancelPresence('${p.id}')" title="Cancelar confirmação" style="margin-left:6px;flex-shrink:0;">
@@ -734,26 +745,67 @@
     } catch (e) { alert('Erro de conexão: ' + e.message); }
   }
 
-  function renderGiftConfirms(gifts) {
+  function renderGiftConfirms(giftList) {
     const el = document.getElementById('giftConfirmList');
-    if (!gifts || !gifts.length) {
-      el.innerHTML = '<div class="empty-state">Nenhum presente confirmado ainda.</div>';
+    const reservations = [];
+    (giftList || []).forEach(g => {
+      (g.reservations || []).forEach(r => {
+        reservations.push({ ...r, giftName: g.name });
+      });
+    });
+    if (!reservations.length) {
+      el.innerHTML = '<div class="empty-state">Nenhum presente reservado ainda.</div>';
       return;
     }
-    el.innerHTML = gifts.map(g => {
-      const date = new Date(g.createdAt).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    el.innerHTML = reservations.map(r => {
+      const date = new Date(r.createdAt).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
       return `
         <div class="list-item">
-          <div class="list-avatar av-gold">${g.personName.charAt(0).toUpperCase()}</div>
+          <div class="list-avatar av-gold">${(r.personName||'?').charAt(0).toUpperCase()}</div>
           <div class="list-info">
-            <div class="list-name">${g.personName}</div>
-            <div class="list-sub">${g.giftName} &bull; ${date}</div>
-            ${g.message ? `<div class="list-msg">"${g.message}"</div>` : ''}
+            <div class="list-name">${escHtml(r.personName)}</div>
+            <div class="list-sub">${escHtml(r.giftName)} &bull; ${date}</div>
           </div>
-          <span class="att-tag" style="background:#FFF8E6;color:#8A5500;">Presente</span>
+          <span class="att-tag" style="background:#FFF8E6;color:#8A5500;">Reservado</span>
         </div>
       `;
     }).join('');
+  }
+
+  function renderMessages(messages) {
+    const el = document.getElementById('msgWallAdmin');
+    if (!messages || !messages.length) {
+      el.innerHTML = '<div class="empty-state">Nenhuma mensagem no mural ainda.</div>';
+      return;
+    }
+    el.innerHTML = [...messages].reverse().map(m => {
+      const date = new Date(m.createdAt).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      return `
+        <div class="list-item" style="align-items:flex-start;">
+          <div class="list-avatar av-green" style="margin-top:2px;">${(m.name||'?').charAt(0).toUpperCase()}</div>
+          <div class="list-info" style="flex:1;">
+            <div class="list-name">${escHtml(m.name)}</div>
+            <div class="list-sub">${date}</div>
+            <div class="list-msg">"${escHtml(m.text)}"</div>
+          </div>
+          <button class="icon-btn-xs" onclick="deleteMessage('${m.id}')" title="Apagar mensagem" style="margin-left:6px;flex-shrink:0;">
+            <i data-lucide="trash-2" style="width:11px;height:11px;"></i>
+          </button>
+        </div>
+      `;
+    }).join('');
+    lucide.createIcons();
+  }
+
+  async function deleteMessage(id) {
+    if (!confirm('Apagar esta mensagem do mural?')) return;
+    try {
+      const res = await fetch('/api/messages/' + id, { method: 'DELETE' });
+      if (res.ok) { await refresh(); return; }
+      let msg = 'Erro ao apagar (status ' + res.status + ').';
+      try { const d = await res.json(); if (d.error) msg = d.error; } catch {}
+      alert(msg);
+    } catch (e) { alert('Erro de conexão: ' + e.message); }
   }
 
   function exportCSV(type) {
