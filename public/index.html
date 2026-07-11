@@ -928,10 +928,12 @@
       const reserved = isFullyReserved(g);
       const avail = (g.quantity||1) - (g.reservations||[]).length;
       const imgHtml = g.imageUrl
-        ? `<img src="${g.imageUrl}" alt="${g.name}" onerror="this.parentElement.innerHTML='<div class=\\'gc-placeholder\\'><span>${g.emoji||'🎁'}</span></div>'" />`
+        ? `<img src="${g.imageUrl}" alt="${g.name}" onerror="this.onerror=null;this.style.display='none';var p=this.parentElement.querySelector('.gc-placeholder');if(p)p.style.display='flex';" /><div class="gc-placeholder" style="display:none"><span>${g.emoji||'🎁'}</span></div>`
         : `<div class="gc-placeholder"><span>${g.emoji||'🎁'}</span></div>`;
-      const linkBtn = (g.links&&g.links[0])
-        ? `<a href="${g.links[0]}" target="_blank" rel="noopener" class="btn-outline-sm"><i data-lucide="external-link" style="width:10px;height:10px;"></i> Ver</a>`
+      const link0 = g.links && g.links[0];
+      const linkUrl = link0 ? (typeof link0 === 'string' ? link0 : link0.url) : null;
+      const linkBtn = linkUrl
+        ? `<a href="${linkUrl}" target="_blank" rel="noopener" class="btn-outline-sm"><i data-lucide="external-link" style="width:10px;height:10px;"></i> Ver</a>`
         : '';
       return `<div class="gift-card${reserved?' reserved':''}">
         <div class="gc-img">

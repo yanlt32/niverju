@@ -727,9 +727,11 @@
     if (!confirm('Cancelar esta confirmação? A pessoa poderá confirmar novamente.')) return;
     try {
       const res = await fetch('/api/rsvp/' + id, { method: 'DELETE' });
-      if (res.ok) { await refresh(); }
-      else { const d = await res.json(); alert(d.error || 'Erro ao cancelar.'); }
-    } catch { alert('Erro de conexão.'); }
+      if (res.ok) { await refresh(); return; }
+      let msg = 'Erro ao cancelar (status ' + res.status + ').';
+      try { const d = await res.json(); if (d.error) msg = d.error; } catch {}
+      alert(msg);
+    } catch (e) { alert('Erro de conexão: ' + e.message); }
   }
 
   function renderGiftConfirms(gifts) {
