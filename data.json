@@ -9,18 +9,25 @@
   },
   "presences": [
     {
-      "id": "4ee08c77-76db-444d-9ee4-1be09066355a",
+      "id": "770d597a-0961-4e49-94bc-110a2aeb7232",
       "name": "Yan Tortelli",
       "phone": "(11) 11111-11111111",
       "attending": "yes",
       "companions": [],
-      "message": "te amoo",
+      "message": "teste",
       "guestId": "fp7",
       "onList": true,
-      "createdAt": "2026-07-11T00:33:40.948Z"
+      "createdAt": "2026-07-11T00:47:04.988Z"
     }
   ],
-  "messages": [],
+  "messages": [
+    {
+      "id": "2dfd4981-bea9-4245-9347-4bbe2ef7a799",
+      "name": "Yan Tortelli",
+      "text": "teste",
+      "createdAt": "2026-07-11T00:47:04.996Z"
+    }
+  ],
   "gifts": [],
   "giftList": [
     {
