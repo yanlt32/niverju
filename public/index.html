@@ -258,7 +258,8 @@
     .gc-body { padding:10px 11px; flex:1; }
     .gc-name { font-family:var(--f-head); font-size:13px; font-weight:600; color:var(--fg); text-transform:uppercase; letter-spacing:0.05em; line-height:1.2; margin-bottom:3px; }
     .gc-desc { font-family:var(--f-body); font-size:10px; color:var(--muted-fg); line-height:1.5; }
-    .gc-foot { padding:8px 11px 11px; display:flex; gap:5px; }
+    .gc-foot { padding:8px 11px 11px; display:flex; flex-direction:column; gap:5px; }
+    .gc-links-wrap { display:flex; gap:5px; flex-wrap:wrap; }
 
     .mimos-msg { border-top:1px solid var(--bd); padding-top:22px; }
     .mimos-msg-ttl { font-family:var(--f-body); font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted-fg); margin-bottom:14px; }
@@ -754,7 +755,7 @@
     document.getElementById('view-form').style.display = 'none';
     document.getElementById('ci-success').style.display = 'none';
     document.getElementById('ci-form-wrap').style.display = 'block';
-    compList = []; compCount = 0; selectedGuestId = null;
+    compList = []; compCount = 0; compGuestIds = {}; selectedGuestId = null;
     document.getElementById('comp-rows').innerHTML = '<div class="comp-empty" id="comp-empty">Nenhum acompanhante adicionado.</div>';
     document.querySelector('.app-main').scrollTop = 0;
     lucide.createIcons();
@@ -809,11 +810,12 @@
   }
 
   /* ── COMPANIONS ── */
-  let compCount = 0, compList = [];
+  let compCount = 0, compList = [], compGuestIds = {};
   function addCompanion() {
     compCount++;
     const id = 'cp_' + compCount;
     compList.push(id);
+    compGuestIds[id] = null;
     const empty = document.getElementById('comp-empty');
     if (empty) empty.remove();
     const row = document.createElement('div');
@@ -828,14 +830,18 @@
       </button>`;
     document.getElementById('comp-rows').appendChild(row);
     lucide.createIcons();
-    setupAutocomplete(document.getElementById(id), document.getElementById(id+'_dd'), (_gId, name) => {
-      document.getElementById(id).value = name;
+    const inp = document.getElementById(id);
+    setupAutocomplete(inp, document.getElementById(id+'_dd'), (gId, name) => {
+      inp.value = name;
+      compGuestIds[id] = gId;
     });
+    inp.addEventListener('input', () => { compGuestIds[id] = null; });
   }
   function removeCompanion(id) {
     const row = document.getElementById('row_'+id);
     if (row) row.remove();
     compList = compList.filter(c => c !== id);
+    delete compGuestIds[id];
     if (!compList.length) document.getElementById('comp-rows').innerHTML = '<div class="comp-empty" id="comp-empty">Nenhum acompanhante adicionado.</div>';
   }
 
@@ -873,8 +879,13 @@
       errEl.classList.add('show'); return;
     }
     const companions = compList
-      .map(id => ({ name: (document.getElementById(id)?.value||'').trim() }))
+      .map(id => ({ name: (document.getElementById(id)?.value||'').trim(), guestId: compGuestIds[id]||null }))
       .filter(c => c.name);
+    const unselected = companions.find(c => !c.guestId);
+    if (unselected) {
+      document.getElementById('ci-err-msg').textContent = `"${unselected.name}" não está na lista. Selecione o nome do acompanhante da lista.`;
+      errEl.classList.add('show'); return;
+    }
     const btn = document.getElementById('ci-btn');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> PROCESSANDO...';
@@ -945,11 +956,12 @@
       const imgHtml = g.imageUrl
         ? `<img src="${g.imageUrl}" alt="${g.name}" onerror="this.onerror=null;this.style.display='none';var p=this.parentElement.querySelector('.gc-placeholder');if(p)p.style.display='flex';" /><div class="gc-placeholder" style="display:none"><span>${g.emoji||'🎁'}</span></div>`
         : `<div class="gc-placeholder"><span>${g.emoji||'🎁'}</span></div>`;
-      const link0 = g.links && g.links[0];
-      const linkUrl = link0 ? (typeof link0 === 'string' ? link0 : link0.url) : null;
-      const linkBtn = linkUrl
-        ? `<a href="${linkUrl}" target="_blank" rel="noopener" class="btn-outline-sm"><i data-lucide="external-link" style="width:10px;height:10px;"></i> Ver</a>`
-        : '';
+      const linkBtns = (g.links||[]).map(lk => {
+        const url = typeof lk==='string' ? lk : lk.url;
+        const label = typeof lk==='string' ? 'Ver' : (lk.label||'Ver');
+        if (!url) return '';
+        return `<a href="${escHtml(url)}" target="_blank" rel="noopener" class="btn-outline-sm"><i data-lucide="external-link" style="width:10px;height:10px;"></i> ${escHtml(label)}</a>`;
+      }).filter(Boolean).join('');
       return `<div class="gift-card${reserved?' reserved':''}">
         <div class="gc-img">
           ${imgHtml}
@@ -960,7 +972,7 @@
           ${g.description?`<div class="gc-desc">${g.description}</div>`:''}
         </div>
         <div class="gc-foot">
-          ${linkBtn}
+          <div class="gc-links-wrap">${linkBtns}</div>
           <button class="btn-pr-sm${reserved?' taken':''}" ${reserved?'disabled':''} onclick="openReserve('${g.id}')">
             ${reserved?'RESERVADO':'RESERVAR'}
           </button>
