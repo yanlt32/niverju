@@ -106,10 +106,40 @@
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
     }
 
+    /* ── Gift quantity row ── */
+    .gift-qty-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 0 16px 10px 60px;
+    }
+    .gift-qty-label { font-size: 11px; color: var(--text-light); white-space: nowrap; }
+    .gift-qty-input {
+      width: 52px; font-size: 13px; font-weight: 600; text-align: center;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 4px 6px; outline: none; font-family: 'Inter', sans-serif;
+      background: #fff; transition: border-color 0.15s;
+    }
+    .gift-qty-input:focus { border-color: var(--rose); }
+    .gift-qty-info { font-size: 11px; color: var(--text-light); margin-left: 4px; }
+
+    /* ── Link suggestions ── */
+    .link-sugg-row {
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .link-sugg-label { font-size: 11px; color: var(--text-light); white-space: nowrap; }
+    .link-sugg-btn {
+      font-size: 11px; font-weight: 600; cursor: pointer;
+      background: #EEF4FF; color: #3B6FD4;
+      border: 1px solid rgba(59,111,212,0.2);
+      border-radius: 6px; padding: 4px 10px;
+      font-family: 'Inter', sans-serif; transition: all 0.15s;
+    }
+    .link-sugg-btn:hover { background: #3B6FD4; color: #fff; border-color: #3B6FD4; }
+
     /* ── Add link row ── */
     .add-link-row {
       display: flex; align-items: center; gap: 8px;
-      margin-top: 8px; flex-wrap: wrap;
+      margin-top: 4px; flex-wrap: wrap;
     }
     .add-link-row input {
       font-size: 12px; border: 1.5px solid var(--border); border-radius: 8px;
@@ -600,6 +630,7 @@
         </div>
       `).join('');
 
+      const qtyAvail = (g.quantity || 1) - (g.reservations || []).length;
       return `
         <div class="gift-block" id="gblock-${g.id}">
           <!-- Name row -->
@@ -619,6 +650,16 @@
             }
           </div>
 
+          <!-- Quantity row -->
+          <div class="gift-qty-row">
+            <span class="gift-qty-label">Quantidade disponível:</span>
+            <input type="number" class="gift-qty-input" id="gqty-${g.id}" value="${g.quantity||1}" min="1" max="99" />
+            <button class="icon-btn save" onclick="saveGiftQty('${g.id}')" title="Salvar quantidade">
+              <i data-lucide="check" style="width:13px;height:13px;"></i>
+            </button>
+            <span class="gift-qty-info">${qtyAvail} disponível${qtyAvail!==1?'is':''} · ${(g.reservations||[]).length} reservado${(g.reservations||[]).length!==1?'s':''}</span>
+          </div>
+
           <!-- Links section -->
           <div class="gift-links-section">
             <div class="gift-links-header">
@@ -628,9 +669,18 @@
 
             ${linkItems || '<div style="font-size:12px;color:var(--text-light);margin-bottom:8px;">Nenhum link adicionado ainda.</div>'}
 
+            <!-- Link suggestions -->
+            <div class="link-sugg-row">
+              <span class="link-sugg-label">Buscar:</span>
+              <button type="button" class="link-sugg-btn" onclick="openSugg('${g.id}','amazon')">Amazon</button>
+              <button type="button" class="link-sugg-btn" onclick="openSugg('${g.id}','americanas')">Americanas</button>
+              <button type="button" class="link-sugg-btn" onclick="openSugg('${g.id}','magalu')">Magalu</button>
+              <button type="button" class="link-sugg-btn" onclick="openSugg('${g.id}','mercadolivre')">Mercado Livre</button>
+            </div>
+
             <!-- Add link form -->
             <div class="add-link-row">
-              <input type="url" class="add-link-url" id="gnewurl-${g.id}" placeholder="https://www.amazon.com.br/..." />
+              <input type="url" class="add-link-url" id="gnewurl-${g.id}" placeholder="Cole aqui a URL do produto..." />
               <input type="text" class="add-link-label" id="gnewlabel-${g.id}" placeholder="Nome (ex: Amazon)" />
               <button class="add-link-btn" onclick="addLink('${g.id}')">
                 <i data-lucide="plus" style="width:13px;height:13px;"></i>
@@ -654,6 +704,29 @@
     });
     if (res.ok) await loadAll();
     else { const d = await res.json(); alert(d.error || 'Erro ao salvar.'); }
+  }
+
+  async function saveGiftQty(id) {
+    const qty = Math.max(1, parseInt(document.getElementById(`gqty-${id}`).value) || 1);
+    const res = await fetch(`/api/presentes/list/${id}`, {
+      method:'PATCH', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ quantity: qty })
+    });
+    if (res.ok) await loadAll();
+    else { const d = await res.json(); alert(d.error || 'Erro ao salvar quantidade.'); }
+  }
+
+  function openSugg(id, store) {
+    const gift = D.giftList.find(g => g.id === id);
+    if (!gift) return;
+    const q = encodeURIComponent(gift.name);
+    const urls = {
+      amazon: `https://www.amazon.com.br/s?k=${q}`,
+      americanas: `https://www.americanas.com.br/busca/${q}`,
+      magalu: `https://www.magazineluiza.com.br/busca/${q}/`,
+      mercadolivre: `https://lista.mercadolivre.com.br/${q}`
+    };
+    window.open(urls[store], '_blank');
   }
 
   async function addLink(id) {

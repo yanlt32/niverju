@@ -861,6 +861,13 @@
     const name  = document.getElementById('ci-name').value.trim();
     const phone = document.getElementById('ci-phone').value.trim();
     const msg   = document.getElementById('ci-msg').value.trim();
+
+    if (!selectedGuestId) {
+      document.getElementById('ci-err-msg').textContent = 'Selecione seu nome da lista de convidados.';
+      errEl.classList.add('show');
+      document.getElementById('ci-name').focus();
+      return;
+    }
     if (!phone) {
       document.getElementById('ci-err-msg').textContent = 'Informe seu WhatsApp.';
       errEl.classList.add('show'); return;
@@ -883,6 +890,14 @@
         btn.disabled = false;
         btn.innerHTML = '<i data-lucide="plane" style="width:15px;height:15px;"></i> CONFIRMAR EMBARQUE';
         lucide.createIcons(); return;
+      }
+      if (msg) {
+        try {
+          await fetch('/api/messages', {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ name, text: msg })
+          });
+        } catch {}
       }
       document.getElementById('ci-form-wrap').style.display = 'none';
       document.getElementById('ci-suc-name').textContent = name.toUpperCase();
@@ -1055,11 +1070,10 @@
   loadGifts();
   buildBarcode('suc-barcode');
   loadGuests().then(() => {
-    setupAutocomplete(
-      document.getElementById('ci-name'),
-      document.getElementById('ci-name-dd'),
-      (gId) => { selectedGuestId = gId; }
-    );
+    const ciNameEl = document.getElementById('ci-name');
+    const ciNameDd = document.getElementById('ci-name-dd');
+    setupAutocomplete(ciNameEl, ciNameDd, (gId) => { selectedGuestId = gId; });
+    ciNameEl.addEventListener('input', () => { selectedGuestId = null; });
   });
 </script>
 </body>
