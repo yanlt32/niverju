@@ -884,7 +884,7 @@
       .filter(c => c.name);
     const unselected = companions.find(c => !c.guestId);
     if (unselected) {
-      document.getElementById('ci-err-msg').textContent = `Acompanhante "${unselected.name}" não está na lista. Selecione o nome do dropdown.`;
+      document.getElementById('ci-err-msg').textContent = `Acompanhante "${unselected.name}" não está na lista. Selecione um nome que esteja na lista(Crianças não estão na lista, não é necessário confirma-lás).`;
       errEl.classList.add('show'); return;
     }
     const btn = document.getElementById('ci-btn');
