@@ -219,6 +219,23 @@
     .btn-rm:hover { border-color:var(--pr); color:var(--pr); }
     .comp-empty { font-family:var(--f-body); font-size:12px; color:var(--muted-fg); font-style:italic; }
 
+    /* ══ AUTOCOMPLETE ══ */
+    .ac-wrap { position:relative; }
+    .ac-dd {
+      position:absolute; top:100%; left:0; right:0; z-index:400;
+      background:#fff; border:1px solid var(--pr); border-top:none;
+      max-height:210px; overflow-y:auto; display:none;
+      box-shadow:0 6px 20px rgba(0,0,0,0.14);
+    }
+    .ac-item {
+      padding:11px 14px; font-family:var(--f-body); font-size:13px;
+      color:var(--fg); cursor:pointer; border-bottom:1px solid var(--bd);
+      transition:background 0.1s;
+    }
+    .ac-item:last-child { border-bottom:none; }
+    .ac-item:hover { background:rgba(213,43,30,0.06); color:var(--pr); }
+    .ac-item mark { background:rgba(213,43,30,0.13); color:var(--pr); font-style:normal; }
+
     /* ══ MIMOS ══ */
     #sec-mimos { padding:24px 20px 32px; }
     .mimos-hd { text-align:center; margin-bottom:6px; }
@@ -355,10 +372,10 @@
     <div id="view-land">
       <div class="marquee-strip">
         <div class="marquee-track">
-          <span class="marquee-item">✈ GRU → YYZ &nbsp; FL JU-001 &nbsp; 15 AGO 2026 &nbsp; EMBARQUE 17H00 &nbsp; PORTÃO 01 &nbsp;&nbsp;</span>
-          <span class="marquee-item">✈ GRU → YYZ &nbsp; FL JU-001 &nbsp; 15 AGO 2026 &nbsp; EMBARQUE 17H00 &nbsp; PORTÃO 01 &nbsp;&nbsp;</span>
-          <span class="marquee-item">✈ GRU → YYZ &nbsp; FL JU-001 &nbsp; 15 AGO 2026 &nbsp; EMBARQUE 17H00 &nbsp; PORTÃO 01 &nbsp;&nbsp;</span>
-          <span class="marquee-item">✈ GRU → YYZ &nbsp; FL JU-001 &nbsp; 15 AGO 2026 &nbsp; EMBARQUE 17H00 &nbsp; PORTÃO 01 &nbsp;&nbsp;</span>
+          <span class="marquee-item">✈ GRU → YYZ &nbsp; FL JU019 &nbsp; 15 AGO 2026 &nbsp; EMBARQUE 17H00 &nbsp; PORTÃO 01 &nbsp;&nbsp;</span>
+          <span class="marquee-item">✈ GRU → YYZ &nbsp; FL JU019 &nbsp; 15 AGO 2026 &nbsp; EMBARQUE 17H00 &nbsp; PORTÃO 01 &nbsp;&nbsp;</span>
+          <span class="marquee-item">✈ GRU → YYZ &nbsp; FL JU019 &nbsp; 15 AGO 2026 &nbsp; EMBARQUE 17H00 &nbsp; PORTÃO 01 &nbsp;&nbsp;</span>
+          <span class="marquee-item">✈ GRU → YYZ &nbsp; FL JU019 &nbsp; 15 AGO 2026 &nbsp; EMBARQUE 17H00 &nbsp; PORTÃO 01 &nbsp;&nbsp;</span>
         </div>
       </div>
 
@@ -396,7 +413,7 @@
               </div>
             </div>
             <div class="bp-grid">
-              <div><div class="bp-grid-lbl">Voo</div><div class="bp-grid-val">JU-001</div></div>
+              <div><div class="bp-grid-lbl">Voo</div><div class="bp-grid-val">JU019</div></div>
               <div><div class="bp-grid-lbl">Data</div><div class="bp-grid-val">15 AGO</div></div>
               <div><div class="bp-grid-lbl">Hora</div><div class="bp-grid-val">17H00</div></div>
               <div><div class="bp-grid-lbl">Classe</div><div class="bp-grid-val">VIP</div></div>
@@ -494,7 +511,10 @@
         <form onsubmit="submitCheckin(event)">
           <div class="fbox">
             <label>Nome completo do passageiro *</label>
-            <input type="text" id="ci-name" placeholder="Seu nome como no documento" required autocomplete="name" />
+            <div class="ac-wrap">
+              <input type="text" id="ci-name" placeholder="Digite para buscar seu nome na lista..." autocomplete="off" required />
+              <div class="ac-dd" id="ci-name-dd"></div>
+            </div>
           </div>
           <div class="fbox">
             <label>WhatsApp *</label>
@@ -587,12 +607,12 @@
     <div class="loc-hd">
       <div class="sec-tag dark">Seção 04</div>
       <div class="loc-sec-title">Informações da Festa</div>
-      <div class="loc-sec-sub">Voo JU-001 · GRU → YYZ</div>
+      <div class="loc-sec-sub">Voo JU019 · GRU → YYZ</div>
     </div>
 
     <div class="loc-card">
       <div class="loc-card-hd">
-        <div class="loc-card-tag">Voo JU-001</div>
+        <div class="loc-card-tag">Voo JU019</div>
         <div class="loc-card-title">Embarque Final</div>
       </div>
       <div class="loc-rows">
@@ -734,7 +754,7 @@
     document.getElementById('view-form').style.display = 'none';
     document.getElementById('ci-success').style.display = 'none';
     document.getElementById('ci-form-wrap').style.display = 'block';
-    compList = []; compCount = 0;
+    compList = []; compCount = 0; selectedGuestId = null;
     document.getElementById('comp-rows').innerHTML = '<div class="comp-empty" id="comp-empty">Nenhum acompanhante adicionado.</div>';
     document.querySelector('.app-main').scrollTop = 0;
     lucide.createIcons();
@@ -747,6 +767,43 @@
     el.value = v;
   }
 
+  /* ── GUESTS AUTOCOMPLETE ── */
+  let guestsList = [], selectedGuestId = null;
+
+  async function loadGuests() {
+    try { guestsList = await fetch('/api/guests').then(r => r.json()); } catch {}
+  }
+
+  function acHighlight(text, query) {
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if (idx < 0) return text;
+    return text.slice(0,idx) + '<mark>' + text.slice(idx,idx+query.length) + '</mark>' + text.slice(idx+query.length);
+  }
+
+  function setupAutocomplete(inputEl, dropdownEl, onSelect) {
+    inputEl.addEventListener('input', () => {
+      const val = inputEl.value.trim();
+      if (!val) { dropdownEl.style.display='none'; return; }
+      const q = val.toLowerCase();
+      const matches = guestsList.filter(g => g.name.toLowerCase().includes(q)).slice(0,10);
+      if (!matches.length) { dropdownEl.style.display='none'; return; }
+      dropdownEl.innerHTML = matches.map(g =>
+        `<div class="ac-item" data-id="${g.id}" data-name="${g.name}">${acHighlight(g.name, val)}</div>`
+      ).join('');
+      dropdownEl.style.display = 'block';
+      dropdownEl.querySelectorAll('.ac-item').forEach(item => {
+        item.addEventListener('mousedown', e => {
+          e.preventDefault();
+          inputEl.value = item.dataset.name;
+          onSelect(item.dataset.id, item.dataset.name);
+          dropdownEl.style.display = 'none';
+        });
+      });
+    });
+    inputEl.addEventListener('blur', () => setTimeout(() => { dropdownEl.style.display='none'; }, 160));
+    inputEl.addEventListener('focus', () => { if (inputEl.value.trim()) inputEl.dispatchEvent(new Event('input')); });
+  }
+
   /* ── COMPANIONS ── */
   let compCount = 0, compList = [];
   function addCompanion() {
@@ -757,9 +814,19 @@
     if (empty) empty.remove();
     const row = document.createElement('div');
     row.className = 'comp-row'; row.id = 'row_' + id;
-    row.innerHTML = `<input type="text" id="${id}" placeholder="Nome completo do acompanhante ${compList.length}" /><button type="button" class="btn-rm" onclick="removeCompanion('${id}')"><i data-lucide="trash-2" style="width:15px;height:15px;"></i></button>`;
+    row.innerHTML = `
+      <div class="ac-wrap" style="flex:1;">
+        <input type="text" id="${id}" placeholder="Nome do acompanhante ${compList.length}" autocomplete="off" />
+        <div class="ac-dd" id="${id}_dd"></div>
+      </div>
+      <button type="button" class="btn-rm" onclick="removeCompanion('${id}')">
+        <i data-lucide="trash-2" style="width:15px;height:15px;"></i>
+      </button>`;
     document.getElementById('comp-rows').appendChild(row);
     lucide.createIcons();
+    setupAutocomplete(document.getElementById(id), document.getElementById(id+'_dd'), (_gId, name) => {
+      document.getElementById(id).value = name;
+    });
   }
   function removeCompanion(id) {
     const row = document.getElementById('row_'+id);
@@ -803,7 +870,7 @@
     try {
       const res = await fetch('/api/rsvp', {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ name, phone, attending:'yes', companions, message:msg, guestId:null })
+        body: JSON.stringify({ name, phone, attending:'yes', companions, message:msg, guestId: selectedGuestId })
       });
       const data = await res.json();
       if (!res.ok) {
@@ -973,6 +1040,13 @@
   /* ── INIT ── */
   loadGifts();
   buildBarcode('suc-barcode');
+  loadGuests().then(() => {
+    setupAutocomplete(
+      document.getElementById('ci-name'),
+      document.getElementById('ci-name-dd'),
+      (gId) => { selectedGuestId = gId; }
+    );
+  });
 </script>
 </body>
 </html>
