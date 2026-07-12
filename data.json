@@ -18,6 +18,43 @@
       "guestId": "fp7",
       "onList": true,
       "createdAt": "2026-07-11T00:47:04.988Z"
+    },
+    {
+      "id": "6b575b75-e74e-4ca3-a0cd-e75327ed49cd",
+      "name": "Natália Julie",
+      "phone": "",
+      "attending": "yes",
+      "companions": [],
+      "message": "",
+      "guestId": "fp1",
+      "onList": true,
+      "createdAt": "2026-07-11T22:03:31.474Z"
+    },
+    {
+      "id": "f45c8a8e-7337-446a-9a1f-56f852578baf",
+      "name": "Brandon Carvalho",
+      "phone": "",
+      "attending": "yes",
+      "companions": [],
+      "message": "",
+      "guestId": "fp2",
+      "onList": true,
+      "createdAt": "2026-07-11T22:39:33.095Z"
+    },
+    {
+      "id": "1e4c5cd3-76e2-4cba-890f-11f376c5efe6",
+      "name": "Matheus Brandalia",
+      "phone": "",
+      "attending": "yes",
+      "companions": [
+        {
+          "name": "Duda Almeida"
+        }
+      ],
+      "message": "",
+      "guestId": "a10",
+      "onList": true,
+      "createdAt": "2026-07-12T16:42:55.368Z"
     }
   ],
   "messages": [
@@ -26,6 +63,12 @@
       "name": "Yan Tortelli",
       "text": "teste",
       "createdAt": "2026-07-11T00:47:04.996Z"
+    },
+    {
+      "id": "6095622e-bff5-4e8f-838c-571c194e926b",
+      "name": "juliana",
+      "text": "oiii",
+      "createdAt": "2026-07-12T16:02:21.666Z"
     }
   ],
   "gifts": [],
@@ -258,43 +301,8 @@
       "group": "Família (próximos)"
     },
     {
-      "id": "fp10",
-      "name": "Isabel Cristina Carvalho",
-      "group": "Família (próximos)"
-    },
-    {
-      "id": "fp11",
-      "name": "Márcio Carvalho",
-      "group": "Família (próximos)"
-    },
-    {
-      "id": "fp12",
-      "name": "Yan Carvalho",
-      "group": "Família (próximos)"
-    },
-    {
-      "id": "fp13",
-      "name": "Kathelyn Alves",
-      "group": "Família (próximos)"
-    },
-    {
       "id": "fp14",
       "name": "Duda Almeida",
-      "group": "Família (próximos)"
-    },
-    {
-      "id": "fp15",
-      "name": "Luiza Fratoni",
-      "group": "Família (próximos)"
-    },
-    {
-      "id": "fp16",
-      "name": "Namorado da Luiza Fratoni",
-      "group": "Família (próximos)"
-    },
-    {
-      "id": "fp17",
-      "name": "Fernanda Fratoni",
       "group": "Família (próximos)"
     },
     {
@@ -340,16 +348,6 @@
     {
       "id": "fnp4",
       "name": "Lucas Trigueiro",
-      "group": "Família"
-    },
-    {
-      "id": "fnp5",
-      "name": "Lucas Caique",
-      "group": "Família"
-    },
-    {
-      "id": "fnp6",
-      "name": "Thainara Pessini",
       "group": "Família"
     },
     {
@@ -403,11 +401,6 @@
       "group": "Tias & Tios"
     },
     {
-      "id": "t4",
-      "name": "Paulo Jorge Coelho",
-      "group": "Tias & Tios"
-    },
-    {
       "id": "t5",
       "name": "Débora Pena",
       "group": "Tias & Tios"
@@ -433,11 +426,6 @@
       "group": "Tias & Tios"
     },
     {
-      "id": "t10",
-      "name": "Carlos Augusto",
-      "group": "Tias & Tios"
-    },
-    {
       "id": "t11",
       "name": "Solange Pena",
       "group": "Tias & Tios"
@@ -445,11 +433,6 @@
     {
       "id": "t12",
       "name": "Priscila Pena",
-      "group": "Tias & Tios"
-    },
-    {
-      "id": "t13",
-      "name": "Namorado da Priscila Pena",
       "group": "Tias & Tios"
     },
     {
@@ -510,26 +493,6 @@
     {
       "id": "o11",
       "name": "Mayk Tomas",
-      "group": "Outros Convidados"
-    },
-    {
-      "id": "o12",
-      "name": "Vitória Souza",
-      "group": "Outros Convidados"
-    },
-    {
-      "id": "o13",
-      "name": "Silvana Souza",
-      "group": "Outros Convidados"
-    },
-    {
-      "id": "o14",
-      "name": "Marcos Guevantz",
-      "group": "Outros Convidados"
-    },
-    {
-      "id": "o15",
-      "name": "Marido (Silvana Souza)",
       "group": "Outros Convidados"
     },
     {
