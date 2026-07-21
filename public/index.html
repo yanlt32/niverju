@@ -34,7 +34,7 @@
       display:flex; align-items:center; padding:0 18px; gap:10px;
       z-index:200; box-shadow:0 1px 8px rgba(0,0,0,0.06);
     }
-    .hd-maple { color:var(--pr); display:flex; }
+    .hd-maple { display:flex; font-size:17px; line-height:1; }
     .hd-brand { font-family:var(--f-head); font-size:16px; font-weight:600; color:var(--fg); letter-spacing:0.3em; text-transform:uppercase; }
 
     /* ══ MAIN ══ */
@@ -144,7 +144,7 @@
     .bp-hd { background:var(--pr); padding:10px 16px; display:flex; align-items:center; justify-content:space-between; }
     .bp-hd-l { display:flex; align-items:center; gap:8px; }
     .bp-brand { font-family:var(--f-head); font-size:12px; font-weight:500; color:#fff; letter-spacing:0.3em; text-transform:uppercase; }
-    .bp-flag { font-size:14px; line-height:1; }
+    .bp-leaf { font-size:15px; line-height:1; }
     .bp-body { padding:18px 16px 14px; }
     .bp-route { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px; margin-bottom:14px; }
     .bp-code { font-family:var(--f-head); font-size:38px; font-weight:700; color:var(--fg); line-height:1; }
@@ -307,6 +307,7 @@
 
     .loc-footer { background:var(--fg); padding:18px 20px 24px; }
     .loc-ft-brand { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
+    .loc-ft-leaf { font-size:15px; line-height:1; }
     .loc-ft-name { font-family:var(--f-head); font-size:14px; font-weight:600; color:#fff; letter-spacing:0.3em; text-transform:uppercase; }
     .loc-ft-tag { font-family:var(--f-cur); font-size:15px; color:rgba(255,255,255,0.38); margin-bottom:14px; }
     .loc-ft-grid { border:1px solid rgba(255,255,255,0.1); padding:12px 14px; margin-bottom:14px; }
@@ -361,9 +362,7 @@
 
 <!-- Header -->
 <header class="app-header">
-  <div class="hd-maple">
-    <svg viewBox="0 0 100 100" fill="currentColor" width="20" height="20"><use href="#maple"/></svg>
-  </div>
+  <div class="hd-maple">🍁</div>
   <div class="hd-brand">Despedida Juju</div>
 </header>
 
@@ -388,10 +387,10 @@
         <div class="bp">
           <div class="bp-hd">
             <div class="bp-hd-l">
-              <span class="bp-flag">🇨🇦</span>
+              <span class="bp-leaf">🍁</span>
               <span class="bp-brand">Despedida Juju</span>
             </div>
-            <span class="bp-flag">🇨🇦</span>
+            <span class="bp-leaf">🍁</span>
           </div>
           <div class="bp-body">
             <div class="bp-route">
@@ -652,7 +651,7 @@
 
     <div class="loc-footer">
       <div class="loc-ft-brand">
-        <svg viewBox="0 0 100 100" fill="#D52B1E" width="18" height="18"><use href="#maple"/></svg>
+        <span class="loc-ft-leaf">🍁</span>
         <span class="loc-ft-name">Despedida Juju</span>
       </div>
       <div class="loc-ft-tag">O primeiro capítulo de uma nova história começa aqui.</div>
