@@ -105,6 +105,10 @@
       flex: 1; font-size: 11px; color: var(--text-light);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
     }
+    .link-thumb {
+      width: 24px; height: 24px; border-radius: 6px; object-fit: cover;
+      flex-shrink: 0; border: 1px solid var(--border);
+    }
 
     /* ── Gift quantity row ── */
     .gift-qty-row {
@@ -120,6 +124,28 @@
     }
     .gift-qty-input:focus { border-color: var(--rose); }
     .gift-qty-info { font-size: 11px; color: var(--text-light); margin-left: 4px; }
+
+    /* ── Gift image row ── */
+    .gift-img-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 0 16px 10px 60px;
+    }
+    .gift-img-preview {
+      width: 30px; height: 30px; border-radius: 8px; object-fit: cover;
+      flex-shrink: 0; border: 1px solid var(--border);
+    }
+    .gift-img-input {
+      flex: 1; font-size: 12px; border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 7px 10px; outline: none; font-family: 'Inter', sans-serif;
+      background: #fff; transition: border-color 0.15s; min-width: 0;
+    }
+    .gift-img-input:focus { border-color: var(--rose); }
+
+    /* ── Links hint ── */
+    .gift-links-hint {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: var(--text-light); margin-top: 6px;
+    }
 
     /* ── Link suggestions ── */
     .link-sugg-row {
@@ -149,6 +175,7 @@
     .add-link-row input:focus { border-color: var(--rose); }
     .add-link-url { flex: 2; min-width: 160px; }
     .add-link-label { flex: 1; min-width: 100px; }
+    .add-link-img { flex: 1; min-width: 140px; }
     .add-link-btn {
       display: inline-flex; align-items: center; gap: 5px;
       background: #FFF0E8; color: var(--rose-dark);
@@ -276,7 +303,7 @@
     }
     .add-guest-row input:focus { border-color:var(--rose); }
 
-    @media(max-width:600px) { .add-link-url,.add-link-label { min-width:100%; } }
+    @media(max-width:600px) { .add-link-url,.add-link-label,.add-link-img { min-width:100%; } }
   </style>
 </head>
 <body>
@@ -619,6 +646,7 @@
 
       const linkItems = links.map((lk, idx) => `
         <div class="gift-link-item">
+          ${lk.image ? `<img class="link-thumb" src="${escHtml(lk.image)}" alt="" onerror="this.style.display='none'" />` : ''}
           <span class="link-label">${escHtml(lk.label || 'Opção ' + (idx+1))}</span>
           <span class="link-url" title="${escHtml(lk.url)}">${escHtml(lk.url)}</span>
           <a href="${escHtml(lk.url)}" target="_blank" rel="noopener" class="icon-btn open" title="Abrir link" onclick="event.stopPropagation()">
@@ -660,6 +688,15 @@
             <span class="gift-qty-info">${qtyAvail} disponível${qtyAvail!==1?'is':''} · ${(g.reservations||[]).length} reservado${(g.reservations||[]).length!==1?'s':''}</span>
           </div>
 
+          <!-- Image row -->
+          <div class="gift-img-row">
+            ${g.imageUrl ? `<img class="gift-img-preview" src="${escHtml(g.imageUrl)}" alt="" onerror="this.style.display='none'" />` : ''}
+            <input type="url" class="gift-img-input" id="gimg-${g.id}" value="${escHtml(g.imageUrl||'')}" placeholder="URL da foto do presente..." />
+            <button class="icon-btn save" onclick="saveGiftImage('${g.id}')" title="Salvar foto">
+              <i data-lucide="check" style="width:13px;height:13px;"></i>
+            </button>
+          </div>
+
           <!-- Links section -->
           <div class="gift-links-section">
             <div class="gift-links-header">
@@ -682,11 +719,13 @@
             <div class="add-link-row">
               <input type="url" class="add-link-url" id="gnewurl-${g.id}" placeholder="Cole aqui a URL do produto..." />
               <input type="text" class="add-link-label" id="gnewlabel-${g.id}" placeholder="Nome (ex: Amazon)" />
+              <input type="url" class="add-link-img" id="gnewimg-${g.id}" placeholder="URL da foto (opcional)" />
               <button class="add-link-btn" onclick="addLink('${g.id}')">
                 <i data-lucide="plus" style="width:13px;height:13px;"></i>
                 Adicionar
               </button>
             </div>
+            ${links.length > 1 ? `<div class="gift-links-hint"><i data-lucide="image" style="width:11px;height:11px;"></i> Com mais de um link, adicione uma foto em cada um para os convidados verem as opções.</div>` : ''}
           </div>
         </div>
       `;
@@ -716,6 +755,16 @@
     else { const d = await res.json(); alert(d.error || 'Erro ao salvar quantidade.'); }
   }
 
+  async function saveGiftImage(id) {
+    const imageUrl = document.getElementById(`gimg-${id}`).value.trim();
+    const res = await fetch(`/api/presentes/list/${id}`, {
+      method:'PATCH', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ imageUrl })
+    });
+    if (res.ok) await loadAll();
+    else { const d = await res.json(); alert(d.error || 'Erro ao salvar foto.'); }
+  }
+
   function openSugg(id, store) {
     const gift = D.giftList.find(g => g.id === id);
     if (!gift) return;
@@ -732,9 +781,10 @@
   async function addLink(id) {
     const url = document.getElementById(`gnewurl-${id}`).value.trim();
     const label = document.getElementById(`gnewlabel-${id}`).value.trim();
+    const image = document.getElementById(`gnewimg-${id}`).value.trim();
     if (!url) { document.getElementById(`gnewurl-${id}`).focus(); return; }
     const gift = D.giftList.find(g => g.id === id);
-    const newLinks = [...(gift.links || []), { url, label }];
+    const newLinks = [...(gift.links || []), { url, label, image }];
     const res = await fetch(`/api/presentes/list/${id}`, {
       method:'PATCH', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ links: newLinks })

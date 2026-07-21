@@ -5,7 +5,16 @@ const { randomUUID } = require('crypto');
 
 const app = express();
 const PORT = 3000;
-const DATA_FILE = path.join(__dirname, 'data.json');
+
+const SEED_FILE = path.join(__dirname, 'data.json');
+const DISK_DIR = process.env.DATA_DIR || '/var/data';
+const DATA_DIR = fs.existsSync(DISK_DIR) ? DISK_DIR : __dirname;
+const DATA_FILE = path.join(DATA_DIR, 'data.json');
+
+// Primeira execução com disco persistente: semeia o data.json a partir do repositório.
+if (DATA_FILE !== SEED_FILE && !fs.existsSync(DATA_FILE)) {
+  fs.copyFileSync(SEED_FILE, DATA_FILE);
+}
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -189,7 +198,7 @@ app.patch('/api/presentes/list/:id', (req, res) => {
   if (emoji       !== undefined) item.emoji       = emoji.trim();
   if (quantity    !== undefined) item.quantity    = Math.max(1, parseInt(quantity) || 1);
   if (links       !== undefined) {
-    item.links = links.map(l => ({ url: (l.url||'').trim(), label: (l.label||'').trim() })).filter(l => l.url);
+    item.links = links.map(l => ({ url: (l.url||'').trim(), label: (l.label||'').trim(), image: (l.image||'').trim() })).filter(l => l.url);
   }
   if (!item.links) item.links = [];
   if (!item.reservations) item.reservations = [];
