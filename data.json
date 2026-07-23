@@ -9,39 +9,6 @@
   },
   "presences": [
     {
-      "id": "770d597a-0961-4e49-94bc-110a2aeb7232",
-      "name": "Yan Tortelli",
-      "phone": "(11) 11111-11111111",
-      "attending": "yes",
-      "companions": [],
-      "message": "teste",
-      "guestId": "fp7",
-      "onList": true,
-      "createdAt": "2026-07-11T00:47:04.988Z"
-    },
-    {
-      "id": "6b575b75-e74e-4ca3-a0cd-e75327ed49cd",
-      "name": "Natália Julie",
-      "phone": "",
-      "attending": "yes",
-      "companions": [],
-      "message": "",
-      "guestId": "fp1",
-      "onList": true,
-      "createdAt": "2026-07-11T22:03:31.474Z"
-    },
-    {
-      "id": "f45c8a8e-7337-446a-9a1f-56f852578baf",
-      "name": "Brandon Carvalho",
-      "phone": "",
-      "attending": "yes",
-      "companions": [],
-      "message": "",
-      "guestId": "fp2",
-      "onList": true,
-      "createdAt": "2026-07-11T22:39:33.095Z"
-    },
-    {
       "id": "1e4c5cd3-76e2-4cba-890f-11f376c5efe6",
       "name": "Matheus Brandalia",
       "phone": "",
@@ -57,20 +24,7 @@
       "createdAt": "2026-07-12T16:42:55.368Z"
     }
   ],
-  "messages": [
-    {
-      "id": "2dfd4981-bea9-4245-9347-4bbe2ef7a799",
-      "name": "Yan Tortelli",
-      "text": "teste",
-      "createdAt": "2026-07-11T00:47:04.996Z"
-    },
-    {
-      "id": "6095622e-bff5-4e8f-838c-571c194e926b",
-      "name": "juliana",
-      "text": "oiii",
-      "createdAt": "2026-07-12T16:02:21.666Z"
-    }
-  ],
+  "messages": [],
   "gifts": [],
   "giftList": [
     {
@@ -195,6 +149,501 @@
       "category": "Presente Especial",
       "links": [],
       "quantity": 3,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "sk1",
+      "name": "Sabonete facial",
+      "description": "Sabonete/gel de limpeza facial para o dia a dia.",
+      "imageUrl": "",
+      "emoji": "🧼",
+      "category": "Skincare",
+      "links": [
+        {
+          "url": "https://a.co/d/06C6hASM",
+          "label": "Amazon"
+        },
+        {
+          "url": "https://a.co/d/00EhaOxR",
+          "label": "Amazon"
+        },
+        {
+          "url": "https://www.drogasil.com.br/garnier-skinactive-uniform-matte-vitamina-c-limpeza-facial-antioleosidade-120g.html",
+          "label": "Garnier (Drogasil)"
+        }
+      ],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "sk2",
+      "name": "Hidratante facial",
+      "description": "Creme hidratante para o rosto.",
+      "imageUrl": "",
+      "emoji": "🧴",
+      "category": "Skincare",
+      "links": [
+        {
+          "url": "https://www.principiaskin.com/creme-hidratante-ch-01-manteiga-de-karite-glicerina-niacinamida.html",
+          "label": "Principia"
+        },
+        {
+          "url": "https://www.amazon.com.br/CeraVe-Hidratante-Corporal-textura-Hialurônico/dp/B0C3SD9MN8",
+          "label": "CeraVe (Amazon)"
+        }
+      ],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "sk3",
+      "name": "Protetor solar facial",
+      "description": "Protetor solar para uso diário no rosto.",
+      "imageUrl": "",
+      "emoji": "☀️",
+      "category": "Skincare",
+      "links": [
+        {
+          "url": "https://www.drogariasaopaulo.com.br/protetor-solar-facial-darrow-darrow-actine-fps60-40gr-darrow/p?idsku=690546",
+          "label": "Actine"
+        },
+        {
+          "url": "https://www.amazon.com.br/NIVEA-Protetor-Solar-Facial-Antissinais/dp/B0BD6755LC",
+          "label": "Nivea (Amazon)"
+        }
+      ],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "sk4",
+      "name": "Sérum facial",
+      "description": "Sérum para cuidados com a pele do rosto.",
+      "imageUrl": "",
+      "emoji": "💧",
+      "category": "Skincare",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "sk5",
+      "name": "Esfoliante facial",
+      "description": "Esfoliante para renovação da pele do rosto.",
+      "imageUrl": "",
+      "emoji": "✨",
+      "category": "Skincare",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "sk6",
+      "name": "Balm labial",
+      "description": "Hidratante para os lábios.",
+      "imageUrl": "",
+      "emoji": "💋",
+      "category": "Skincare",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "hc1",
+      "name": "Shampoo",
+      "description": "Shampoo para os cuidados com o cabelo.",
+      "imageUrl": "",
+      "emoji": "🧴",
+      "category": "Cuidados com o Cabelo",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "hc2",
+      "name": "Condicionador",
+      "description": "Condicionador para os cuidados com o cabelo.",
+      "imageUrl": "",
+      "emoji": "🧴",
+      "category": "Cuidados com o Cabelo",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "hc3",
+      "name": "Máscara hidratante",
+      "description": "Máscara capilar hidratante.",
+      "imageUrl": "",
+      "emoji": "💆",
+      "category": "Cuidados com o Cabelo",
+      "links": [
+        {
+          "url": "https://a.co/d/0cNa6B2A",
+          "label": "Amend"
+        },
+        {
+          "url": "https://a.co/d/02jZpOgl",
+          "label": "Lola"
+        },
+        {
+          "url": "https://www.belezanaweb.com.br/eudora-siage-hidratacao-micelar-mascara-capilar-250g/",
+          "label": "Eudora"
+        }
+      ],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "hc4",
+      "name": "Máscara nutritiva",
+      "description": "Máscara capilar nutritiva.",
+      "imageUrl": "",
+      "emoji": "💆",
+      "category": "Cuidados com o Cabelo",
+      "links": [
+        {
+          "url": "https://www.belezanaweb.com.br/amend-essenciais-nutricao-mascara-capilar-250g/",
+          "label": "Amend"
+        },
+        {
+          "url": "https://www.brae.com.br/fiber-mask-200g/p?idsku=183",
+          "label": "Braé"
+        }
+      ],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "hc5",
+      "name": "Máscara reconstrutiva",
+      "description": "Máscara capilar reconstrutiva.",
+      "imageUrl": "",
+      "emoji": "💆",
+      "category": "Cuidados com o Cabelo",
+      "links": [
+        {
+          "url": "https://www.belezanaweb.com.br/amend-essenciais-reconstrucao-mascara-capilar-250g/",
+          "label": "Amend"
+        },
+        {
+          "url": "https://a.co/d/065IWDbl",
+          "label": "Amend"
+        }
+      ],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "hc6",
+      "name": "Óleo capilar",
+      "description": "Óleo para finalização e cuidado dos fios.",
+      "imageUrl": "",
+      "emoji": "💧",
+      "category": "Cuidados com o Cabelo",
+      "links": [
+        {
+          "url": "https://www.drogariasaopaulo.com.br/oleo-capilar-extraordinario-elseve-loreal-paris-feminino-100ml/p?idsku=360201",
+          "label": "Elseve"
+        },
+        {
+          "url": "https://www.belezanaweb.com.br/brae-essential-oil-blend-oleo-60ml/?sku=MP88363",
+          "label": "Braé"
+        },
+        {
+          "url": "https://a.co/d/06mzNpk0",
+          "label": "Elseve"
+        }
+      ],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "hc7",
+      "name": "Protetor térmico",
+      "description": "Protetor térmico capilar para uso com secador/chapinha.",
+      "imageUrl": "",
+      "emoji": "🔥",
+      "category": "Cuidados com o Cabelo",
+      "links": [
+        {
+          "url": "https://www.drogariasaopaulo.com.br/protetor-termico-capilar-tresemme-110ml-spray/p?idsku=884278",
+          "label": "Tresemmé"
+        },
+        {
+          "url": "https://a.co/d/006dhln5",
+          "label": "Cadiveu"
+        }
+      ],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "gy1",
+      "name": "Calça legging",
+      "description": "Legging para a academia.",
+      "imageUrl": "",
+      "emoji": "🏋️",
+      "category": "Academia",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "gy2",
+      "name": "Bermuda legging",
+      "description": "Bermuda legging para a academia.",
+      "imageUrl": "",
+      "emoji": "🏋️",
+      "category": "Academia",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "gy3",
+      "name": "Top de academia",
+      "description": "Top esportivo para treino.",
+      "imageUrl": "",
+      "emoji": "🏋️",
+      "category": "Academia",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "gy4",
+      "name": "Camiseta esportiva",
+      "description": "Camiseta esportiva para treino.",
+      "imageUrl": "",
+      "emoji": "🏋️",
+      "category": "Academia",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "gy5",
+      "name": "Jaqueta esportiva",
+      "description": "Jaqueta para treinos ao ar livre / clima frio.",
+      "imageUrl": "",
+      "emoji": "🏋️",
+      "category": "Academia",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "pj1",
+      "name": "Pijama de frio",
+      "description": "Conjunto de pijama quentinho, estilo moletom felpudo, para o inverno canadense.",
+      "imageUrl": "",
+      "emoji": "🌙",
+      "category": "Pijamas",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "pj2",
+      "name": "Pijama estampado (corações)",
+      "description": "Conjunto de pijama estampado, modelo com blusa e calça.",
+      "imageUrl": "",
+      "emoji": "🌙",
+      "category": "Pijamas",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "pj3",
+      "name": "Pantufas",
+      "description": "Pantufas quentinhas para dentro de casa.",
+      "imageUrl": "",
+      "emoji": "🥿",
+      "category": "Pijamas",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "pj4",
+      "name": "Meias quentinhas",
+      "description": "Meias felpudas para o frio.",
+      "imageUrl": "",
+      "emoji": "🧦",
+      "category": "Pijamas",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "rd1",
+      "name": "Calça jeans",
+      "description": "Calça jeans para o dia a dia.",
+      "imageUrl": "",
+      "emoji": "👖",
+      "category": "Roupas do Dia a Dia",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "rd2",
+      "name": "Calça de moletom",
+      "description": "Calça de moletom jogger, cor bege ou preta.",
+      "imageUrl": "",
+      "emoji": "👖",
+      "category": "Roupas do Dia a Dia",
+      "links": [
+        {
+          "url": "https://www.centauro.com.br/calca-jogger-feminina-oxer-moletom-991185.html?cor=12",
+          "label": "Centauro (Oxer)"
+        }
+      ],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "rd3",
+      "name": "Calça de perna larga (modal)",
+      "description": "Calça de perna larga em modal.",
+      "imageUrl": "",
+      "emoji": "👖",
+      "category": "Roupas do Dia a Dia",
+      "links": [
+        {
+          "url": "https://www.bershka.com/br/calça-de-perna-larga-em-modal-c0p209121390.html?colorId=712",
+          "label": "Bershka"
+        }
+      ],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "rd4",
+      "name": "Legging",
+      "description": "Legging para o dia a dia.",
+      "imageUrl": "",
+      "emoji": "👖",
+      "category": "Roupas do Dia a Dia",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "rd5",
+      "name": "Regata",
+      "description": "Regata para o dia a dia.",
+      "imageUrl": "",
+      "emoji": "👕",
+      "category": "Roupas do Dia a Dia",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "rd6",
+      "name": "Camiseta",
+      "description": "Camiseta para o dia a dia.",
+      "imageUrl": "",
+      "emoji": "👕",
+      "category": "Roupas do Dia a Dia",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "rd7",
+      "name": "Blusa de manga longa (gola alta)",
+      "description": "Blusa básica de manga longa, gola alta canelada, ideal para o frio.",
+      "imageUrl": "",
+      "emoji": "👚",
+      "category": "Roupas do Dia a Dia",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "rd8",
+      "name": "Moletom com capuz",
+      "description": "Blusa de moletom com capuz e bolso canguru.",
+      "imageUrl": "",
+      "emoji": "👚",
+      "category": "Roupas do Dia a Dia",
+      "links": [
+        {
+          "url": "https://www.centauro.com.br/blusa-de-moletom-feminina-oxer-com-capuz-canguru-991183.html?cor=12",
+          "label": "Centauro (Oxer)"
+        }
+      ],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "rd9",
+      "name": "Cardigã",
+      "description": "Cardigã para o dia a dia.",
+      "imageUrl": "",
+      "emoji": "🧥",
+      "category": "Roupas do Dia a Dia",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "ac1",
+      "name": "Mochila",
+      "description": "Mochila para o dia a dia / viagens curtas.",
+      "imageUrl": "",
+      "emoji": "🎒",
+      "category": "Acessórios",
+      "links": [],
+      "quantity": 1,
+      "reservations": [],
+      "takenBy": null
+    },
+    {
+      "id": "ac2",
+      "name": "Necessaire",
+      "description": "Necessaire para produtos de higiene e beleza do dia a dia.",
+      "imageUrl": "",
+      "emoji": "👜",
+      "category": "Acessórios",
+      "links": [],
+      "quantity": 1,
       "reservations": [],
       "takenBy": null
     }

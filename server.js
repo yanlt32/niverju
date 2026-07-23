@@ -4,7 +4,7 @@ const path = require('path');
 const { randomUUID } = require('crypto');
 
 const app = express();
-const PORT = 3000;
+const PORT = 2000;
 
 const SEED_FILE = path.join(__dirname, 'data.json');
 const DISK_DIR = process.env.DATA_DIR || '/var/data';
@@ -16,12 +16,35 @@ if (DATA_FILE !== SEED_FILE && !fs.existsSync(DATA_FILE)) {
   fs.copyFileSync(SEED_FILE, DATA_FILE);
 }
 
-app.use(express.json());
+const UPLOADS_DIR = path.join(DATA_DIR, 'uploads');
+fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+
+app.use(express.json({ limit: '15mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(UPLOADS_DIR));
 
 function readData() { return JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8')); }
 function writeData(d) { fs.writeFileSync(DATA_FILE, JSON.stringify(d, null, 2)); }
 function normName(n) { return n.trim().toLowerCase().replace(/\s+/g, ' '); }
+
+/* ─── UPLOAD DE IMAGENS ─── */
+const ALLOWED_IMAGE_TYPES = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/gif': 'gif' };
+
+app.post('/api/upload', (req, res) => {
+  const { dataUrl } = req.body;
+  const match = typeof dataUrl === 'string' && dataUrl.match(/^data:(image\/\w+);base64,(.+)$/);
+  if (!match || !ALLOWED_IMAGE_TYPES[match[1]]) {
+    return res.status(400).json({ error: 'Imagem inválida. Use PNG, JPG, WEBP ou GIF.' });
+  }
+  const ext = ALLOWED_IMAGE_TYPES[match[1]];
+  const buffer = Buffer.from(match[2], 'base64');
+  if (buffer.length > 8 * 1024 * 1024) {
+    return res.status(413).json({ error: 'Imagem muito grande (máx. 8MB).' });
+  }
+  const filename = `${randomUUID()}.${ext}`;
+  fs.writeFileSync(path.join(UPLOADS_DIR, filename), buffer);
+  res.json({ success: true, url: `/uploads/${filename}` });
+});
 
 /* ─── EVENTO ─── */
 app.get('/api/evento', (req, res) => res.json(readData().evento));
@@ -132,7 +155,7 @@ app.get('/api/presentes', (req, res) => {
 
 /* Reservar um presente */
 app.post('/api/presentes/list/:id/reserve', (req, res) => {
-  const { personName } = req.body;
+  const { personName, chosenLink } = req.body;
   if (!personName) return res.status(400).json({ error: 'Nome é obrigatório.' });
   const data = readData();
   const item = data.giftList.find(g => g.id === req.params.id);
@@ -142,7 +165,7 @@ app.post('/api/presentes/list/:id/reserve', (req, res) => {
   if (item.reservations.length >= qty) {
     return res.status(409).json({ error: 'Este presente já foi reservado.' });
   }
-  const reservation = { id: randomUUID(), personName: personName.trim(), createdAt: new Date().toISOString() };
+  const reservation = { id: randomUUID(), personName: personName.trim(), chosenLink: (chosenLink || '').trim() || null, createdAt: new Date().toISOString() };
   item.reservations.push(reservation);
   item.takenBy = item.reservations[0]?.personName || null;
   writeData(data);

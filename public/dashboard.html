@@ -78,6 +78,8 @@
     .icon-btn.open { background:#EEF4FF;color:#3B6FD4; } .icon-btn.open:hover { background:#3B6FD4;color:#fff; }
     .icon-btn-xs { width:22px;height:22px;border-radius:6px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#FDEDEC;color:var(--error);transition:all 0.15s;flex-shrink:0; }
     .icon-btn-xs:hover { background:var(--error);color:#fff; }
+    .icon-btn-xs.attach { background:#F0EEF8;color:#7C5CBF; }
+    .icon-btn-xs.attach:hover { background:#7C5CBF;color:#fff; }
 
     /* ── Links section ── */
     .gift-links-section {
@@ -140,6 +142,16 @@
       background: #fff; transition: border-color 0.15s; min-width: 0;
     }
     .gift-img-input:focus { border-color: var(--rose); }
+
+    /* ── Attach image button ── */
+    .attach-btn {
+      display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0;
+      background: #F0EEF8; color: #7C5CBF; border: 1px solid rgba(124,92,191,0.25);
+      border-radius: 8px; padding: 7px 10px; font-size: 12px; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.15s; white-space: nowrap;
+    }
+    .attach-btn:hover { background: #7C5CBF; color: #fff; border-color: #7C5CBF; }
+    .attach-btn.uploading { opacity: 0.6; pointer-events: none; }
 
     /* ── Links hint ── */
     .gift-links-hint {
@@ -649,6 +661,10 @@
           ${lk.image ? `<img class="link-thumb" src="${escHtml(lk.image)}" alt="" onerror="this.style.display='none'" />` : ''}
           <span class="link-label">${escHtml(lk.label || 'Opção ' + (idx+1))}</span>
           <span class="link-url" title="${escHtml(lk.url)}">${escHtml(lk.url)}</span>
+          <label class="icon-btn-xs attach" title="${lk.image ? 'Trocar foto' : 'Anexar foto'}">
+            <input type="file" accept="image/*" style="display:none" onchange="attachLinkImage('${g.id}', ${idx}, this)" />
+            <i data-lucide="paperclip" style="width:11px;height:11px;"></i>
+          </label>
           <a href="${escHtml(lk.url)}" target="_blank" rel="noopener" class="icon-btn open" title="Abrir link" onclick="event.stopPropagation()">
             <i data-lucide="external-link" style="width:13px;height:13px;"></i>
           </a>
@@ -692,6 +708,10 @@
           <div class="gift-img-row">
             ${g.imageUrl ? `<img class="gift-img-preview" src="${escHtml(g.imageUrl)}" alt="" onerror="this.style.display='none'" />` : ''}
             <input type="url" class="gift-img-input" id="gimg-${g.id}" value="${escHtml(g.imageUrl||'')}" placeholder="URL da foto do presente..." />
+            <label class="attach-btn" id="gattach-${g.id}">
+              <i data-lucide="paperclip" style="width:13px;height:13px;"></i> Anexar
+              <input type="file" accept="image/*" style="display:none" onchange="attachImage(this,'gimg-${g.id}')" />
+            </label>
             <button class="icon-btn save" onclick="saveGiftImage('${g.id}')" title="Salvar foto">
               <i data-lucide="check" style="width:13px;height:13px;"></i>
             </button>
@@ -720,6 +740,10 @@
               <input type="url" class="add-link-url" id="gnewurl-${g.id}" placeholder="Cole aqui a URL do produto..." />
               <input type="text" class="add-link-label" id="gnewlabel-${g.id}" placeholder="Nome (ex: Amazon)" />
               <input type="url" class="add-link-img" id="gnewimg-${g.id}" placeholder="URL da foto (opcional)" />
+              <label class="attach-btn" id="gnewattach-${g.id}">
+                <i data-lucide="paperclip" style="width:13px;height:13px;"></i> Anexar
+                <input type="file" accept="image/*" style="display:none" onchange="attachImage(this,'gnewimg-${g.id}')" />
+              </label>
               <button class="add-link-btn" onclick="addLink('${g.id}')">
                 <i data-lucide="plus" style="width:13px;height:13px;"></i>
                 Adicionar
@@ -753,6 +777,66 @@
     });
     if (res.ok) await loadAll();
     else { const d = await res.json(); alert(d.error || 'Erro ao salvar quantidade.'); }
+  }
+
+  function readFileAsDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function uploadImageFile(file) {
+    const dataUrl = await readFileAsDataUrl(file);
+    const res = await fetch('/api/upload', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ dataUrl })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erro ao enviar imagem.');
+    return data.url;
+  }
+
+  async function attachImage(fileInput, targetInputId) {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+    const label = fileInput.closest('.attach-btn');
+    const originalHtml = label.innerHTML;
+    label.classList.add('uploading');
+    label.innerHTML = '<i data-lucide="loader-2" style="width:13px;height:13px;"></i> Enviando...';
+    lucide.createIcons();
+    try {
+      document.getElementById(targetInputId).value = await uploadImageFile(file);
+    } catch (e) {
+      alert('Erro ao enviar imagem: ' + e.message);
+    } finally {
+      label.classList.remove('uploading');
+      label.innerHTML = originalHtml;
+      lucide.createIcons();
+    }
+  }
+
+  async function attachLinkImage(giftId, idx, fileInput) {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+    const label = fileInput.closest('.icon-btn-xs');
+    label.style.opacity = '0.5';
+    try {
+      const url = await uploadImageFile(file);
+      const gift = D.giftList.find(g => g.id === giftId);
+      const newLinks = gift.links.map((l, i) => i === idx ? { ...l, image: url } : l);
+      const res = await fetch(`/api/presentes/list/${giftId}`, {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ links: newLinks })
+      });
+      if (res.ok) await loadAll();
+      else { const d = await res.json(); alert(d.error || 'Erro ao salvar foto do link.'); }
+    } catch (e) {
+      alert('Erro ao enviar imagem: ' + e.message);
+      label.style.opacity = '1';
+    }
   }
 
   async function saveGiftImage(id) {
@@ -887,7 +971,7 @@
           <div class="list-avatar av-gold">${(r.personName||'?').charAt(0).toUpperCase()}</div>
           <div class="list-info">
             <div class="list-name">${escHtml(r.personName)}</div>
-            <div class="list-sub">${escHtml(r.giftName)} &bull; ${date}</div>
+            <div class="list-sub">${escHtml(r.giftName)}${r.chosenLink ? ' · loja: ' + escHtml(r.chosenLink) : ''} &bull; ${date}</div>
           </div>
           <span class="att-tag" style="background:#FFF8E6;color:#8A5500;">Reservado</span>
           <button class="icon-btn-xs" onclick="cancelReservation('${r.giftId}','${r.id}')" title="Cancelar reserva" style="margin-left:6px;flex-shrink:0;">

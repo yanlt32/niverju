@@ -49,87 +49,97 @@
     /* Gift grid */
     .gift-grid {
       display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-      gap:16px;
+      grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+      gap:10px;
       margin-bottom:8px;
     }
 
     /* Gift card */
     .gc {
-      background:#fff;border-radius:18px;overflow:hidden;
-      box-shadow:0 4px 16px rgba(0,0,0,0.07);border:1px solid #EEE8DC;
+      background:#fff;border-radius:14px;overflow:hidden;
+      box-shadow:0 3px 10px rgba(0,0,0,0.06);border:1px solid #EEE8DC;
       display:flex;flex-direction:column;transition:transform 0.2s,box-shadow 0.2s;
       position:relative;
     }
-    .gc:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,0.12);}
+    .gc:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,0.1);}
     .gc.reserved{opacity:0.75;}
 
     /* Gift image */
     .gc-img{
-      height:160px;overflow:hidden;background:#FAF5E8;
+      height:100px;overflow:hidden;background:#FAF5E8;
       display:flex;align-items:center;justify-content:center;
       position:relative;
     }
     .gc-img img{width:100%;height:100%;object-fit:cover;}
     .gc-img-placeholder{
-      display:flex;flex-direction:column;align-items:center;gap:8px;
+      display:flex;flex-direction:column;align-items:center;gap:4px;
       color:#D4C4A0;
     }
-    .gc-img-placeholder span{font-size:36px;}
-    .gc-img-placeholder small{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+    .gc-img-placeholder span{font-size:26px;}
+    .gc-img-placeholder small{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 
     /* Reserved seal */
     .reserved-seal {
-      position:absolute;top:10px;right:10px;
+      position:absolute;top:6px;right:6px;
       background:#C8102E;color:#fff;
-      font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
-      padding:4px 10px;border-radius:100px;
+      font-size:8px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+      padding:3px 8px;border-radius:100px;
       box-shadow:0 2px 8px rgba(200,16,46,0.4);
     }
     .available-seal {
-      position:absolute;top:10px;right:10px;
+      position:absolute;top:6px;right:6px;
       background:#E8FAF0;color:#009C3B;
-      font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
-      padding:4px 10px;border-radius:100px;border:1px solid #A8DFBC;
+      font-size:8px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+      padding:3px 8px;border-radius:100px;border:1px solid #A8DFBC;
     }
 
     /* Qty badge */
     .qty-badge {
-      position:absolute;top:10px;left:10px;
+      position:absolute;top:6px;left:6px;
       background:rgba(0,0,0,0.55);color:#fff;
-      font-size:9px;font-weight:800;padding:3px 8px;border-radius:100px;
+      font-size:8px;font-weight:800;padding:2px 6px;border-radius:100px;
     }
 
     /* Card body */
-    .gc-body{padding:14px 16px;flex:1;display:flex;flex-direction:column;gap:6px;}
-    .gc-name{font-size:14px;font-weight:700;color:#1A0805;line-height:1.3;}
-    .gc-desc{font-size:12px;color:#7A5540;line-height:1.55;flex:1;}
+    .gc-body{padding:8px 10px;flex:1;display:flex;flex-direction:column;gap:3px;}
+    .gc-name{font-size:12px;font-weight:700;color:#1A0805;line-height:1.25;}
+    .gc-desc{
+      font-size:10.5px;color:#7A5540;line-height:1.4;flex:1;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+    }
 
     /* Link options (multiple purchase links with photos) */
-    .gc-link-options{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
-    .gc-link-opt{
-      display:flex;flex-direction:column;align-items:center;gap:4px;width:56px;
-      text-decoration:none;color:#5A3528;transition:transform 0.15s;
+    .gc-link-caption{
+      font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;
+      color:#9A8070;margin-top:2px;
     }
-    .gc-link-opt:hover{transform:translateY(-2px);color:#C8102E;}
+    .gc-link-options{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
+    .gc-link-opt{
+      display:inline-flex;align-items:center;gap:4px;
+      text-decoration:none;color:#8B0C1F;transition:all 0.15s;
+      background:#FFF0E8;border:1px solid rgba(200,16,46,0.25);
+      border-radius:100px;padding:4px 9px 4px 5px;
+    }
+    .gc-link-opt:hover{background:#C8102E;color:#fff;border-color:#C8102E;transform:translateY(-1px);}
     .gc-link-opt img{
-      width:44px;height:44px;border-radius:10px;object-fit:cover;
-      border:1px solid #E0D8CC;background:#FAF5E8;
+      width:16px;height:16px;border-radius:5px;object-fit:cover;
+      border:1px solid #E0D8CC;background:#fff;flex-shrink:0;
     }
     .gc-link-opt i{
-      width:44px;height:44px;border-radius:10px;border:1px solid #E0D8CC;
-      background:#FAF5E8;display:flex;align-items:center;justify-content:center;
+      width:16px;height:16px;border-radius:5px;border:1px solid rgba(200,16,46,0.3);
+      background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;
     }
+    .gc-link-opt:hover i{border-color:#fff;}
     .gc-link-opt span{
-      font-size:9px;font-weight:700;text-align:center;line-height:1.2;
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:56px;
+      font-size:9.5px;font-weight:700;text-align:left;line-height:1.2;
+      white-space:normal;
     }
 
     /* Card actions */
-    .gc-actions{padding:0 16px 16px;display:flex;gap:8px;}
+    .gc-actions{padding:0 10px 10px;display:flex;gap:5px;}
     .gc-btn{
-      flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
-      padding:10px 8px;border-radius:10px;font-size:12px;font-weight:700;
+      flex:1;display:flex;align-items:center;justify-content:center;gap:4px;
+      padding:7px 6px;border-radius:8px;font-size:10.5px;font-weight:700;
       text-decoration:none;font-family:'Inter',sans-serif;cursor:pointer;
       border:none;transition:all 0.2s;letter-spacing:0.2px;
     }
@@ -165,6 +175,17 @@
       outline:none;transition:all 0.2s;
     }
     .modal input:focus{border-color:#C8102E;background:#fff;box-shadow:0 0 0 4px rgba(200,16,46,0.08);}
+    .modal-link-options{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+    .modal-link-opt{
+      display:flex;align-items:center;gap:10px;padding:10px 12px;
+      border:1.5px solid #E8D5C0;border-radius:12px;background:#FAF5E8;
+      cursor:pointer;transition:all 0.15s;
+    }
+    .modal-link-opt:hover{border-color:#E85070;}
+    .modal-link-opt.selected{border-color:#C8102E;background:#FFF0E8;box-shadow:0 0 0 3px rgba(200,16,46,0.08);}
+    .modal-link-opt input{width:auto;padding:0;margin:0;accent-color:#C8102E;}
+    .modal-link-opt img{width:28px;height:28px;border-radius:7px;object-fit:cover;border:1px solid #E0D8CC;background:#fff;flex-shrink:0;}
+    .modal-link-opt span{font-size:13px;font-weight:600;color:#3A2018;}
     .modal-alert{background:#FDEDEC;color:#C0392B;border:1px solid #f4c6c2;border-radius:10px;padding:10px 14px;font-size:13px;margin-top:10px;display:none;}
     .modal-alert.show{display:block;}
     .modal-actions{display:flex;gap:10px;margin-top:20px;}
@@ -183,11 +204,11 @@
     .ms-close{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#C8102E,#8B0C1F);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
 
     @media(max-width:600px){
-      .gift-grid{grid-template-columns:repeat(2,1fr);}
-      .gc-img{height:130px;}
+      .gift-grid{grid-template-columns:repeat(3,1fr);}
+      .gc-img{height:80px;}
     }
     @media(max-width:360px){
-      .gift-grid{grid-template-columns:1fr;}
+      .gift-grid{grid-template-columns:repeat(2,1fr);}
     }
   </style>
 </head>
@@ -237,6 +258,10 @@
       <h2>Reservar Presente</h2>
       <div class="modal-gift-name" id="modalGiftName"></div>
       <p class="modal-sub">Deseja reservar este presente? Informe seu nome para registrar a reserva.</p>
+      <div id="modalLinkChoice" style="display:none;">
+        <label>Qual opção você vai comprar?</label>
+        <div id="modalLinkOptions" class="modal-link-options"></div>
+      </div>
       <label>Seu nome</label>
       <input type="text" id="modalPersonName" placeholder="Nome completo..." />
       <div class="modal-alert" id="modalAlert"></div>
@@ -338,12 +363,13 @@
     const multiLinks = hasLink && g.links.length > 1;
 
     const linkOptionsHtml = multiLinks
-      ? `<div class="gc-link-options">
+      ? `<div class="gc-link-caption">Comprar em:</div>
+         <div class="gc-link-options">
            ${g.links.map((lk, idx) => `
              <a href="${lk.url}" target="_blank" rel="noopener" class="gc-link-opt" title="${lk.label || 'Opção ' + (idx+1)}">
                ${lk.image
-                 ? `<img src="${lk.image}" alt="${lk.label||''}" onerror="this.parentElement.innerHTML='<i data-lucide=\\'external-link\\' style=\\'width:14px;height:14px;\\'></i>'" />`
-                 : `<i data-lucide="external-link" style="width:14px;height:14px;"></i>`}
+                 ? `<img src="${lk.image}" alt="${lk.label||''}" onerror="this.parentElement.innerHTML='<i data-lucide=\\'external-link\\' style=\\'width:12px;height:12px;\\'></i>'" />`
+                 : `<i data-lucide="external-link" style="width:12px;height:12px;"></i>`}
                <span>${lk.label || 'Opção ' + (idx+1)}</span>
              </a>`).join('')}
          </div>`
@@ -386,17 +412,46 @@
   }
 
   /* ── Modal ── */
+  let selectedLinkLabel = null;
+
   function openModal(id) {
     const g = giftData.find(x => x.id === id);
     if (!g || isFullyReserved(g)) return;
     currentReserveId = id;
+    selectedLinkLabel = null;
     document.getElementById('modalGiftName').textContent = g.name;
     document.getElementById('modalPersonName').value = '';
     document.getElementById('modalAlert').className = 'modal-alert';
     document.getElementById('modalForm').style.display = 'block';
     document.getElementById('modalSuccess').className = 'modal-success';
+
+    const links = g.links || [];
+    const choiceBox = document.getElementById('modalLinkChoice');
+    const optsEl = document.getElementById('modalLinkOptions');
+    if (links.length > 1) {
+      choiceBox.style.display = 'block';
+      selectedLinkLabel = links[0].label || 'Opção 1';
+      optsEl.innerHTML = links.map((lk, idx) => `
+        <label class="modal-link-opt${idx===0?' selected':''}" data-idx="${idx}">
+          <input type="radio" name="modalLink" value="${escHtmlAttr(lk.label || 'Opção '+(idx+1))}" ${idx===0?'checked':''} onchange="selectLinkOption(${idx}, this)" />
+          ${lk.image ? `<img src="${lk.image}" alt="" onerror="this.style.display='none'" />` : ''}
+          <span>${lk.label || 'Opção ' + (idx+1)}</span>
+        </label>
+      `).join('');
+    } else {
+      choiceBox.style.display = 'none';
+      optsEl.innerHTML = '';
+    }
+
     document.getElementById('reserveModal').classList.add('open');
     setTimeout(() => document.getElementById('modalPersonName').focus(), 100);
+  }
+
+  function escHtmlAttr(s) { return String(s).replace(/"/g,'&quot;'); }
+
+  function selectLinkOption(idx, input) {
+    selectedLinkLabel = input.value;
+    document.querySelectorAll('.modal-link-opt').forEach((el, i) => el.classList.toggle('selected', i === idx));
   }
 
   function closeModal() {
@@ -420,7 +475,7 @@
     try {
       const res = await fetch(`/api/presentes/list/${currentReserveId}/reserve`, {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ personName: name })
+        body: JSON.stringify({ personName: name, chosenLink: selectedLinkLabel })
       });
       const data = await res.json();
       if (!res.ok) {
